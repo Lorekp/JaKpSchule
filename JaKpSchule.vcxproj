@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="MainMenu.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -132,18 +144,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\LabyrinthSchool\VisualStudio\AssetManager.h" />
-    <ClInclude Include="..\LabyrinthSchool\VisualStudio\Grid.h" />
-    <ClInclude Include="..\LabyrinthSchool\VisualStudio\Level.h" />
-    <ClInclude Include="..\LabyrinthSchool\VisualStudio\MainMenu.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\LabyrinthSchool\VisualStudio\AssetManager.cpp" />
-    <ClCompile Include="..\LabyrinthSchool\VisualStudio\Grid.cpp" />
-    <ClCompile Include="..\LabyrinthSchool\VisualStudio\Level.cpp" />
-    <ClCompile Include="..\LabyrinthSchool\VisualStudio\Main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
