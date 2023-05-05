@@ -1,19 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include <direct.h>
+#include <iostream>
 #include "Level.h"
 #include "AssetManager.h"
+
+int dirExists(const char* const path);
 
 int main() {
 
     //initialization
     const char* spath = ".\\saves";
     if (dirExists(spath) > 0)
-        if ()
+        std::cout << "folder already exists";
     else if (dirExists(spath) == 0)
-        mkdir(".\\saves");
+        _mkdir(".\\saves");
     
 
-
+    bool fullscreen = true;
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
     AssetManager manager;
 
@@ -23,10 +26,23 @@ int main() {
         sf::Event event;
         while (window.pollEvent(event))
         {
-            switch (event.type)
-                case sf::Event::KeyPressed:
-                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-                        ;
+            switch (event.type) {
+            case sf::Event::KeyPressed:
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
+                    if (fullscreen)
+                    {
+                        window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
+                        fullscreen = false;
+                    }
+                    else
+                    {
+                        window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
+                        fullscreen = true;
+                    }
+                break;
+            case sf::Event::Closed:
+                window.close();
+            }
         }
 
         window.clear();
