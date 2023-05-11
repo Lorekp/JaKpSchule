@@ -1,5 +1,5 @@
 #ifndef ASSET MANAGER_H
-#define ASSET MANAGER H
+#define ASSET MANAGER_H
 
 #include <SFML/Graphics.hpp>
 #include <map>
