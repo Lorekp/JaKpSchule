@@ -3,24 +3,22 @@
 #include <iostream>
 #include "Level.h"
 #include "AssetManager.h"
+#include "MainMenu.h"
 
-int dirExists(const char* const path);
+bool isDirExist(const std::string& path);
+bool makePath(const std::string& path);
 
 int main() {
 
     //initialization
-    const char* spath = ".\\saves";
-    if (dirExists(spath) > 0)
-        std::cout << "folder already exists";
-    else if (dirExists(spath) == 0)
-        _mkdir(".\\saves");
     
+    std::cout << makePath(".\\saves") ? "saves folder created" : "error";
 
     bool fullscreen = true;
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
     AssetManager manager;
+    MainMenu mainMenu(manager);
 
-    Level level = Level(8);
     while (window.isOpen())
     {
         sf::Event event;
@@ -46,6 +44,7 @@ int main() {
         }
 
         window.clear();
+        
         //draw here
         window.display();
     }
@@ -54,20 +53,63 @@ int main() {
 
 }
 
-int dirExists(const char* const path)
+bool isDirExist(const std::string& path)
 {
-    //returns 0 if no dir/ exists but not a dir
-    //returns >0 if dir exists
-    //returns <0 if other error
-    struct stat info;
-
-    int statRC = stat(path, &info);
-    if (statRC != 0)
+#if defined(_WIN32)
+    struct _stat info;
+    if (_stat(path.c_str(), &info) != 0)
     {
-        if (errno == ENOENT) { return 0; } // something along the path does not exist
-        if (errno == ENOTDIR) { return 0; } // something in path prefix is not a dir
-        return -1;
+        return false;
     }
+    return (info.st_mode & _S_IFDIR) != 0;
+#else 
+    struct stat info;
+    if (stat(path.c_str(), &info) != 0)
+    {
+        return false;
+    }
+    return (info.st_mode & S_IFDIR) != 0;
+#endif
+}
 
-    return (info.st_mode & S_IFDIR) ? 1 : 0;
+bool makePath(const std::string& path)
+{
+#if defined(_WIN32)
+    int ret = _mkdir(path.c_str());
+#else
+    mode_t mode = 0755;
+    int ret = mkdir(path.c_str(), mode);
+#endif
+    if (ret == 0)
+        return true;
+
+    switch (errno)
+    {
+    case ENOENT:
+        // parent didn't exist, try to create it
+        {
+            int pos = path.find_last_of('/');
+            if (pos == std::string::npos)
+#if defined(_WIN32)
+                pos = path.find_last_of('\\');
+            if (pos == std::string::npos)
+#endif
+                return false;
+            if (!makePath( path.substr(0, pos) ))
+                return false;
+        }
+        // now, try to create again
+#if defined(_WIN32)
+        return 0 == _mkdir(path.c_str());
+#else 
+        return 0 == mkdir(path.c_str(), mode);
+#endif
+
+    case EEXIST:
+        // done!
+        return isDirExist(path);
+
+    default:
+        return false;
+    }
 }

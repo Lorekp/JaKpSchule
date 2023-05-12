@@ -45,4 +45,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Arrow_Left_Key_Light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\Arrow_Right_Key_Light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\Arrow_Up_Key_Light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\Arrow_Down_Key_Light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

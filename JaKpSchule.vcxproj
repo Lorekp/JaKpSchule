@@ -31,6 +31,12 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenu.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Arrow_Down_Key_Light.png" />
+    <Image Include="resources\Arrow_Left_Key_Light.png" />
+    <Image Include="resources\Arrow_Right_Key_Light.png" />
+    <Image Include="resources\Arrow_Up_Key_Light.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
