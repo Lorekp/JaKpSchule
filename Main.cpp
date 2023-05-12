@@ -27,16 +27,10 @@ int main() {
             switch (event.type) {
             case sf::Event::KeyPressed:
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-                    if (fullscreen)
-                    {
-                        window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
-                        fullscreen = false;
-                    }
-                    else
-                    {
-                        window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-                        fullscreen = true;
-                    }
+				{
+					(fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
+					fullscreen != fullscreen;
+				}
                 break;
             case sf::Event::Closed:
                 window.close();
