@@ -11,7 +11,7 @@ AssetManager::AssetManager()
 
 void AssetManager::serializeGrid(std::string const& filename, std::vector<std::vector<GridElement>>& grid)
 {
-	std::ofstream wf(filename, std::ios::out | std::ios::binary);
+	std::ofstream wf(filename, std::ios::binary | std::ios::trunc);
 	if (!wf)
 		std::cout << "Canot open file!" <<std::endl;
 	//write x/y size of grid
@@ -59,16 +59,19 @@ void AssetManager::serializeGrid(std::string const& filename, std::vector<std::v
 
 Grid AssetManager::deserializeGrid(std::string const& filename)
 {
-	std::ifstream rf(filename, std::ios::out | std::ios::binary);
+	std::ifstream rf(filename, std::ios::binary);
 	if (!rf)
 		std::cout << "Cannot open file!" << std::endl;
 	//reading size of grid
 	int gx, gy;
 	rf.read((char*)&gx, sizeof(int));
 	rf.read((char*)&gy, sizeof(int));
+	std::cout << gx << gy << std::endl;
 	Grid rGrid(gx, gy);
+	std::cout << gx << gy << std::endl;
 	for (int x = 0; x < gx; x++) 
 	{
+		std::cout << gx << gy << std::endl;
 		for (int y = 0; y < gy; y++)
 		{
 			//reading how many subGridElements to read
@@ -96,6 +99,7 @@ Grid AssetManager::deserializeGrid(std::string const& filename)
 	rf.close();
 	if (!rf.good())
 		std::cout << "Error occurred at reading time!" << std::endl;
+	std::cout << gx << gy << std::endl;
 	return rGrid;
 }
 

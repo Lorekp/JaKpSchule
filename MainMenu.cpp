@@ -18,7 +18,7 @@ MainMenu::MainMenu(AssetManager manager)
 	mainGrid.addSubGridElementAt(0, 3, Straight(2));
 	mainGrid.addSubGridElementAt(3, 3, Slope(90));
 	manager.serializeGrid(".\\levels\\mainGrid.labdat", mainGrid.getGrid());
-	manager.getGrid(".\\levels\\mainGrid.labdat");
+	mainGrid = manager.getGrid(".\\levels\\mainGrid.labdat");
 	mainGrid.printGrid();
 
 }

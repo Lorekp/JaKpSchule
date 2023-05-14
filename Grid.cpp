@@ -13,6 +13,8 @@ Grid::Grid(int gridSizeX, int gridSizeY) {
 
 Grid::Grid()
 {
+    grid.push_back(std::vector<GridElement>());
+    grid.at(0).push_back(GridElement());
 }
 
 void Grid::printGrid()
@@ -40,6 +42,6 @@ std::vector<std::vector<GridElement>>& Grid::getGrid()
     return grid;
 }
 
-void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
+void Grid::addSubGridElementAt(int y, int x, SubGridElement newSubGridElement) {
     grid.at(x).at(y).addSubGridElement(newSubGridElement);
 }

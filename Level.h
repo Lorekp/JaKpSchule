@@ -6,10 +6,9 @@
 class Level {
 
 private:
-	Grid grid;
 
 public:
 	void run();
-	Level(int gridSizeX, int gridSizeY);
+	Level();
 
 };
