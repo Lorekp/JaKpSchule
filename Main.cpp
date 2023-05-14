@@ -12,7 +12,8 @@ int main() {
 
     //initialization
     
-    std::cout << makePath(".\\saves") ? "saves folder created" : "error";
+    makePath(".\\saves");
+
 
     bool fullscreen = true;
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);

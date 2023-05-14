@@ -1,5 +1,8 @@
+#pragma once
 #include "AssetManager.h"
 #include "Grid.h"
+#include "Slope.h"
+#include "Straight.h"
 #include <vector>
 
 class MainMenu{

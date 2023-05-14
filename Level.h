@@ -1,14 +1,15 @@
 #pragma once
 #include <vector>
+#include "GridElement.h"
+#include "Grid.h"
 
 class Level {
 
 private:
-	std::vector<std::vector<int>> grid;
+	Grid grid;
 
 public:
 	void run();
-	Level(int gridSize);
-	Level(std::vector<std::vector<int>> grid);
+	Level(int gridSizeX, int gridSizeY);
 
 };

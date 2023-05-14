@@ -1,15 +1,20 @@
+#pragma once
 #include <vector>
+#include <iostream>
+#include "GridElement.h"
+#include "SubGridElement.h"
 
 class Grid {
 
 private:
-	std::vector<std::vector<int>> grid;
-
-	unsigned concatenate(unsigned x, unsigned y);
+	std::vector<std::vector<GridElement>> grid;
 
 public:
-	void setGridValueAt(int x, int y, int newValue, int rotationDeg, int offsetx, int offsety);
-	int getGridValueAt(int x, int y);
-	Grid(int gridSize);
+	void addSubGridElementAt(int x, int y, SubGridElement newSubGridElement);
+	GridElement getGridElementAt(int x, int y);
+	std::vector<std::vector<GridElement>>& getGrid();
+	Grid(int gridSizeX, int gridSizeY);
+	Grid();
 
+	void printGrid();
 };

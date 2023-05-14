@@ -1,29 +1,45 @@
 #include "Grid.h"
 
-Grid::Grid(int gridSize) {
-    for (int x = 0; x < gridSize; x++)
+Grid::Grid(int gridSizeX, int gridSizeY) {
+    for (int x = 0; x < gridSizeX; x++)
     {
-       for (int y = 0; y < gridSize; y++) 
+       grid.push_back(std::vector<GridElement>());
+       for (int y = 0; y < gridSizeY; y++) 
        {
-           
+           grid.at(x).push_back(GridElement());
        }
     }
 }
 
-int Grid::getGridValueAt(int x, int y) {
+Grid::Grid()
+{
+}
+
+void Grid::printGrid()
+{
+    for (int x = 0; x < grid.size(); x++)
+    {
+        grid.push_back(std::vector<GridElement>());
+        for (int y = 0; y < grid.at(x).size(); y++)
+        {
+            if (grid.at(x).at(y).getSubGridElements().size() > 0)
+                std::cout << grid.at(x).at(y).getSubGridElementAt(0).getType();
+            else
+                std::cout << "-";
+        }
+        std::cout << std::endl;
+    }
+}
+
+GridElement Grid::getGridElementAt(int x, int y) {
 	return grid.at(x).at(y);
 }
 
-void Grid::setGridValueAt(int x, int y, int newValue, int rotationDeg, int offsetx, int offsety) {
-    //value 100 = empty, 101 = slope, 102 = straight
-    //rotation 000 = none, rotation 090 = 90°, rotation 180 = 190° ...
-    //offset in pixels
-    grid[x][y] = concatenate(newValue, rotationDeg);
+std::vector<std::vector<GridElement>>& Grid::getGrid()
+{
+    return grid;
 }
 
-unsigned concatenate(unsigned x, unsigned y) {
-    unsigned pow = 10;
-    while (y >= pow)
-        pow *= 10;
-    return x * pow + y;
+void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
+    grid.at(x).at(y).addSubGridElement(newSubGridElement);
 }

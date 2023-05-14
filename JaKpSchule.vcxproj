@@ -21,15 +21,23 @@
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GridElement.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Slope.cpp" />
+    <ClCompile Include="Straight.cpp" />
+    <ClCompile Include="SubGridElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="GridElement.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Slope.h" />
+    <ClInclude Include="Straight.h" />
+    <ClInclude Include="SubGridElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\Arrow_Down_Key_Light.png" />
