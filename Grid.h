@@ -15,6 +15,4 @@ public:
 	std::vector<std::vector<GridElement>>& getGrid();
 	Grid(int gridSizeX, int gridSizeY);
 	Grid();
-
-	void printGrid();
 };

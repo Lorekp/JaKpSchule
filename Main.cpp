@@ -30,7 +30,7 @@ int main() {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
 				{
 					(fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-					fullscreen != fullscreen;
+					fullscreen = !fullscreen;
 				}
                 break;
             case sf::Event::Closed:

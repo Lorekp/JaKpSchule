@@ -66,12 +66,9 @@ Grid AssetManager::deserializeGrid(std::string const& filename)
 	int gx, gy;
 	rf.read((char*)&gx, sizeof(int));
 	rf.read((char*)&gy, sizeof(int));
-	std::cout << gx << gy << std::endl;
 	Grid rGrid(gx, gy);
-	std::cout << gx << gy << std::endl;
 	for (int x = 0; x < gx; x++) 
 	{
-		std::cout << gx << gy << std::endl;
 		for (int y = 0; y < gy; y++)
 		{
 			//reading how many subGridElements to read
@@ -104,7 +101,6 @@ Grid AssetManager::deserializeGrid(std::string const& filename)
 	rf.close();
 	if (!rf.good())
 		std::cout << "Error occurred at reading time!" << std::endl;
-	std::cout << gx << gy << std::endl;
 	return rGrid;
 }
 

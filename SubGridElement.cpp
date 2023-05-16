@@ -27,5 +27,7 @@ void SubGridElement::setRotation(int newRotation)
 
 SubGridElement::SubGridElement()
 {
+    this->rotation = 0;
     this->type = -1;
+    this->side = 0;
 }

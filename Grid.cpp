@@ -17,22 +17,6 @@ Grid::Grid()
     grid.at(0).push_back(GridElement());
 }
 
-void Grid::printGrid()
-{
-    for (int x = 0; x < grid.size(); x++)
-    {
-        grid.push_back(std::vector<GridElement>());
-        for (int y = 0; y < grid.at(x).size(); y++)
-        {
-            if (grid.at(x).at(y).getSubGridElements().size() > 0)
-                std::cout << grid.at(x).at(y).getSubGridElementAt(0).getType();
-            else
-                std::cout << "-";
-        }
-        std::cout << std::endl;
-    }
-}
-
 GridElement Grid::getGridElementAt(int x, int y) {
 	return grid.at(x).at(y);
 }
