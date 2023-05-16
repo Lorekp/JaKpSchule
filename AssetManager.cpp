@@ -13,38 +13,38 @@ void AssetManager::serializeGrid(std::string const& filename, std::vector<std::v
 {
 	std::ofstream wf(filename, std::ios::binary | std::ios::trunc);
 	if (!wf)
-		std::cout << "Canot open file!" <<std::endl;
+		std::cout << "Cannot open file!" <<std::endl;
 	//write x/y size of grid
 	int gridSizeX = grid.size();
 	int gridSizeY = grid.at(0).size();
 	wf.write((char*)&gridSizeX, sizeof(int));
 	wf.write((char*)&gridSizeY, sizeof(int));
-	for (int x = 0; x < grid.size(); x++)
+	for (int x = 0; x < gridSizeX; x++)
 	{
-		for (int y = 0; y < grid.at(x).size(); y++)
+		for (int y = 0; y < gridSizeY; y++)
 		{
-			int sGridsize = grid.at(x).at(y).getSubGridElements().size();
+			int sGridsize = grid.at(y).at(x).getSubGridElements().size();
 			//write number of SubGridElements
 			wf.write((char*)&sGridsize, sizeof(int));
 			for (int i = 0; i < sGridsize; i++)
 			{
-				int type = grid.at(x).at(y).getSubGridElementAt(i).getType();
+				int type = grid.at(y).at(x).getSubGridElementAt(i).getType();
 				//write type of subgridelement & depending on type side/rotation
 				wf.write((char*)&type, sizeof(int));
 				switch (type)
 				{
 				case 0:
 				{
-					int rotation = grid.at(x).at(y).getSubGridElementAt(i).getRotation();
+					int rotation = grid.at(y).at(x).getSubGridElementAt(i).getRotation();
 					wf.write((char*)&rotation, sizeof(int));
-				}
 					break;
+				}
 				case 1:
 				{
-					int side = grid.at(x).at(y).getSubGridElementAt(i).getSide();
+					int side = grid.at(y).at(x).getSubGridElementAt(i).getSide();
 					wf.write((char*)&side, sizeof(int));
-				}
 					break;
+				}
 				default:
 					break;
 				}
@@ -84,12 +84,17 @@ Grid AssetManager::deserializeGrid(std::string const& filename)
 				switch (type)
 				{
 				case 0:
+				{
 					rf.read((char*)&rotation, sizeof(int));
 					rGrid.addSubGridElementAt(x, y, Slope(rotation));
 					break;
+				}
 				case 1:
+				{
 					rf.read((char*)&side, sizeof(int));
 					rGrid.addSubGridElementAt(x, y, Straight(side));
+					break;
+				}
 				default:
 					break;
 				}
