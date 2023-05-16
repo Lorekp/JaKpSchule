@@ -17,8 +17,10 @@ int main() {
 
     bool fullscreen = true;
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
+    window.setFramerateLimit(60);
     AssetManager manager;
     MainMenu mainMenu(manager);
+    sf::Sprite background(manager.getTexture(".\\resources\\white19201080.png"));
 
     while (window.isOpen())
     {
@@ -39,7 +41,8 @@ int main() {
         }
 
         window.clear();
-        
+        window.draw(background);
+        mainMenu.draw(window.getSize().x, window.getSize().y, 1, window);
         //draw here
         window.display();
     }

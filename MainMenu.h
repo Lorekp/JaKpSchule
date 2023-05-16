@@ -8,10 +8,9 @@
 class MainMenu{
 
 private:
-	std::vector<sf::Texture> textures;
-
+	std::vector<sf::Sprite> textures;
+	Grid mainGrid;
 public:
 	MainMenu(AssetManager manager);
-	std::vector<sf::Texture>& GetTextures();
-
+	void draw(float windowX, float windowY, float scale, sf::RenderWindow& window);
 };

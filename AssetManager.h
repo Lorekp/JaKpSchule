@@ -1,14 +1,16 @@
-#ifndef ASSET MANAGER_H
-#define ASSET MANAGER_H
+#ifndef ASSET_MANAGER_H
+#define ASSET_MANAGER_H
 
-#include <SFML/Graphics.hpp>
+#include "Slope.h"
+#include "Straight.h"
+#include "GridElement.h"
 #include <map>
 #include <fstream>
 #include <iostream>
 #include <assert.h>
-#include "Grid.h"
-#include "Slope.h"
-#include "Straight.h"
+#include <SFML/Graphics.hpp>
+
+class Grid;
 
 class AssetManager {
 
@@ -18,7 +20,7 @@ class AssetManager {
 
 		static sf::Texture& getTexture(std::string const& filename);
 		static Grid& getGrid(std::string const& filename);
-		void serializeGrid(std::string const& filename, std::vector<std::vector<GridElement>>& grid);
+		static void serializeGrid(std::string const& filename, std::vector<std::vector<GridElement>>& grid);
 
 	private:
 
@@ -30,6 +32,6 @@ class AssetManager {
 
 		static AssetManager* sInstance;
 
-		Grid deserializeGrid(std::string const& filename);
+		static Grid deserializeGrid(std::string const& filename);
 };
 #endif

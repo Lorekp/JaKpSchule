@@ -82,5 +82,14 @@
     <Image Include="resources\Arrow_Down_Key_Light.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\white19201080.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\slope.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\straight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
