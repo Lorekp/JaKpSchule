@@ -36,8 +36,9 @@ void Grid::draw(float px, float py, float scale, sf::RenderWindow& window)
     {
         for (int y = 0; y < gridSizeY; y++)
         {
-            sprites.at(x).at(y).setPosition(centerOfGrid + sf::Vector2f(px, py) - sf::Vector2f((gridSizeX - x+1)*256*scale, (gridSizeY - y+1)*256*scale));
-            window.draw(sprites.at(x).at(y));
+            sprites.at(y).at(x).setScale(sf::Vector2f(scale, scale));
+            sprites.at(y).at(x).setPosition((sf::Vector2f(px/2, py/2)) - centerOfGrid + sf::Vector2f((x)*256*scale, (y)*256*scale));
+            window.draw(sprites.at(y).at(x));
         }
     }
 }
@@ -56,6 +57,9 @@ void Grid::calcSprites()
             {
                 switch (grid.at(x).at(y).getSubGridElements().at(i).getType())
                 {
+                case -1:
+                    sprites.at(x).at(y).setTexture(AssetManager::getTexture(".\\resources\\empty256.png"));
+                    break;
                 case 0:
                     sprites.at(x).at(y).setTexture(AssetManager::getTexture(".\\resources\\slope.png"));
                     break;

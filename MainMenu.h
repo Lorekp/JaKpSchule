@@ -11,6 +11,6 @@ private:
 	std::vector<sf::Sprite> textures;
 	Grid mainGrid;
 public:
-	MainMenu(AssetManager manager);
+	MainMenu();
 	void draw(float windowX, float windowY, float scale, sf::RenderWindow& window);
 };
