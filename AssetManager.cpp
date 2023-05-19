@@ -1,5 +1,4 @@
 #include "AssetManager.h"
-#include "Grid.h"
 
 AssetManager* AssetManager::sInstance = nullptr;
 
@@ -9,8 +8,11 @@ AssetManager::AssetManager()
 	sInstance = this;
 }
 
-void AssetManager::serializeGrid(std::string const& filename, std::vector<std::vector<GridElement>>& grid)
+void AssetManager::serializeGrid(std::string filename, std::vector<std::vector<GridElement>>& grid)
 {
+	#if !defined(WIN_32)
+	filename = std::regex_replace(filename, std::regex("\\\\"), "/");
+	#endif
 	std::ofstream wf(filename, std::ios::binary | std::ios::trunc);
 	if (!wf)
 		std::cout << "Cannot open file!" <<std::endl;
@@ -57,8 +59,11 @@ void AssetManager::serializeGrid(std::string const& filename, std::vector<std::v
 	
 }
 
-Grid AssetManager::deserializeGrid(std::string const& filename)
+Grid AssetManager::deserializeGrid(std::string filename)
 {
+	#if !defined(WIN_32)
+	filename = std::regex_replace(filename, std::regex("\\\\"), "/");
+	#endif
 	std::ifstream rf(filename, std::ios::binary);
 	if (!rf)
 		std::cout << "Cannot open file!" << std::endl;
@@ -104,8 +109,15 @@ Grid AssetManager::deserializeGrid(std::string const& filename)
 	return rGrid;
 }
 
-sf::Texture& AssetManager::getTexture(std::string const& filename)
+sf::Texture& AssetManager::getTexture(std::string filename)
 {
+	#if !defined(WIN_32)
+	for(int index=0;index<filename.size();index++)
+	{
+		filename = std::regex_replace(filename, std::regex("\\\\"), "/");
+	}
+	#endif
+
 	auto& texMap = sInstance->m_Textures;
 
 	auto pairFound = texMap.find(filename);
@@ -122,8 +134,11 @@ sf::Texture& AssetManager::getTexture(std::string const& filename)
 	}
 }
 
-Grid& AssetManager::getGrid(std::string const& filename)
+Grid& AssetManager::getGrid(std::string filename)
 {
+	#if !defined(WIN_32)
+	filename = std::regex_replace(filename, std::regex("\\\\"), "/");
+	#endif
 	auto& gridMap = sInstance->m_Grids;
 
 	auto pairFound = gridMap.find(filename);
