@@ -12,12 +12,16 @@ int main() {
 
     //initialization
     
-    std::cout << makePath(".\\saves") ? "saves folder created" : "error";
+    makePath(".\\saves");
+
 
     bool fullscreen = true;
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
+    //sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
+    window.setFramerateLimit(60);
     AssetManager manager;
-    MainMenu mainMenu(manager);
+    MainMenu mainMenu;
+    sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
 
     while (window.isOpen())
     {
@@ -29,7 +33,7 @@ int main() {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
 				{
 					(fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-					fullscreen != fullscreen;
+					fullscreen = !fullscreen;
 				}
                 break;
             case sf::Event::Closed:
@@ -38,7 +42,8 @@ int main() {
         }
 
         window.clear();
-        
+        window.draw(background);
+        mainMenu.draw(window.getSize().x, window.getSize().y, 0.25, window);
         //draw here
         window.display();
     }

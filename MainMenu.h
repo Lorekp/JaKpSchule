@@ -1,13 +1,16 @@
+#pragma once
 #include "AssetManager.h"
+#include "Grid.h"
+#include "Slope.h"
+#include "Straight.h"
 #include <vector>
 
 class MainMenu{
 
 private:
-	std::vector<sf::Texture> textures;
-
+	std::vector<sf::Sprite> textures;
+	Grid mainGrid;
 public:
-	MainMenu(AssetManager manager);
-	std::vector<sf::Texture>& GetTextures();
-
+	MainMenu();
+	void draw(float windowX, float windowY, float scale, sf::RenderWindow& window);
 };

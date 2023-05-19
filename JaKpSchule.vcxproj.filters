@@ -30,6 +30,18 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GridElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SubGridElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Slope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Straight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Grid.h">
@@ -44,6 +56,18 @@
     <ClInclude Include="AssetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GridElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SubGridElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Slope.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Straight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\Arrow_Left_Key_Light.png">
@@ -56,6 +80,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\Arrow_Down_Key_Light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\white19201080.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\slope.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\straight.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

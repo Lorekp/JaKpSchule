@@ -1,16 +1,20 @@
 #include "MainMenu.h"
+#include "Grid.h"
 
 
-MainMenu::MainMenu(AssetManager manager) 
+MainMenu::MainMenu() 
 {
-	
-	textures.push_back(manager.GetTexture(".\\resources\\Arrow_Up_Key_Light.png"));
-	textures.push_back(manager.GetTexture(".\\resources\\Arrow_Left_Key_Light.png"));
-	textures.push_back(manager.GetTexture(".\\resources\\Arrow_Right_Key_Light.png"));
-	textures.push_back(manager.GetTexture(".\\resources\\Arrow_Down_Key_Light.png"));
+	//texture init
+	AssetManager::getTexture(".\\resources\\slope.png").setSmooth(true);
+	AssetManager::getTexture(".\\resources\\straight.png").setSmooth(true);
+	AssetManager::getTexture(".\\resources\\Arrow_Right_Key_Light.png").setSmooth(true);
+	AssetManager::getTexture(".\\resources\\Arrow_Left_Key_Light.png").setSmooth(true);
+	AssetManager::getTexture(".\\resources\\Arrow_Up_Key_Light.png").setSmooth(true);
+	AssetManager::getTexture(".\\resources\\Arrow_Down_Key_Light.png").setSmooth(true);
+	mainGrid = AssetManager::getGrid(".\\levels\\mainGrid.labdat");
 }
 
-std::vector<sf::Texture>& MainMenu::GetTextures()
+void MainMenu::draw(float windowX, float windowY, float scale, sf::RenderWindow& window)
 {
-	return textures;
+	mainGrid.draw(windowX, windowY, scale, window);
 }
