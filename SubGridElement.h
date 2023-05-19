@@ -1,16 +1,20 @@
 #pragma once
+#include <SFML/Graphics/Sprite.hpp>
+#include "AssetManager.h"
+
 class SubGridElement
 {
 public:
-	int getRotation();
 	int getType();
 	int getSide();
+	int getRotation();
+	sf::Sprite& getSprite();
 	void setSide(int newSide);
-	void setRotation(int newRotation);
 	SubGridElement();
 protected:
-	int rotation;
 	int type;
+	int rotation;
 	int side;
+	sf::Sprite sprite;
 };
 

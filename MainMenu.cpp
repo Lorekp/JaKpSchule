@@ -14,7 +14,7 @@ MainMenu::MainMenu()
 	mainGrid = AssetManager::getGrid(".\\levels\\mainGrid.labdat");
 }
 
-void MainMenu::draw(float windowX, float windowY, float scale, sf::RenderWindow& window)
+void MainMenu::draw(float scale, sf::RenderWindow& window)
 {
-	mainGrid.draw(windowX, windowY, scale, window);
+	mainGrid.draw(scale, window);
 }

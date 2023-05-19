@@ -12,5 +12,5 @@ private:
 	Grid mainGrid;
 public:
 	MainMenu();
-	void draw(float windowX, float windowY, float scale, sf::RenderWindow& window);
+	void draw(float scale, sf::RenderWindow& window);
 };

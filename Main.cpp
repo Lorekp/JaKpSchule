@@ -5,6 +5,8 @@
 #include "AssetManager.h"
 #include "MainMenu.h"
 
+sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
+sf::View disableLetterboxView(sf::View view);
 bool isDirExist(const std::string& path);
 bool makePath(const std::string& path);
 
@@ -19,6 +21,12 @@ int main() {
     //sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
     window.setFramerateLimit(60);
+
+    sf::View view;
+    view.setSize(window.getSize().x, window.getSize().y);
+    view.setCenter(view.getSize().x / 2, view.getSize().y / 2);
+    view = getLetterboxView(view, window.getSize().x, window.getSize().y);
+
     AssetManager manager;
     MainMenu mainMenu;
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
@@ -38,18 +46,65 @@ int main() {
                 break;
             case sf::Event::Closed:
                 window.close();
+                break;
+            case sf::Event::Resized:
+                view = getLetterboxView(view, event.size.width, event.size.height);
+                break;
             }
         }
 
         window.clear();
+        window.setView(view);
+
         window.draw(background);
-        mainMenu.draw(window.getSize().x, window.getSize().y, 0.25, window);
+        mainMenu.draw(0.25, window);
         //draw here
         window.display();
     }
 
     return 0;
 
+}
+
+sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
+
+    // Compares the aspect ratio of the window to the aspect ratio of the view,
+    // and sets the view's viewport accordingly in order to archieve a letterbox effect.
+    // A new view (with a new viewport set) is returned.
+
+    float windowRatio = windowWidth / (float)windowHeight;
+    float viewRatio = view.getSize().x / (float)view.getSize().y;
+    float sizeX = 1;
+    float sizeY = 1;
+    float posX = 0;
+    float posY = 0;
+
+    bool horizontalSpacing = true;
+    if (windowRatio < viewRatio)
+        horizontalSpacing = false;
+
+    // If horizontalSpacing is true, the black bars will appear on the left and right side.
+    // Otherwise, the black bars will appear on the top and bottom.
+
+    if (horizontalSpacing) {
+        sizeX = viewRatio / windowRatio;
+        posX = (1 - sizeX) / 2.f;
+    }
+
+    else {
+        sizeY = windowRatio / viewRatio;
+        posY = (1 - sizeY) / 2.f;
+    }
+
+    view.setViewport(sf::FloatRect(posX, posY, sizeX, sizeY));
+
+    return view;
+}
+
+sf::View disableLetterboxView(sf::View view) {
+
+    view.setViewport(sf::FloatRect(0, 0, 1, 1));
+    return view;
 }
 
 bool isDirExist(const std::string& path)

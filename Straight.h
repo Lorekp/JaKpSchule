@@ -1,5 +1,7 @@
 #pragma once
 #include "SubGridElement.h"
+#include "AssetManager.h"
+
 class Straight :
     public SubGridElement
 {

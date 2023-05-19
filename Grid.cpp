@@ -27,55 +27,61 @@ std::vector<std::vector<GridElement>>& Grid::getGrid()
     return grid;
 }
 
-void Grid::draw(float px, float py, float scale, sf::RenderWindow& window)
+void Grid::draw(float scale, sf::RenderWindow& window)
 {
-    int gridSizeX = sprites.size();
-    int gridSizeY = sprites.at(0).size();
+    int gridSizeX = grid.size();
+    int gridSizeY = grid.at(0).size();
     sf::Vector2f centerOfGrid = sf::Vector2f((gridSizeX * 256 * scale) / 2, (gridSizeY * 256 * scale) / 2);
     for (int x = 0; x < gridSizeX; x++)
     {
         for (int y = 0; y < gridSizeY; y++)
         {
-            sprites.at(y).at(x).setScale(sf::Vector2f(scale, scale));
-            sprites.at(y).at(x).setPosition((sf::Vector2f(px/2, py/2)) - centerOfGrid + sf::Vector2f((x)*256*scale, (y)*256*scale));
-            window.draw(sprites.at(y).at(x));
-        }
-    }
-}
-
-void Grid::calcSprites()
-{
-    int gridSizeX = grid.size();
-    int gridSizeY = grid.at(0).size();
-    sprites.resize(gridSizeX);
-    for (int x = 0; x < gridSizeX; x++)
-    {
-        sprites.at(x).resize(gridSizeY);
-        for (int y = 0; y < gridSizeY; y++)
-        {
-            for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++)
-            {
-                switch (grid.at(x).at(y).getSubGridElements().at(i).getType())
+            for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++) {
+                sf::Sprite sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
+                sprite.setScale(sf::Vector2f(scale, scale));
+                switch (grid.at(x).at(y).getSubGridElementAt(i).getType())
                 {
-                case -1:
-                    sprites.at(x).at(y).setTexture(AssetManager::getTexture(".\\resources\\empty256.png"));
-                    break;
                 case 0:
-                    sprites.at(x).at(y).setTexture(AssetManager::getTexture(".\\resources\\slope.png"));
+                    sprite.setOrigin(128 * scale, 128 * scale);
+                    sprite.setRotation(grid.at(x).at(y).getSubGridElementAt(i).getRotation());
+                    sprite.setOrigin(128 * scale, 128 * scale);
+                    sprite.setPosition((sf::Vector2f(window.getView().getSize().x / 2, window.getView().getSize().y / 2)) - centerOfGrid + sf::Vector2f((x) * 256 * scale, (y) * 256 * scale));
                     break;
                 case 1:
-                    sprites.at(x).at(y).setTexture(AssetManager::getTexture(".\\resources\\straight.png"));
-                    break;
+                    sprite.setPosition((sf::Vector2f(window.getView().getSize().x / 2, window.getView().getSize().y / 2)) - centerOfGrid + sf::Vector2f((x) * 256 * scale, (y) * 256 * scale));
+                    switch (grid.at(x).at(y).getSubGridElementAt(i).getSide())
+                    {
+                    case 0:
+                        sprite.setOrigin(128 * scale, 128 * scale);
+                        sprite.setRotation(90);
+                        sprite.setOrigin(128 * scale, 128 * scale);
+                        sprite.move((-scale * 256) / 2, 0);
+                        break;
+                    case 1:
+                        sprite.move(0, (scale * 256) / 2);
+                        break;
+                    case 2:
+                        sprite.setOrigin(128 * scale, 128 * scale);
+                        sprite.setRotation(90);
+                        sprite.setOrigin(128 * scale, 128 * scale);
+                        sprite.setRotation(90);
+                        sprite.move((scale * 256)/2, 0);
+                        break;
+                    case 3:
+                        sprite.move(0, (-scale * 256) / 2);
+                        break;
+                    default:
+                        break;
+                    }
                 default:
                     break;
                 }
+                window.draw(sprite);
             }
-            
         }
     }
 }
 
 void Grid::addSubGridElementAt(int y, int x, SubGridElement newSubGridElement) {
     grid.at(x).at(y).addSubGridElement(newSubGridElement);
-    calcSprites();
 }
