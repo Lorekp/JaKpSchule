@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics/Sprite.hpp>
-#include "AssetManager.h"
+
+class AssetManager;
 
 class SubGridElement
 {

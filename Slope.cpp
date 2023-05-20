@@ -1,4 +1,5 @@
 #include "Slope.h"
+#include "AssetManager.h"
 
 Slope::Slope(int rotation) {
 	this->type = 0;

@@ -1,5 +1,7 @@
 #include "MainMenu.h"
-#include "Grid.h"
+#include "AssetManager.h"
+#include "Slope.h"
+#include "Straight.h"
 
 
 MainMenu::MainMenu() 

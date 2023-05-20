@@ -1,5 +1,6 @@
 #include "AssetManager.h"
-#include "Grid.h"
+#include "Slope.h"
+#include "Straight.h"
 
 AssetManager* AssetManager::sInstance = nullptr;
 

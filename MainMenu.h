@@ -1,9 +1,10 @@
 #pragma once
-#include "AssetManager.h"
-#include "Grid.h"
-#include "Slope.h"
-#include "Straight.h"
 #include <vector>
+#include "Grid.h"
+
+class AssetManager;
+class Slope;
+class Straight;
 
 class MainMenu{
 

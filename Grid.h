@@ -1,11 +1,12 @@
 #pragma once
-#include "GridElement.h"
-#include "SubGridElement.h"
+
 #include <vector>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
 class AssetManager;
+class GridElement;
+class SubGridElement;
 
 class Grid {
 

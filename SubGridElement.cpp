@@ -1,4 +1,5 @@
 #include "SubGridElement.h"
+#include "AssetManager.h"
 
 int SubGridElement::getType()
 {

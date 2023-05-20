@@ -1,4 +1,5 @@
 #include "Straight.h"
+#include "AssetManager.h"
 
 Straight::Straight(int side)
 {

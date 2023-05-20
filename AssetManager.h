@@ -1,16 +1,18 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-#include "Slope.h"
-#include "Straight.h"
-#include "GridElement.h"
+
 #include <map>
 #include <fstream>
 #include <iostream>
 #include <assert.h>
 #include <SFML/Graphics.hpp>
+#include "GridElement.h"
+#include "Grid.h"
+#include "SubGridElement.h"
 
-class Grid;
+class Slope;
+class Straight;
 
 class AssetManager {
 
