@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="GridElement.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridElement.h" />
     <ClInclude Include="Level.h" />
@@ -44,6 +46,7 @@
     <Image Include="resources\Arrow_Left_Key_Light.png" />
     <Image Include="resources\Arrow_Right_Key_Light.png" />
     <Image Include="resources\Arrow_Up_Key_Light.png" />
+    <Image Include="resources\grid.png" />
     <Image Include="resources\slope.png" />
     <Image Include="resources\straight.png" />
     <Image Include="resources\white19201080.png" />

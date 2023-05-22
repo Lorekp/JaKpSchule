@@ -4,7 +4,6 @@
 
 #include <map>
 #include <fstream>
-#include <iostream>
 #include <assert.h>
 #include <SFML/Graphics.hpp>
 #include "GridElement.h"

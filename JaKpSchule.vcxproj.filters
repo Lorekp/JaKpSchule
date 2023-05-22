@@ -42,6 +42,9 @@
     <ClCompile Include="Straight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Grid.h">
@@ -68,6 +71,9 @@
     <ClInclude Include="Straight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\Arrow_Left_Key_Light.png">
@@ -89,6 +95,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\straight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\grid.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

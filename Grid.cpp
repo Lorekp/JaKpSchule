@@ -29,7 +29,7 @@ std::vector<std::vector<GridElement>>& Grid::getGrid()
     return grid;
 }
 
-void Grid::draw(float scale, sf::RenderWindow& window)
+void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
 {
     int gridSizeX = grid.size();
     int gridSizeY = grid.at(0).size();
@@ -38,12 +38,21 @@ void Grid::draw(float scale, sf::RenderWindow& window)
     {
         for (int y = 0; y < gridSizeY; y++)
         {
+            if (drawGrid)
+            {
+                sf::Sprite sprite(AssetManager::getTexture(".\\resources\\grid.png"));
+                sprite.setScale(sf::Vector2f(scale, scale));
+                float newPosX = window.getView().getSize().x / 2 - (gridSizeX * 256 * scale) / 2 + (y * 256 * scale);
+                float newPosY = window.getView().getSize().y / 2 - (gridSizeY * 256 * scale) / 2 + (x * 256 * scale);
+                sprite.setPosition(newPosX, newPosY);
+                window.draw(sprite);
+            }
             for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++) {
                 sf::Sprite sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
                 sprite.setOrigin(128, 128);
                 sprite.setScale(sf::Vector2f(scale, scale));
-                float newPosX = window.getView().getSize().x / 2 - (gridSizeX * 256 * scale) / 2 + (y * 256 * scale) - 128*scale;
-                float newPosY = window.getView().getSize().y / 2 - (gridSizeY * 256 * scale) / 2 + (x * 256 * scale) - 128*scale;
+                float newPosX = window.getView().getSize().x / 2 - (gridSizeX * 256 * scale) / 2 + (y * 256 * scale) + 128*scale;
+                float newPosY = window.getView().getSize().y / 2 - (gridSizeY * 256 * scale) / 2 + (x * 256 * scale) + 128*scale;
                 switch (grid.at(x).at(y).getSubGridElementAt(i).getType())
                 {
                 case 0:

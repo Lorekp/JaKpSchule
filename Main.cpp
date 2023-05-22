@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "AssetManager.h"
 #include "MainMenu.h"
+#include "Editor.h"
 
 sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 sf::View disableLetterboxView(sf::View view);
@@ -18,8 +19,11 @@ int main() {
 
 
     bool fullscreen = true;
+
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8.0;
     //sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
     sf::View view;
@@ -29,6 +33,7 @@ int main() {
 
     AssetManager manager;
     MainMenu mainMenu;
+    Editor editor;
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
 
     while (window.isOpen())
@@ -58,6 +63,7 @@ int main() {
 
         window.draw(background);
         mainMenu.draw(0.25, window);
+        //editor.draw(0.25, window);
         //draw here
         window.display();
     }
@@ -96,7 +102,9 @@ sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
         posY = (1 - sizeY) / 2.f;
     }
 
-    view.setViewport(sf::FloatRect(posX, posY, sizeX, sizeY));
+
+    view.setViewport(sf::FloatRect((posX), (posY), sizeX, sizeY)); 
+    view.setCenter(floor(view.getCenter().x), floor(view.getCenter().y));
 
     return view;
 }

@@ -18,5 +18,5 @@ MainMenu::MainMenu()
 
 void MainMenu::draw(float scale, sf::RenderWindow& window)
 {
-	mainGrid.draw(scale, window);
+	mainGrid.draw(scale, window, true);
 }
