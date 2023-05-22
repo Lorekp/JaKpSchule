@@ -40,33 +40,30 @@ void Grid::draw(float scale, sf::RenderWindow& window)
         {
             for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++) {
                 sf::Sprite sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
+                sprite.setOrigin(128 * scale, 128 * scale);
                 sprite.setScale(sf::Vector2f(scale, scale));
+                float newPosX = window.getView().getSize().x / 2 - (gridSizeX * 256 * scale) / 2 + (y * 256 * scale) - 128*scale;
+                float newPosY = window.getView().getSize().y / 2 - (gridSizeY * 256 * scale) / 2 + (x * 256 * scale) - 128*scale;
                 switch (grid.at(x).at(y).getSubGridElementAt(i).getType())
                 {
                 case 0:
-                    sprite.setOrigin(128 * scale, 128 * scale);
+                    sprite.setPosition(newPosX, newPosY);
                     sprite.setRotation(grid.at(x).at(y).getSubGridElementAt(i).getRotation());
-                    sprite.setOrigin(0, 0);
-                    sprite.setPosition((sf::Vector2f(window.getView().getSize().x / 2, window.getView().getSize().y / 2)) - centerOfGrid + sf::Vector2f((y) * 256 * scale, (x) * 256 * scale));
                     break;
                 case 1:
-                    sprite.setPosition((sf::Vector2f(window.getView().getSize().x / 2, window.getView().getSize().y / 2)) - centerOfGrid + sf::Vector2f((y) * 256 * scale, (x) * 256 * scale));
+                    sprite.setPosition(newPosX, newPosY);
                     switch (grid.at(x).at(y).getSubGridElementAt(i).getSide())
                     {
                     case 0: 
-                        sprite.setOrigin(128 * scale, 128 * scale);
-                        sprite.setRotation(90);
-                        sprite.setOrigin(0,0);
                         sprite.move(0, (-scale * 256) / 2);
+                        sprite.setRotation(90);
                         break;
                     case 1:
                         sprite.move((scale * 256) / 2, 0);
                         break;
                     case 2:
-                        sprite.setOrigin(128 * scale, 128 * scale);
-                        sprite.setRotation(90);
-                        sprite.setOrigin(0,0);
                         sprite.move(0, (scale * 256) / 2);
+                        sprite.setRotation(90);
                         break;
                     case 3:
                         sprite.move((-scale * 256) / 2, 0);
