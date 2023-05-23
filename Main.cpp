@@ -104,7 +104,6 @@ sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
 
 
     view.setViewport(sf::FloatRect((posX), (posY), sizeX, sizeY)); 
-    view.setCenter(floor(view.getCenter().x), floor(view.getCenter().y));
 
     return view;
 }
