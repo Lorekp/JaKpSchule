@@ -50,7 +50,7 @@ int main() {
 				}
                 break;
             case sf::Event::MouseWheelScrolled:
-                view.zoom(1 + (event.mouseWheel.delta / 20));
+                view.zoom(1 + (event.mouseWheel.delta));
                 break;
             case sf::Event::Closed:
                 window.close();
