@@ -49,6 +49,9 @@ int main() {
 					fullscreen = !fullscreen;
 				}
                 break;
+            case sf::Event::MouseWheelScrolled:
+                view.zoom(1 + (event.mouseWheel.delta / 20));
+                break;
             case sf::Event::Closed:
                 window.close();
                 break;
@@ -62,7 +65,7 @@ int main() {
         window.setView(view);
 
         window.draw(background);
-        mainMenu.draw(0.25, window);
+        editor.draw(0.25, window);
         //editor.draw(0.25, window);
         //draw here
         window.display();
