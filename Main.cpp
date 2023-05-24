@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "AssetManager.h"
 #include "MainMenu.h"
+#include "Editor.h"
 
 bool isDirExist(const std::string& path);
 bool makePath(const std::string& path);
@@ -11,46 +12,22 @@ bool makePath(const std::string& path);
 int main() {
 
     //initialization
-    
     makePath(".\\saves");
 
-
-    bool fullscreen = true;
-    //sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
+    //window init
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8.0;
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, settings);
     window.setFramerateLimit(60);
+
     AssetManager manager;
-    MainMenu mainMenu;
-    sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (event.type) {
-            case sf::Event::KeyPressed:
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-				{
-					(fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-					fullscreen = !fullscreen;
-				}
-                break;
-            case sf::Event::Closed:
-                window.close();
-            }
-        }
-
-        window.clear();
-        window.draw(background);
-        mainMenu.draw(window.getSize().x, window.getSize().y, 0.25, window);
-        //draw here
-        window.display();
-    }
-
+    Editor editor(window);
+    editor.run();
+    
     return 0;
 
 }
+
 
 bool isDirExist(const std::string& path)
 {
