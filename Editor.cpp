@@ -3,7 +3,7 @@
 
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)
 {
-	grid = AssetManager::getGrid(filename);
+    grid = AssetManager::getGrid(filename);
 }
 
 Editor::Editor(sf::RenderWindow& window) : window(window)
@@ -85,14 +85,14 @@ void Editor::run()
                     {
                         for (int j = 0; j < grid.getGrid().at(0).size(); j++)
                         {
-                            if ((j * 256 * scale -(gridSizeX / 2)) < mousePos.x && mousePos.x < (j * 256 * scale + 256 * scale - (gridSizeX / 2)) &&
-                                (i * 256 * scale -(gridSizeY / 2)) < mousePos.y && mousePos.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
+                            if ((j * 256 * scale - (gridSizeX / 2)) < mousePos.x && mousePos.x < (j * 256 * scale + 256 * scale - (gridSizeX / 2)) &&
+                                (i * 256 * scale - (gridSizeY / 2)) < mousePos.y && mousePos.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
                             {
                                 //do something with x = i and y = j
                             }
                         }
                     }
-                    
+
                 }
                 break;
                 default:
@@ -123,14 +123,14 @@ void Editor::run()
             view.move(camSpeed * dTimeAsSeconds, 0);
 
         //checking boundries of cam
-        if (view.getCenter().x < -(grid.getGrid().size()*256*scale)/2)
-            view.setCenter(-(grid.getGrid().size() * 256 * scale)/2, view.getCenter().y);
+        if (view.getCenter().x < -(grid.getGrid().size() * 256 * scale) / 2)
+            view.setCenter(-(grid.getGrid().size() * 256 * scale) / 2, view.getCenter().y);
         if (view.getCenter().x > (grid.getGrid().size() * 256 * scale) / 2)
-            view.setCenter((grid.getGrid().size() * 256 * scale)/2, view.getCenter().y);
+            view.setCenter((grid.getGrid().size() * 256 * scale) / 2, view.getCenter().y);
         if (view.getCenter().y < -(grid.getGrid().at(0).size() * 256 * scale) / 2)
-            view.setCenter(view.getCenter().x, -(grid.getGrid().at(0).size() * 256 * scale)/2);
+            view.setCenter(view.getCenter().x, -(grid.getGrid().at(0).size() * 256 * scale) / 2);
         if (view.getCenter().y > (grid.getGrid().at(0).size() * 256 * scale) / 2)
-            view.setCenter(view.getCenter().x, (grid.getGrid().at(0).size() * 256 * scale)/2);
+            view.setCenter(view.getCenter().x, (grid.getGrid().at(0).size() * 256 * scale) / 2);
 
         window.clear();
         window.setView(view);
@@ -143,7 +143,12 @@ void Editor::run()
 
         window.display();
     }
+}
 
+void Editor::draw(float scale, sf::RenderWindow& window)
+{
+    grid.draw(scale, window, true);
+}
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
 
