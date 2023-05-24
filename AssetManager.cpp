@@ -1,5 +1,6 @@
 #include "AssetManager.h"
-#include "Grid.h"
+#include "Slope.h"
+#include "Straight.h"
 
 AssetManager* AssetManager::sInstance = nullptr;
 
@@ -35,7 +36,7 @@ void AssetManager::serializeGrid(std::string const& filename, std::vector<std::v
 				{
 				case 0:
 				{
-					int rotation = grid.at(y).at(x).getSubGridElementAt(i).getRotation();
+					int rotation = grid.at(y).at(x).getSubGridElementAt(i).getSprite().getRotation();
 					wf.write((char*)&rotation, sizeof(int));
 					break;
 				}
