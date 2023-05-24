@@ -17,17 +17,18 @@ int main() {
     //window init
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8.0;
+
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
     AssetManager manager;
+  
     Editor editor(window);
     editor.run();
     
     return 0;
 
 }
-
 
 bool isDirExist(const std::string& path)
 {

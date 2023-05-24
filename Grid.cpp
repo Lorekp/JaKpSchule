@@ -33,6 +33,7 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
 {
     int gridSizeX = grid.size();
     int gridSizeY = grid.at(0).size();
+
     if (drawGrid)
     {
 
@@ -43,6 +44,7 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
         sprite.setScale(scale, scale);
         sprite.setTextureRect(sf::IntRect(0, 0, 256 * gridSizeX, 256 * gridSizeY));
         sprite.setPosition(-(gridSizeX * 256 * scale) / 2, -(gridSizeY * 256 * scale) / 2);
+
         window.draw(sprite);
     }
     for (int x = 0; x < gridSizeX; x++)
@@ -54,10 +56,10 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
                 sf::Sprite sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
                 sprite.setOrigin(128, 128);
                 sprite.setScale(sf::Vector2f(scale, scale));
-                /*float newPosX = floor(window.getView().getSize().x / 2) - (gridSizeX * 256 * scale) / 2 + (y * 256 * scale) + 128*scale;
-                float newPosY = floor(window.getView().getSize().y / 2) - (gridSizeY * 256 * scale) / 2 + (x * 256 * scale) + 128*scale;*/    
+              
                 float newPosX = floor((y * 256 * scale) + (128 * scale) - (gridSizeX * 256 * scale) / 2);
                 float newPosY = floor((x * 256 * scale) + (128 * scale) - (gridSizeY * 256 * scale) / 2);
+
                 switch (grid.at(x).at(y).getSubGridElementAt(i).getType())
                 {
                 case 0:

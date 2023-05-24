@@ -11,6 +11,7 @@ public:
 	int getRotation();
 	sf::Sprite& getSprite();
 	void setSide(int newSide);
+	void setSprite(sf::Sprite sprite);
 	SubGridElement();
 protected:
 	int type;
