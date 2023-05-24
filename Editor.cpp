@@ -1,5 +1,7 @@
 #include "Editor.h"
 #include "AssetManager.h"
+#include "Slope.h"
+#include "Straight.h"
 
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)
 {
@@ -22,7 +24,7 @@ void Editor::run()
     bool fullscreen = false;
     bool upFlag = false, downFlag = false, leftFlag = false, rightFlag = false; //movement flags
     float camSpeed = 500;
-    float scale = 0.25f;
+    this->scale = 0.25f;
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
 
@@ -49,6 +51,9 @@ void Editor::run()
                 case sf::Keyboard::A: leftFlag = true; break;
                 case sf::Keyboard::S: downFlag = true; break;
                 case sf::Keyboard::D: rightFlag = true; break;
+                case sf::Keyboard::R: sf::Vector2i clickedCellV = clickedCell(event); 
+                case sf::Keyboard::F: sf::Vector2i clickedCellV = clickedCell(event); grid.addSubGridElementAt(clickedCellV.x, clickedCellV.y, Slope(0)); break;
+                case sf::Keyboard::G: sf::Vector2i clickedCellV = clickedCell(event); grid.addSubGridElementAt(clickedCellV.x, clickedCellV.y, Straight(0)); break;
                 default:
                     break;
                 }
@@ -77,21 +82,8 @@ void Editor::run()
                 {
                 case sf::Mouse::Right:
                 {
-                    //checking if mouse clicked in any of the cells
-                    float gridSizeX = grid.getGrid().size() * 256 * scale;
-                    float gridSizeY = grid.getGrid().at(0).size() * 256 * scale;
-                    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-                    for (int i = 0; i < grid.getGrid().size(); i++)
-                    {
-                        for (int j = 0; j < grid.getGrid().at(0).size(); j++)
-                        {
-                            if ((j * 256 * scale - (gridSizeX / 2)) < mousePos.x && mousePos.x < (j * 256 * scale + 256 * scale - (gridSizeX / 2)) &&
-                                (i * 256 * scale - (gridSizeY / 2)) < mousePos.y && mousePos.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
-                            {
-                                //do something with x = i and y = j
-                            }
-                        }
-                    }
+                    //TODO: do something
+                    clickedCell(event);
 
                 }
                 break;
@@ -190,4 +182,22 @@ sf::View Editor::disableLetterboxView(sf::View view) {
 
     view.setViewport(sf::FloatRect(0, 0, 1, 1));
     return view;
+}
+
+sf::Vector2i Editor::clickedCell(sf::Event& event) {
+    float gridSizeX = grid.getGrid().size() * 256 * scale;
+    float gridSizeY = grid.getGrid().at(0).size() * 256 * scale;
+    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+    for (int i = 0; i < grid.getGrid().size(); i++)
+    {
+        for (int j = 0; j < grid.getGrid().at(0).size(); j++)
+        {
+            if ((j * 256 * scale - (gridSizeX / 2)) < mousePos.x && mousePos.x < (j * 256 * scale + 256 * scale - (gridSizeX / 2)) &&
+                (i * 256 * scale - (gridSizeY / 2)) < mousePos.y && mousePos.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
+            {
+                return sf::Vector2i(i, j);
+            }
+        }
+    }
+    return sf::Vector2i(-1, -1);
 }

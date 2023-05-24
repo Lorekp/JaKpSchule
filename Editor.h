@@ -14,11 +14,13 @@ public:
 	void draw(float scale, sf::RenderWindow& window);
 
 private:
+	float scale;
 	Grid grid;
 	sf::View view;
 	sf::RenderWindow& window;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	sf::View disableLetterboxView(sf::View view);
+	sf::Vector2i clickedCell(sf::Event& event);
 };
 
