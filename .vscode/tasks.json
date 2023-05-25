@@ -12,6 +12,7 @@
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "AssetManager.cpp",
                 "MainMenu.cpp",
+                "Editor.cpp",
                 "Grid.cpp",
                 "GridElement.cpp",
                 "SubGridElement.cpp",

@@ -143,7 +143,12 @@ void Editor::run()
 
         window.display();
     }
+}
 
+void Editor::draw(float scale, sf::RenderWindow& window)
+{
+    grid.draw(scale, window, true);
+}
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
 

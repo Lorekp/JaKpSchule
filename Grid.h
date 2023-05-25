@@ -4,6 +4,7 @@
 #include "SubGridElement.h"
 #include <vector>
 #include <iostream>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 class AssetManager;

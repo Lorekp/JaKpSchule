@@ -18,7 +18,11 @@ bool makePath(std::string path);
 int main() {
 
     //initialization
+    #if defined(WIN_32)
     makePath(".\\saves");
+    #else
+    makePath("./saves");
+    #endif
 
     //window init
     sf::ContextSettings settings;

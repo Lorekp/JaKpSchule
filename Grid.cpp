@@ -54,8 +54,8 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
                 sprite.setOrigin(128, 128);
                 sprite.setScale(sf::Vector2f(scale, scale));
               
-                float newPosX = floor((y * 256 * scale) + (128 * scale) - (gridSizeX * 256 * scale) / 2);
-                float newPosY = floor((x * 256 * scale) + (128 * scale) - (gridSizeY * 256 * scale) / 2);
+                float newPosX = std::floor((y * 256 * scale) + (128 * scale) - (gridSizeX * 256 * scale) / 2);
+                float newPosY = std::floor((x * 256 * scale) + (128 * scale) - (gridSizeY * 256 * scale) / 2);
 
                 switch (grid.at(x).at(y).getSubGridElementAt(i).getType())
                 {
