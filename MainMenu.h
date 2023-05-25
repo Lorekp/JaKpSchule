@@ -1,9 +1,10 @@
 #pragma once
-#include "AssetManager.h"
-#include "Grid.h"
-#include "Slope.h"
-#include "Straight.h"
 #include <vector>
+#include "Grid.h"
+
+class AssetManager;
+class Slope;
+class Straight;
 
 class MainMenu{
 
@@ -12,5 +13,5 @@ private:
 	Grid mainGrid;
 public:
 	MainMenu();
-	void draw(float windowX, float windowY, float scale, sf::RenderWindow& window);
+	void draw(float scale, sf::RenderWindow& window);
 };

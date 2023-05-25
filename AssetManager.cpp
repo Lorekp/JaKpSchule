@@ -37,7 +37,7 @@ void AssetManager::serializeGrid(std::string filename, std::vector<std::vector<G
 				{
 				case 0:
 				{
-					int rotation = grid.at(y).at(x).getSubGridElementAt(i).getRotation();
+					int rotation = grid.at(y).at(x).getSubGridElementAt(i).getSprite().getRotation();
 					wf.write((char*)&rotation, sizeof(int));
 					break;
 				}

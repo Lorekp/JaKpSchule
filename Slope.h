@@ -1,5 +1,7 @@
 #pragma once
+
 #include "SubGridElement.h"
+class AssetManager;
 
 class Slope :
     public SubGridElement

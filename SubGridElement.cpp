@@ -1,9 +1,5 @@
 #include "SubGridElement.h"
-
-int SubGridElement::getRotation()
-{
-    return rotation;
-}
+#include "AssetManager.h"
 
 int SubGridElement::getType()
 {
@@ -15,19 +11,30 @@ int SubGridElement::getSide()
     return side;
 }
 
+int SubGridElement::getRotation()
+{
+    return rotation;
+}
+
+sf::Sprite& SubGridElement::getSprite()
+{
+    return sprite;
+}
+
 void SubGridElement::setSide(int newSide)
 {
     this->side = newSide;
 }
 
-void SubGridElement::setRotation(int newRotation)
+void SubGridElement::setSprite(sf::Sprite sprite)
 {
-    this->rotation = newRotation;
+    this->sprite = sprite;
 }
 
 SubGridElement::SubGridElement()
 {
-    this->rotation = 0;
+    this->sprite.setTexture(AssetManager::getTexture(".\\resources\\grid.png"));
     this->type = -1;
     this->side = 0;
+    this->rotation = 0;
 }

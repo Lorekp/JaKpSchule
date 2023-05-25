@@ -3,16 +3,17 @@
 
 #include "Slope.h"
 #include "Straight.h"
-#include "Grid.h"
-#include "GridElement.h"
 #include <map>
 #include <fstream>
-#include <iostream>
 #include <assert.h>
 #include <SFML/Graphics.hpp>
 #include <regex>
+#include "GridElement.h"
+#include "Grid.h"
+#include "SubGridElement.h"
 
-class Grid;
+class Slope;
+class Straight;
 
 class AssetManager {
 
