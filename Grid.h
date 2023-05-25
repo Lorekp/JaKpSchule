@@ -1,5 +1,7 @@
 #pragma once
-
+#include "AssetManager.h"
+#include "GridElement.h"
+#include "SubGridElement.h"
 #include <vector>
 #include <iostream>
 #include <SFML/Graphics.hpp>

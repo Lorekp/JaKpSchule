@@ -1,7 +1,4 @@
 #include "Grid.h"
-#include "AssetManager.h"
-#include "GridElement.h"
-#include "SubGridElement.h"
 
 Grid::Grid(int gridSizeX, int gridSizeY) {
     for (int x = 0; x < gridSizeX; x++)
