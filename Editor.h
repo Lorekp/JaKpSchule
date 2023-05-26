@@ -18,9 +18,12 @@ private:
 	Grid grid;
 	sf::View view;
 	sf::RenderWindow& window;
+	sf::Vector2i clickedCell;
+	bool hoverPlace;
+	SubGridElement hoverElement;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	sf::View disableLetterboxView(sf::View view);
-	sf::Vector2i clickedCell(sf::Event& event);
+	bool checkClickedCell();
 };
 

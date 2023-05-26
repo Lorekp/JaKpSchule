@@ -100,5 +100,11 @@
     <Image Include="resources\grid.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\slopeLowOp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\straightLowOp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -31,6 +31,11 @@ void SubGridElement::setSprite(sf::Sprite sprite)
     this->sprite = sprite;
 }
 
+void SubGridElement::setRotation(int rotation)
+{
+    this->rotation = rotation;
+}
+
 SubGridElement::SubGridElement()
 {
     this->sprite.setTexture(AssetManager::getTexture(".\\resources\\grid.png"));

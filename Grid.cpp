@@ -97,6 +97,6 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
     }
 }
 
-void Grid::addSubGridElementAt(int y, int x, SubGridElement newSubGridElement) {
+void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
     grid.at(x).at(y).addSubGridElement(newSubGridElement);
 }
