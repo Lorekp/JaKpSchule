@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include "AssetManager.h"
+#include <iostream>
 
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)
 {
@@ -19,6 +20,7 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
 
 void Editor::run()
 {
+    bool isInMovement{false};
     bool fullscreen = false;
     bool upFlag = false, downFlag = false, leftFlag = false, rightFlag = false; //movement flags
     float camSpeed = 500;
@@ -49,7 +51,9 @@ void Editor::run()
                 case sf::Keyboard::A: leftFlag = true; break;
                 case sf::Keyboard::S: downFlag = true; break;
                 case sf::Keyboard::D: rightFlag = true; break;
+                case sf::Keyboard::T: isInMovement = true; break;
                 case sf::Keyboard::P: playerExists = !playerExists; break;
+                case sf::Keyboard::R: player.setPos(-32, -32); break;
                 default:
                     break;
                 }
@@ -61,6 +65,7 @@ void Editor::run()
                 case sf::Keyboard::A: leftFlag = false; break;
                 case sf::Keyboard::S: downFlag = false; break;
                 case sf::Keyboard::D: rightFlag = false; break;
+                case sf::Keyboard::T: isInMovement = false; break;
                 default:
                     break;
                 }
@@ -133,6 +138,7 @@ void Editor::run()
         if (view.getCenter().y > (grid.getGrid().at(0).size() * 256 * scale * 1.08f))
             view.setCenter(view.getCenter().x, (grid.getGrid().at(0).size() * 256 * scale * 1.08f));
 
+        if(isInMovement)    player.move(256, 256);
         window.clear();
         window.setView(view);
 
@@ -143,6 +149,7 @@ void Editor::run()
         draw(scale, window);
 
         window.display();
+        //std::cout << sf::Mouse::getPosition().x << " " << sf::Mouse::getPosition().y << '\n';
     }
 }
 
