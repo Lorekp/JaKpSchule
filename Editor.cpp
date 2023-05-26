@@ -162,9 +162,11 @@ void Editor::run()
 void Editor::draw(float scale, sf::RenderWindow& window)
 {
     grid.draw(scale, window, true);
-    if (hoverPlace) {
-        window.draw(hoverElement);
-    }
+    if (hoverPlace) 
+        if (checkClickedCell()) {
+            //hoverElement.setPosition
+            window.draw(hoverElement);
+        }
 }
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
