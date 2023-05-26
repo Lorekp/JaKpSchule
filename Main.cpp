@@ -10,6 +10,7 @@
 #include "Level.h"
 #include "AssetManager.h"
 #include "MainMenu.h"
+#include "Editor.h"
 
 bool isDirExist(std::string path);
 bool makePath(std::string path);
@@ -17,53 +18,24 @@ bool makePath(std::string path);
 int main() {
 
     //initialization
-    
+    #if defined(WIN_32)
     makePath(".\\saves");
+    #else
+    makePath("./saves");
+    #endif
 
+    //window init
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8.0;
 
-    bool fullscreen = false;
-    //sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth");
-    window.setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width * 0.5 - window.getSize().x * 0.5, sf::VideoMode::getDesktopMode().height * 0.5 - window.getSize().y * 0.5));
-
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, settings);
     window.setFramerateLimit(60);
+
     AssetManager manager;
-    MainMenu mainMenu;
-    sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (event.type) {
-            case sf::Event::KeyPressed:
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
-				{
-					if(fullscreen)
-                    {
-                        window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth"); 
-                        window.setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width * 0.5 - window.getSize().x * 0.5, sf::VideoMode::getDesktopMode().height * 0.5 - window.getSize().y * 0.5));
-                    }
-                    else
-                    {
-                        window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
-                    }
-                    fullscreen = !fullscreen;
-				}
-                break;
-            case sf::Event::Closed:
-                window.close();
-            }
-        }
-
-        window.clear();
-        window.draw(background);
-        mainMenu.draw(window.getSize().x, window.getSize().y, 0.25, window);
-        //draw here
-        window.display();
-    }
-
+  
+    Editor editor(window);
+    editor.run();
+    
     return 0;
 
 }

@@ -1,6 +1,8 @@
 #pragma once
-#include "SubGridElement.h"
+
 #include <vector>
+
+#include "SubGridElement.h"
 
 class GridElement
 {
