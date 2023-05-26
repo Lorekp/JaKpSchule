@@ -49,6 +49,7 @@ void Editor::run()
                 case sf::Keyboard::A: leftFlag = true; break;
                 case sf::Keyboard::S: downFlag = true; break;
                 case sf::Keyboard::D: rightFlag = true; break;
+                case sf::Keyboard::P: playerExists = !playerExists; break;
                 default:
                     break;
                 }
@@ -123,14 +124,14 @@ void Editor::run()
             view.move(camSpeed * dTimeAsSeconds, 0);
 
         //checking boundries of cam
-        if (view.getCenter().x < -(grid.getGrid().size()*256*scale)/2)
-            view.setCenter(-(grid.getGrid().size() * 256 * scale)/2, view.getCenter().y);
-        if (view.getCenter().x > (grid.getGrid().size() * 256 * scale) / 2)
-            view.setCenter((grid.getGrid().size() * 256 * scale)/2, view.getCenter().y);
-        if (view.getCenter().y < -(grid.getGrid().at(0).size() * 256 * scale) / 2)
-            view.setCenter(view.getCenter().x, -(grid.getGrid().at(0).size() * 256 * scale)/2);
-        if (view.getCenter().y > (grid.getGrid().at(0).size() * 256 * scale) / 2)
-            view.setCenter(view.getCenter().x, (grid.getGrid().at(0).size() * 256 * scale)/2);
+        if (view.getCenter().x < -(grid.getGrid().size() * 256 * scale * 1.92f))
+            view.setCenter(-(grid.getGrid().size() * 256 * scale * 1.92f), view.getCenter().y);
+        if (view.getCenter().x > (grid.getGrid().size() * 256 * scale * 1.92f))
+            view.setCenter((grid.getGrid().size() * 256 * scale * 1.92f), view.getCenter().y);
+        if (view.getCenter().y < -(grid.getGrid().at(0).size() * 256 * scale * 1.08f))
+            view.setCenter(view.getCenter().x, -(grid.getGrid().at(0).size() * 256 * scale * 1.08f));
+        if (view.getCenter().y > (grid.getGrid().at(0).size() * 256 * scale * 1.08f))
+            view.setCenter(view.getCenter().x, (grid.getGrid().at(0).size() * 256 * scale * 1.08f));
 
         window.clear();
         window.setView(view);
@@ -148,6 +149,7 @@ void Editor::run()
 void Editor::draw(float scale, sf::RenderWindow& window)
 {
     grid.draw(scale, window, true);
+    if(playerExists)    player.draw(window, scale);
 }
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {

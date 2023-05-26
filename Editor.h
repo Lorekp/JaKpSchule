@@ -2,6 +2,7 @@
 #include <string>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Grid.h"
+#include "Player.h"
 
 
 
@@ -14,7 +15,9 @@ public:
 	void draw(float scale, sf::RenderWindow& window);
 
 private:
+    bool playerExists{false};
 	Grid grid;
+	Player player;
 	sf::View view;
 	sf::RenderWindow& window;
 
