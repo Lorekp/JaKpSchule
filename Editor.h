@@ -22,8 +22,12 @@ private:
 	sf::Vector2i hoveredCell;
 	int hoveredSymbol;
 	bool hoverPlace;
+	bool drawStart;
+	bool drawFinish;
+	bool drawStartPossibilities;
 	SubGridElement hoverElement;
 	sf::Sprite resizeSymbols[8];
+	std::vector<std::vector<sf::Sprite>> startPossibilites;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	sf::View disableLetterboxView(sf::View view);

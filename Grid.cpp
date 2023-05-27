@@ -12,6 +12,10 @@ Grid::Grid(int gridSizeX, int gridSizeY) {
            grid.at(x).push_back(GridElement());
        }
     }
+    startSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
+    finishSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
+    startSprite.setOrigin(128, 128);
+    start = sf::Vector3i(0, 2, 2);
 }
 
 Grid::Grid()
@@ -24,6 +28,10 @@ Grid::Grid()
             grid.at(x).push_back(GridElement());
         }
     }
+    startSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
+    finishSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
+    startSprite.setOrigin(128, 128);
+    start = sf::Vector3i(0, 2, 2);
 }
 
 GridElement Grid::getGridElementAt(int x, int y) {
@@ -38,6 +46,16 @@ sf::Vector3i Grid::getStart()
 sf::Vector3i Grid::getFinish()
 {
     return finish;
+}
+
+sf::Sprite Grid::getStartSprite()
+{
+    return startSprite;
+}
+
+sf::Sprite Grid::getFinishSprite()
+{
+    return finishSprite;
 }
 
 void Grid::setStart(sf::Vector3i start)
@@ -73,7 +91,7 @@ std::vector<std::vector<GridElement>>& Grid::getGrid()
     return grid;
 }
 
-void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
+void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawStart, bool drawFinish)
 {
     int gridSizeX = grid.size();
     int gridSizeY = grid.at(0).size();
@@ -142,7 +160,40 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
         }
     }
 
+    if (drawStart) {
+        startSprite.setScale(scale, scale);
+        switch (getSide(sf::Vector2i(start.x, start.y)))
+        {
+        case 2: startSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, start.y * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(180); break;
+        case 4: startSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, start.y * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); break;
+        case 3: startSprite.setPosition(start.x * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startSprite.setRotation(90); break;
+        case 6: startSprite.setPosition(start.x * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startSprite.setRotation(270); break;
+        case 5: {
+            //if (start.z == 0)
 
+            //else if (start.z == 1)
+        }
+        default:
+            break;
+        }
+        window.draw(startSprite);
+    }
+}
+
+int Grid::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, es = 8, sw = 10, wn = 7
+{
+    int result = 0;
+
+    if (cell.x == 0)
+        result = 4;
+    else if (cell.x == grid.size() - 1)
+        result = 2;
+    if (cell.y == 0)
+        result += 3;
+    else if (cell.y == grid.at(0).size() - 1)
+        result += 6;
+
+    return result;
 }
 
 void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {

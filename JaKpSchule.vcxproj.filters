@@ -112,5 +112,11 @@
     <Image Include="resources\plusEmpty.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\arrowLowOp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\arrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

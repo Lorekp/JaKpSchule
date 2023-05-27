@@ -42,6 +42,8 @@
     <ClInclude Include="SubGridElement.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\arrow.png" />
+    <Image Include="resources\arrowLowOp.png" />
     <Image Include="resources\Arrow_Down_Key_Light.png" />
     <Image Include="resources\Arrow_Left_Key_Light.png" />
     <Image Include="resources\Arrow_Right_Key_Light.png" />

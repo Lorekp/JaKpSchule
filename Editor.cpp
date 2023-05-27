@@ -22,6 +22,7 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
 
     this->grid = Grid(4, 4);
 
+    //setup resizeSymbols
     for (int i = 0; i < 4; i++) {
         resizeSymbols[i] = sf::Sprite(AssetManager::getTexture(".\\resources\\plusEmpty.png"));
         resizeSymbols[i].setOrigin(128, 128);
@@ -34,6 +35,19 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
         resizeSymbols[i].setScale(scale, scale);
     }
 
+    this->drawStart = true;
+    this->drawFinish = true;
+    this->drawStartPossibilities = false;
+
+    //setupStartPossibilities
+    for (int i = 0; i < 4; i++)
+    {
+        startPossibilites.push_back(std::vector<sf::Sprite>());
+        for (int j = 0; j < 4; j++)
+        {
+            startPossibilites.at(i).push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+        }
+    }
 }
 
 void Editor::run()
@@ -169,6 +183,7 @@ void Editor::run()
                         case 5: grid.removeColumnFromGrid(1); break;
                         case 6: grid.removeRowFromGrid(grid.getGrid().size()); break;
                         case 7: grid.removeRowFromGrid(1); break;
+                        case 8: drawStart = false; drawStartPossibilities = true; break;
                         default:
                             break;
                         }
@@ -240,7 +255,7 @@ void Editor::run()
 void Editor::draw(float scale, sf::RenderWindow& window)
 {
     //draw the grid itself
-    grid.draw(scale, window, true);
+    grid.draw(scale, window, true, drawStart, drawFinish);
 
     //draw the not yet placed element
     if (hoverPlace) 
@@ -277,6 +292,12 @@ void Editor::draw(float scale, sf::RenderWindow& window)
     for (int i = 0; i < 8; i++) {
         window.draw(resizeSymbols[i]);
     }
+
+    //draw startPossibilities
+    if (drawStartPossibilities)
+        for (int i = 0; i < startPossibilites.size(); i++)
+            for (int j = 0; j < startPossibilites.at(0).size(); i++)
+                window.draw(startPossibilites.at(i).at(j));
 }
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
@@ -343,12 +364,23 @@ bool Editor::checkHoveredCell() {
 
 bool Editor::checkHoveredSymbol(int mouseX, int mouseY)
 {
+    sf::Vector2f wMousePos = window.mapPixelToCoords(sf::Vector2i(mouseX, mouseY), view);
     for (int i = 0; i < 8; i++)
-        if (resizeSymbols[i].getGlobalBounds().contains(window.mapPixelToCoords(sf::Vector2i(mouseX, mouseY), view)))
+        if (resizeSymbols[i].getGlobalBounds().contains(wMousePos))
         {
             hoveredSymbol = i;
             return true;
         }
+    if (grid.getFinishSprite().getGlobalBounds().contains(wMousePos))
+    {
+        hoveredSymbol = 9;
+        return true;
+    }
+    else if (grid.getStartSprite().getGlobalBounds().contains(wMousePos))
+    {
+        hoveredSymbol = 8;
+        return true;
+    }
     return false;
 }
 
