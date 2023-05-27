@@ -2,6 +2,7 @@
 #include <string>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Grid.h"
+#include "SubGridElement.h"
 
 
 
@@ -18,12 +19,16 @@ private:
 	Grid grid;
 	sf::View view;
 	sf::RenderWindow& window;
-	sf::Vector2i clickedCell;
+	sf::Vector2i hoveredCell;
+	int hoveredSymbol;
 	bool hoverPlace;
 	SubGridElement hoverElement;
+	sf::Sprite resizeSymbols[8];
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	sf::View disableLetterboxView(sf::View view);
-	bool checkClickedCell();
+	bool checkHoveredCell();
+	bool checkHoveredSymbol(int mouseX, int mouseY);
+	bool checkForStraight(int side);
 };
 

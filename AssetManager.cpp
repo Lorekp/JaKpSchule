@@ -10,8 +10,10 @@ AssetManager::AssetManager()
 	sInstance = this;
 }
 
-void AssetManager::serializeGrid(std::string const& filename, std::vector<std::vector<GridElement>>& grid)
+void AssetManager::serializeGrid(std::string const& filename, Grid& gridG)
 {
+	std::vector<std::vector<GridElement>>& grid = gridG.getGrid();
+
 	std::ofstream wf(filename, std::ios::binary | std::ios::trunc);
 	if (!wf)
 		std::cout << "Cannot open file!" <<std::endl;
@@ -52,6 +54,17 @@ void AssetManager::serializeGrid(std::string const& filename, std::vector<std::v
 			}
 		}
 	}
+	//write start/finish
+	sf::Vector3i start = gridG.getStart();
+	wf.write((char*)&start.x, sizeof(int));
+	wf.write((char*)&start.y, sizeof(int));
+	wf.write((char*)&start.z, sizeof(int));
+
+	sf::Vector3i finish = gridG.getFinish();
+	wf.write((char*)&finish.x, sizeof(int));
+	wf.write((char*)&finish.y, sizeof(int));
+	wf.write((char*)&finish.z, sizeof(int));
+
 	wf.close();
 	if (!wf.good()) 
 		std::cout << "Error occurred at writing time!" << std::endl;
@@ -99,6 +112,19 @@ Grid AssetManager::deserializeGrid(std::string const& filename)
 			}
 		}
 	}
+	//read start/finish
+	sf::Vector3i start;
+	rf.read((char*)&start.x, sizeof(int));
+	rf.read((char*)&start.y, sizeof(int));
+	rf.read((char*)&start.z, sizeof(int));
+	rGrid.setStart(start);
+
+	sf::Vector3i finish;
+	rf.read((char*)&finish.x, sizeof(int));
+	rf.read((char*)&finish.y, sizeof(int));
+	rf.read((char*)&finish.z, sizeof(int));
+	rGrid.setFinish(finish);
+
 	rf.close();
 	if (!rf.good())
 		std::cout << "Error occurred at reading time!" << std::endl;

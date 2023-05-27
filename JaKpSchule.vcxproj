@@ -47,6 +47,8 @@
     <Image Include="resources\Arrow_Right_Key_Light.png" />
     <Image Include="resources\Arrow_Up_Key_Light.png" />
     <Image Include="resources\grid.png" />
+    <Image Include="resources\plus.png" />
+    <Image Include="resources\plusEmpty.png" />
     <Image Include="resources\slope.png" />
     <Image Include="resources\slopeLowOp.png" />
     <Image Include="resources\straight.png" />

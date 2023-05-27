@@ -21,7 +21,7 @@ class AssetManager {
 
 		static sf::Texture& getTexture(std::string const& filename);
 		static Grid& getGrid(std::string const& filename);
-		static void serializeGrid(std::string const& filename, std::vector<std::vector<GridElement>>& grid);
+		static void serializeGrid(std::string const& filename, Grid& grid);
 
 	private:
 

@@ -16,12 +16,56 @@ Grid::Grid(int gridSizeX, int gridSizeY) {
 
 Grid::Grid()
 {
-    grid.push_back(std::vector<GridElement>());
-    grid.at(0).push_back(GridElement());
+    for (int x = 0; x < 4; x++)
+    {
+        grid.push_back(std::vector<GridElement>());
+        for (int y = 0; y < 4; y++)
+        {
+            grid.at(x).push_back(GridElement());
+        }
+    }
 }
 
 GridElement Grid::getGridElementAt(int x, int y) {
 	return grid.at(x).at(y);
+}
+
+sf::Vector3i Grid::getStart()
+{
+    return start;
+}
+
+sf::Vector3i Grid::getFinish()
+{
+    return finish;
+}
+
+void Grid::setStart(sf::Vector3i start)
+{
+    this->start = start;
+}
+
+void Grid::setFinish(sf::Vector3i finish)
+{
+    this->finish = finish;
+}
+
+bool Grid::checkForSubGridElement(int x, int y, int type)
+{
+    for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++)
+        if (grid.at(x).at(y).getSubGridElementAt(i).getType() == type)
+            return true;
+    return false;
+}
+
+bool Grid::checkForSubGridElementAndSide(int x, int y, int type, int side)
+{
+    if (x < 0 || y < 0 || x > grid.size() - 1 || y > grid.at(0).size() - 1)
+        return false;
+    for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++)
+        if (grid.at(x).at(y).getSubGridElementAt(i).getType() == type && grid.at(x).at(y).getSubGridElementAt(i).getSide() == side)
+            return true;
+    return false;
 }
 
 std::vector<std::vector<GridElement>>& Grid::getGrid()
@@ -42,11 +86,12 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
         
         sf::Sprite sprite(texture);
         sprite.setScale(scale, scale);
-        sprite.setTextureRect(sf::IntRect(0, 0, 256 * gridSizeX, 256 * gridSizeY));
-        sprite.setPosition(-(gridSizeX * 256 * scale) / 2, -(gridSizeY * 256 * scale) / 2);
+        sprite.setTextureRect(sf::IntRect(0, 0, 256 * gridSizeY, 256 * gridSizeX));
+        sprite.setPosition(-(gridSizeY * 256 * scale) / 2, -(gridSizeX * 256 * scale) / 2);
 
         window.draw(sprite);
     }
+
     for (int x = 0; x < gridSizeX; x++)
     {
         for (int y = 0; y < gridSizeY; y++)
@@ -57,14 +102,14 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
                 sprite.setOrigin(128, 128);
                 sprite.setScale(sf::Vector2f(scale, scale));
               
-                float newPosX = floor((y * 256 * scale) + (128 * scale) - (gridSizeX * 256 * scale) / 2);
-                float newPosY = floor((x * 256 * scale) + (128 * scale) - (gridSizeY * 256 * scale) / 2);
+                float newPosX = floor((y * 256 * scale) + (128 * scale) - (gridSizeY * 256 * scale) / 2);
+                float newPosY = floor((x * 256 * scale) + (128 * scale) - (gridSizeX * 256 * scale) / 2);
 
                 switch (grid.at(x).at(y).getSubGridElementAt(i).getType())
                 {
                 case 0:
                     sprite.setPosition(newPosX, newPosY);
-                    sprite.setRotation(grid.at(x).at(y).getSubGridElementAt(i).getRotation());
+                    sprite.setRotation(grid.at(x).at(y).getSubGridElementAt(i).getSprite().getRotation());
                     break;
                 case 1:
                     sprite.setPosition(newPosX, newPosY);
@@ -100,3 +145,60 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
 void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
     grid.at(x).at(y).addSubGridElement(newSubGridElement);
 }
+
+void Grid::removeRowFromGrid(int row)
+{
+    if (row <= grid.size() && grid.size() > 4)
+        grid.erase(grid.begin() + row - 1);
+}
+
+void Grid::addRowToGrid()
+{
+    grid.push_back(std::vector<GridElement>());
+    for (int y = 0; y < grid.at(0).size(); y++)
+    {
+        grid.at(grid.size()-1).push_back(GridElement());
+    }
+}
+
+void Grid::removeColumnFromGrid(int column)
+{
+    if (column <= grid.at(0).size() && grid.at(0).size() > 4)
+        for (int x = 0; x < grid.size(); x++)
+        {
+            grid.at(x).erase(grid.at(x).begin() + column - 1);
+        }
+}
+
+void Grid::addColumnToGrid()
+{
+    for (int x = 0; x < grid.size(); x++)
+    {
+            grid.at(x).push_back(GridElement());
+    }
+}
+
+void Grid::moveGridRight()
+{
+    for (int i = grid.size()-1; i > 0; i--)
+    {
+        for (int j = grid.at(i).size()-1; j > 0; j--)
+            grid.at(i).at(j).setSubGridElements(grid.at(i).at(j - 1).getSubGridElements());
+        grid.at(i).at(0).setSubGridElements(std::vector<SubGridElement>());
+    }
+}
+
+void Grid::moveGridDown()
+{
+    for (int i = grid.size() - 1; i > 0; i--)
+    {
+        grid.at(i) = grid.at(i - 1);
+    }
+    grid.at(0) = std::vector<GridElement>();
+    for (int i = 0; i < grid.at(1).size(); i++)
+    {
+        grid.at(0).push_back(GridElement());
+    }
+}
+
+

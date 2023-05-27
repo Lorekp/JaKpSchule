@@ -18,3 +18,10 @@ SubGridElement GridElement::getSubGridElementAt(int i)
 {
 	return subGridElements.at(i);
 }
+
+void GridElement::setSubGridElements(std::vector<SubGridElement> newSubgridElements)
+{
+	this->subGridElements = newSubgridElements;
+}
+
+

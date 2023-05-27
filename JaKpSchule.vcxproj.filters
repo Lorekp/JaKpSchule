@@ -106,5 +106,11 @@
     <Image Include="resources\straightLowOp.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\plus.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\plusEmpty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
