@@ -78,6 +78,7 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
     int gridSizeX = grid.size();
     int gridSizeY = grid.at(0).size();
 
+    //if editor draw lines
     if (drawGrid)
     {
 
@@ -91,7 +92,7 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
 
         window.draw(sprite);
     }
-
+    //draw gridelements
     for (int x = 0; x < gridSizeX; x++)
     {
         for (int y = 0; y < gridSizeY; y++)
@@ -140,6 +141,8 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
             }
         }
     }
+
+
 }
 
 void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
