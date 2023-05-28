@@ -11,6 +11,7 @@ bool makePath(const std::string& path);
 
 int main() {
 
+    float scale = 0.25f;
     //initialization
     makePath(".\\saves");
 
@@ -23,10 +24,10 @@ int main() {
 
     AssetManager manager;
   
-    /*MainMenu mainMenu;
-    mainMenu.run();*/
-    Editor editor(window);
-    editor.run();
+    MainMenu mainMenu(scale, window);
+    mainMenu.run();
+    /*Editor editor(window);
+    editor.run();*/
     
     return 0;
 

@@ -26,25 +26,25 @@ void AssetManager::serializeGrid(std::string const& filename, Grid& gridG)
 	{
 		for (int y = 0; y < gridSizeY; y++)
 		{
-			int sGridsize = grid.at(y).at(x).getSubGridElements().size();
+			int sGridsize = grid.at(x).at(y).getSubGridElements().size();
 			//write number of SubGridElements
 			wf.write((char*)&sGridsize, sizeof(int));
 			for (int i = 0; i < sGridsize; i++)
 			{
-				int type = grid.at(y).at(x).getSubGridElementAt(i).getType();
+				int type = grid.at(x).at(y).getSubGridElementAt(i).getType();
 				//write type of subgridelement & depending on type side/rotation
 				wf.write((char*)&type, sizeof(int));
 				switch (type)
 				{
 				case 0:
 				{
-					int rotation = grid.at(y).at(x).getSubGridElementAt(i).getSprite().getRotation();
+					int rotation = grid.at(x).at(y).getSubGridElementAt(i).getSprite().getRotation();
 					wf.write((char*)&rotation, sizeof(int));
 					break;
 				}
 				case 1:
 				{
-					int side = grid.at(y).at(x).getSubGridElementAt(i).getSide();
+					int side = grid.at(x).at(y).getSubGridElementAt(i).getSide();
 					wf.write((char*)&side, sizeof(int));
 					break;
 				}
