@@ -23,6 +23,8 @@ int main() {
 
     AssetManager manager;
   
+    /*MainMenu mainMenu;
+    mainMenu.run();*/
     Editor editor(window);
     editor.run();
     

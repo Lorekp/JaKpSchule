@@ -15,7 +15,9 @@ Grid::Grid(int gridSizeX, int gridSizeY) {
     startSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
     finishSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
     startSprite.setOrigin(128, 128);
+    finishSprite.setOrigin(128, 128);
     start = sf::Vector3i(0, 2, 2);
+    finish = sf::Vector3i(3, 3, 0);
 }
 
 Grid::Grid()
@@ -31,19 +33,21 @@ Grid::Grid()
     startSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
     finishSprite.setTexture(AssetManager::getTexture(".\\resources\\arrow.png"));
     startSprite.setOrigin(128, 128);
+    finishSprite.setOrigin(128, 128);
     start = sf::Vector3i(0, 2, 2);
+    finish = sf::Vector3i(3, 3, 0);
 }
 
 GridElement Grid::getGridElementAt(int x, int y) {
 	return grid.at(x).at(y);
 }
 
-sf::Vector3i Grid::getStart()
+sf::Vector3i& Grid::getStart()
 {
     return start;
 }
 
-sf::Vector3i Grid::getFinish()
+sf::Vector3i& Grid::getFinish()
 {
     return finish;
 }
@@ -159,39 +163,120 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawS
             }
         }
     }
-
+    //draw start
     if (drawStart) {
         startSprite.setScale(scale, scale);
         switch (getSide(sf::Vector2i(start.x, start.y)))
         {
-        case 2: startSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, start.y * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(180); break;
-        case 4: startSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, start.y * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); break;
-        case 3: startSprite.setPosition(start.x * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startSprite.setRotation(90); break;
-        case 6: startSprite.setPosition(start.x * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startSprite.setRotation(270); break;
+        case 2: startSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, start.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(180); break;
+        case 4: startSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, start.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(0); break;
+        case 3: startSprite.setPosition(start.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startSprite.setRotation(90); break;
+        case 6: startSprite.setPosition(start.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startSprite.setRotation(270); break;
         case 5: {
-            //if (start.z == 0)
-
-            //else if (start.z == 1)
+            if (start.z == 2) {
+                startSprite.setPosition(start.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startSprite.setRotation(90);
+            }
+            else if (start.z == 3) {
+                startSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, start.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(180);
+            }
+            break;
+        }
+        case 8: {
+            if (start.z == 3) {
+                startSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, start.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(180);
+            }
+            else if (start.z == 0) {
+                startSprite.setPosition(start.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startSprite.setRotation(270);
+            }
+            break;
+        }
+        case 10: {
+            if (start.z == 0) {
+                startSprite.setPosition(start.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startSprite.setRotation(270);
+            }
+            else if (start.z == 1) {
+                startSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, start.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(0);
+            }
+            break;
+        }
+        case 7: {
+            if (start.z == 2) {
+                startSprite.setPosition(start.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startSprite.setRotation(90);
+            }
+            else if (start.z == 1) {
+                startSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, start.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startSprite.setRotation(0);
+            }
+            break;
         }
         default:
             break;
         }
         window.draw(startSprite);
     }
+    if (drawFinish)
+    {
+        finishSprite.setScale(scale, scale);
+        switch (getSide(sf::Vector2i(finish.x, finish.y)))
+        {
+        case 2: finishSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, finish.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishSprite.setRotation(0); break;
+        case 4: finishSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, finish.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishSprite.setRotation(180); break;
+        case 3: finishSprite.setPosition(finish.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishSprite.setRotation(270); break;
+        case 6: finishSprite.setPosition(finish.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishSprite.setRotation(90); break;
+        case 5: {
+            if (finish.z == 2) {
+                finishSprite.setPosition(finish.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishSprite.setRotation(270);
+            }
+            else if (finish.z == 3) {
+                finishSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, finish.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishSprite.setRotation(0);
+            }
+            break;
+        }
+        case 8: {
+            if (finish.z == 3) {
+                finishSprite.setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, finish.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishSprite.setRotation(0);
+            }
+            else if (finish.z == 0) {
+                finishSprite.setPosition(finish.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishSprite.setRotation(90);
+            }
+            break;
+        }
+        case 10: {
+            if (finish.z == 0) {
+                finishSprite.setPosition(finish.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishSprite.setRotation(90);
+            }
+            else if (finish.z == 1) {
+                finishSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, finish.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishSprite.setRotation(180);
+            }
+            break;
+        }
+        case 7: {
+            if (finish.z == 2) {
+                finishSprite.setPosition(finish.y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishSprite.setRotation(270);
+            }
+            else if (finish.z == 1) {
+                finishSprite.setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, finish.x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishSprite.setRotation(180);
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        window.draw(finishSprite);
+    }
 }
 
-int Grid::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, es = 8, sw = 10, wn = 7
+int Grid::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, se = 8, sw = 10, nw = 7
 {
     int result = 0;
 
     if (cell.x == 0)
-        result = 4;
+        result = 3;
     else if (cell.x == grid.size() - 1)
-        result = 2;
+        result = 6;
     if (cell.y == 0)
-        result += 3;
+        result += 4;
     else if (cell.y == grid.at(0).size() - 1)
-        result += 6;
+        result += 2;
 
     return result;
 }
@@ -200,10 +285,13 @@ void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
     grid.at(x).at(y).addSubGridElement(newSubGridElement);
 }
 
-void Grid::removeRowFromGrid(int row)
+bool Grid::removeRowFromGrid(int row)
 {
-    if (row <= grid.size() && grid.size() > 4)
+    if (row <= grid.size() && grid.size() > 4) {
         grid.erase(grid.begin() + row - 1);
+        return true;
+    }
+    return false;
 }
 
 void Grid::addRowToGrid()
@@ -215,13 +303,16 @@ void Grid::addRowToGrid()
     }
 }
 
-void Grid::removeColumnFromGrid(int column)
+bool Grid::removeColumnFromGrid(int column)
 {
-    if (column <= grid.at(0).size() && grid.at(0).size() > 4)
+    if (column <= grid.at(0).size() && grid.at(0).size() > 4) {
         for (int x = 0; x < grid.size(); x++)
         {
             grid.at(x).erase(grid.at(x).begin() + column - 1);
         }
+        return true;
+    }
+    return false;
 }
 
 void Grid::addColumnToGrid()

@@ -24,15 +24,20 @@ private:
 	bool hoverPlace;
 	bool drawStart;
 	bool drawFinish;
+	bool drawFinishPossibilities;
 	bool drawStartPossibilities;
 	SubGridElement hoverElement;
 	sf::Sprite resizeSymbols[8];
-	std::vector<std::vector<sf::Sprite>> startPossibilites;
+	std::vector<sf::Sprite> startPossibilities[4];
+	std::vector<sf::Sprite> finishPossibilities[4];
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	sf::View disableLetterboxView(sf::View view);
 	bool checkHoveredCell();
 	bool checkHoveredSymbol(int mouseX, int mouseY);
 	bool checkForStraight(int side);
+	void readjustPossibilities();
+	void resizePossibilities(bool bigger, bool x);
+	void readjustArrows(int side, bool add);
 };
 

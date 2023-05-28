@@ -38,14 +38,46 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
     this->drawStart = true;
     this->drawFinish = true;
     this->drawStartPossibilities = false;
+    this->drawFinishPossibilities = false;
+
+    int gridSizeX = grid.getGrid().size();
+    int gridSizeY = grid.getGrid().at(0).size();
 
     //setupStartPossibilities
     for (int i = 0; i < 4; i++)
     {
-        startPossibilites.push_back(std::vector<sf::Sprite>());
-        for (int j = 0; j < 4; j++)
+        for (int j = 0; j < gridSizeY; j++)
         {
-            startPossibilites.at(i).push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+            startPossibilities[i].push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+            startPossibilities[i].at(j).setOrigin(128, 128);
+            switch (i)
+            {
+            case 0: startPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startPossibilities[i].at(j).setRotation(90); break;
+            case 1: startPossibilities[i].at(j).setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startPossibilities[i].at(j).setRotation(180); break;
+            case 2: startPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startPossibilities[i].at(j).setRotation(270); break;
+            case 3: startPossibilities[i].at(j).setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startPossibilities[i].at(j).setRotation(0); break;
+            default:
+                break;
+            }
+        }
+    }
+
+    //setupFinishPossibilities
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < gridSizeY; j++)
+        {
+            finishPossibilities[i].push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+            finishPossibilities[i].at(j).setOrigin(128, 128);
+            switch (i)
+            {
+            case 0: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishPossibilities[i].at(j).setRotation(270); break;
+            case 1: finishPossibilities[i].at(j).setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(0); break;
+            case 2: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishPossibilities[i].at(j).setRotation(90); break;
+            case 3: finishPossibilities[i].at(j).setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(180); break;
+            default:
+                break;
+            }
         }
     }
 }
@@ -79,7 +111,13 @@ void Editor::run()
                     break;
                 case sf::Keyboard::W: upFlag = true; break;
                 case sf::Keyboard::A: leftFlag = true; break;
-                case sf::Keyboard::S: downFlag = true; break;
+                case sf::Keyboard::S: {
+                    if (event.key.control)
+                        AssetManager::serializeGrid(".\\saves\\level.labdat", this->grid);
+                    else
+                        downFlag = true; 
+                }
+                break;
                 case sf::Keyboard::D: rightFlag = true; break;
                 case sf::Keyboard::R: 
                 {
@@ -158,12 +196,22 @@ void Editor::run()
                 {
                 case sf::Mouse::Right:
                 {
-                    //TODO: do something
-
+                    if (hoverPlace)
+                        if (checkHoveredCell())
+                        {
+                            if (hoverElement.getType() == 0)
+                                hoverElement.setRotation(hoverElement.getSprite().getRotation() + 90);
+                            else if (hoverElement.getType() == 1) {
+                                (hoverElement.getSide() + 1 > 3) ? (hoverElement.setSide(0)) : (hoverElement.setSide(hoverElement.getSide() + 1));
+                                hoverElement.setRotation((hoverElement.getSide() + 1) * 90);
+                            }
+                        }
                 }
+                break;
                 case sf::Mouse::Left:
                 {
-                    if (hoverPlace)
+                    bool consumeClick = false;
+                    if (hoverPlace && !consumeClick)
                         if (checkHoveredCell())
                             if (hoverElement.getType() == 0) {
                                 if (!grid.checkForSubGridElement(hoveredCell.x, hoveredCell.y, 0))
@@ -172,21 +220,106 @@ void Editor::run()
                             else if (hoverElement.getType() == 1)
                                 if (!grid.checkForSubGridElementAndSide(hoveredCell.x, hoveredCell.y, 1, hoverElement.getSide()) && !checkForStraight(hoverElement.getSide()))
                                     grid.addSubGridElementAt(hoveredCell.x, hoveredCell.y, Straight(hoverElement.getSide()));
-                    if (checkHoveredSymbol(event.mouseButton.x, event.mouseButton.y))
+                    if (checkHoveredSymbol(event.mouseButton.x, event.mouseButton.y) && !consumeClick) {
                         switch (hoveredSymbol)
                         {
-                        case 0: grid.addColumnToGrid(); break;
-                        case 1: grid.addColumnToGrid(); grid.moveGridRight(); break;
-                        case 2: grid.addRowToGrid(); break;
-                        case 3: grid.addRowToGrid(); grid.moveGridDown(); break;
-                        case 4: grid.removeColumnFromGrid(grid.getGrid().at(0).size()); break;
-                        case 5: grid.removeColumnFromGrid(1); break;
-                        case 6: grid.removeRowFromGrid(grid.getGrid().size()); break;
-                        case 7: grid.removeRowFromGrid(1); break;
-                        case 8: drawStart = false; drawStartPossibilities = true; break;
+                        case 8:
+                            if (!drawFinishPossibilities) {
+                                drawStart = false; drawStartPossibilities = true;
+                                consumeClick = true;
+                            }
+                            break;
+                        case 9:
+                            if (!drawStartPossibilities) {
+                                drawFinish = false; drawFinishPossibilities = true;
+                                consumeClick = true;
+                            }
+                            break;
                         default:
                             break;
                         }
+                    }
+                    if (drawStartPossibilities && !consumeClick) {
+                        for (int i = 0; i < 4; i++) {
+                            if (i == 0 || i == 2) {
+                                for (int j = 0; j < startPossibilities[0].size(); j++)
+                                {
+                                    if (startPossibilities[i].at(j).getGlobalBounds().contains(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), view)))
+                                    {
+                                        if (i == 2)
+                                            grid.setStart(sf::Vector3i(grid.getGrid().size() - 1, j, 0));
+                                        else
+                                            grid.setStart(sf::Vector3i(0, j, 2));
+                                        drawStartPossibilities = false;
+                                        drawStart = true;
+                                    }
+                                }
+                            }
+                            if (i == 1 || i == 3) {
+                                for (int j = 0; j < startPossibilities[1].size(); j++)
+                                {
+                                    if (startPossibilities[i].at(j).getGlobalBounds().contains(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), view)))
+                                    {
+                                        if (i == 1)
+                                            grid.setStart(sf::Vector3i(j, grid.getGrid().at(0).size() - 1, 3));
+                                        else
+                                            grid.setStart(sf::Vector3i(j, 0, 1));
+                                        drawStartPossibilities = false;
+                                        drawStart = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (drawFinishPossibilities && !consumeClick) {
+                        for (int i = 0; i < 4; i++) {
+                            if (i == 0 || i == 2) {
+                                for (int j = 0; j < finishPossibilities[0].size(); j++)
+                                {
+                                    if (finishPossibilities[i].at(j).getGlobalBounds().contains(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), view)))
+                                    {
+                                        if (i == 2)
+                                            grid.setFinish(sf::Vector3i(grid.getGrid().size() - 1, j, 0));
+                                        else
+                                            grid.setFinish(sf::Vector3i(0, j, 2));
+                                        drawFinishPossibilities = false;
+                                        drawFinish = true;
+                                    }
+                                }
+                            }
+                            if (i == 1 || i == 3) {
+                                for (int j = 0; j < finishPossibilities[1].size(); j++)
+                                {
+                                    if (finishPossibilities[i].at(j).getGlobalBounds().contains(window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), view)))
+                                    {
+                                        if (i == 1)
+                                            grid.setFinish(sf::Vector3i(j, grid.getGrid().at(0).size() - 1, 3));
+                                        else
+                                            grid.setFinish(sf::Vector3i(j, 0, 1));
+                                        drawFinishPossibilities = false;
+                                        drawFinish = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (checkHoveredSymbol(event.mouseButton.x, event.mouseButton.y) && !consumeClick) {
+                        switch (hoveredSymbol)
+                        {
+                            //add
+                        case 0: readjustArrows(1, true); grid.addColumnToGrid(); resizePossibilities(true, false); readjustPossibilities(); break;
+                        case 1: readjustArrows(3, true); grid.addColumnToGrid(); grid.moveGridRight(); resizePossibilities(true, false); readjustPossibilities(); break;
+                        case 2: readjustArrows(2, true); grid.addRowToGrid(); resizePossibilities(true, true); readjustPossibilities(); break;
+                        case 3: readjustArrows(0, true); grid.addRowToGrid(); grid.moveGridDown(); resizePossibilities(true, true); readjustPossibilities(); break;
+                            //remove
+                        case 4: if (grid.removeColumnFromGrid(grid.getGrid().at(0).size())) { readjustArrows(1, false); resizePossibilities(false, false); readjustPossibilities(); }  break;
+                        case 5: if (grid.removeColumnFromGrid(1)) { readjustArrows(3, false); resizePossibilities(false, false); readjustPossibilities(); } break;
+                        case 6: if (grid.removeRowFromGrid(grid.getGrid().size())) { readjustArrows(2, false); resizePossibilities(false, true); readjustPossibilities(); } break;
+                        case 7: if (grid.removeRowFromGrid(1)) { readjustArrows(0, false); resizePossibilities(false, true); readjustPossibilities(); } break;
+                        default:
+                            break;
+                        }
+                    }
                 }
                 break;
                 default:
@@ -294,10 +427,23 @@ void Editor::draw(float scale, sf::RenderWindow& window)
     }
 
     //draw startPossibilities
-    if (drawStartPossibilities)
-        for (int i = 0; i < startPossibilites.size(); i++)
-            for (int j = 0; j < startPossibilites.at(0).size(); i++)
-                window.draw(startPossibilites.at(i).at(j));
+    if (drawStartPossibilities) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < startPossibilities[i].size(); j++) {
+                startPossibilities[i].at(j).setScale(scale, scale);
+                window.draw(startPossibilities[i].at(j));
+            }
+        }
+    }
+        
+    if (drawFinishPossibilities) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < finishPossibilities[i].size(); j++) {
+                finishPossibilities[i].at(j).setScale(scale, scale);
+                window.draw(finishPossibilities[i].at(j));
+            }
+        }
+    }
 }
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
@@ -381,6 +527,7 @@ bool Editor::checkHoveredSymbol(int mouseX, int mouseY)
         hoveredSymbol = 8;
         return true;
     }
+    
     return false;
 }
 
@@ -394,5 +541,243 @@ bool Editor::checkForStraight(int side)
     case 3: return grid.checkForSubGridElementAndSide(hoveredCell.x, hoveredCell.y - 1, 1, 1); break;
     default:
         break;
+    }
+    return false;
+}
+
+void Editor::readjustPossibilities()
+{
+    int gridSizeX = grid.getGrid().size();
+    int gridSizeY = grid.getGrid().at(0).size();
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < startPossibilities[i].size(); j++)
+        {
+            switch (i)
+            {
+            case 0: startPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); startPossibilities[i].at(j).setRotation(90); break;
+            case 1: startPossibilities[i].at(j).setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); startPossibilities[i].at(j).setRotation(180); break;
+            case 2: startPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); startPossibilities[i].at(j).setRotation(270); break;
+            case 3: startPossibilities[i].at(j).setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(0); break;
+            default:
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < finishPossibilities[i].size(); j++)
+        {
+            switch (i)
+            {
+            case 0: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishPossibilities[i].at(j).setRotation(270); break;
+            case 1: finishPossibilities[i].at(j).setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(0); break;
+            case 2: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishPossibilities[i].at(j).setRotation(90); break;
+            case 3: finishPossibilities[i].at(j).setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(180); break;
+            default:
+                break;
+            }
+        }
+    }
+}
+
+void Editor::readjustArrows(int side, bool add)
+{
+    switch (side)
+    {
+    case 0: {
+        if (add)
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if (ogStart.z == 1 || ogStart.z == 3)
+                start.x += 1;
+            if (ogFinish.z == 1 || ogFinish.z == 3)
+                finish.x += 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+
+        }
+        else
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if (ogStart.z == 1 || ogStart.z == 3)
+                start.x -= 1;
+            if (ogFinish.z == 1 || ogFinish.z == 3)
+                finish.x -= 1;
+            if ((ogStart.z == 1 || ogStart.z == 3) && ogStart.x == 0)
+                start.x += 1;
+            if ((ogFinish.z == 1 || ogFinish.z == 3) && ogStart.x == 0)
+                finish.x += 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+        }
+    }
+    break;
+    case 1: {
+        if (add)
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if (ogStart.z == 3 && ogStart.y == grid.getGrid().at(0).size() - 1)
+                start.y += 1;
+            if (ogFinish.z == 3 && ogFinish.y == grid.getGrid().at(0).size() - 1)
+                finish.y += 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+        }
+        else
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if ((ogStart.z == 0 || ogStart.z == 2) && ogStart.y == grid.getGrid().at(0).size())
+                start.y -= 1;
+            if ((ogFinish.z == 0 || ogFinish.z == 2) && ogFinish.y == grid.getGrid().at(0).size())
+                finish.y -= 1;
+            if (ogStart.z == 3 && ogStart.y == grid.getGrid().at(0).size())
+                start.y -= 1;
+            if (ogFinish.z == 3 && ogFinish.y == grid.getGrid().at(0).size())
+                finish.y -= 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+        }
+    }
+    break;
+    case 2:
+    {
+        if (add)
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if (ogStart.z == 0 && ogStart.x == grid.getGrid().size() - 1)
+                start.x += 1;
+            if (ogFinish.z == 0 && ogFinish.x == grid.getGrid().size() - 1)
+                finish.x += 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+        }
+        else
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if ((ogStart.z == 1 || ogStart.z == 3) && ogStart.x == grid.getGrid().size())
+                start.x -= 1;
+            if ((ogFinish.z == 1 || ogFinish.z == 3) && ogFinish.x == grid.getGrid().size())
+                finish.x -= 1;
+            if (ogStart.z == 0 && ogStart.x == grid.getGrid().size())
+                start.x -= 1;
+            if (ogFinish.z == 0 && ogFinish.x == grid.getGrid().size())
+                finish.x -= 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+        }
+    }
+    break;
+    case 3:
+    {
+        if (add)
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if (ogStart.z == 0 || ogStart.z == 2)
+                start.y += 1;
+            if (ogFinish.z == 0 || ogFinish.z == 2)
+                finish.y += 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+
+        }
+        else
+        {
+            sf::Vector3i ogFinish = grid.getFinish();
+            sf::Vector3i ogStart = grid.getStart();
+            sf::Vector3i finish = sf::Vector3i(0, 0, 0);
+            sf::Vector3i start = sf::Vector3i(0, 0, 0);
+            if (ogStart.z == 0 || ogStart.z == 2)
+                start.y -= 1;
+            if (ogFinish.z == 0 || ogFinish.z == 2)
+                finish.y -= 1;
+            if ((ogStart.z == 0 || ogStart.z == 2) && ogStart.y == 0)
+                start.y += 1;
+            if ((ogFinish.z == 0 || ogFinish.z == 2) && ogStart.y == 0)
+                finish.y += 1;
+            grid.setStart(grid.getStart() + start);
+            grid.setFinish(grid.getFinish() + finish);
+        }
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+void Editor::resizePossibilities(bool bigger, bool x)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (x) {
+            if (i == 1 || i == 3)
+                if (bigger)
+                {
+                    startPossibilities[i].push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+                    startPossibilities[i].at(startPossibilities[i].size() - 1).setOrigin(128, 128);
+                }
+                else
+                {
+                    startPossibilities[i].pop_back();
+                }
+        }
+        else
+            if (i == 0 || i == 2)
+                if (bigger)
+                {
+                    startPossibilities[i].push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+                    startPossibilities[i].at(startPossibilities[i].size() - 1).setOrigin(128, 128);
+                }
+                else
+                {
+                    startPossibilities[i].pop_back();
+                }
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        if (x) {
+            if (i == 1 || i == 3)
+                if (bigger)
+                {
+                    finishPossibilities[i].push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+                    finishPossibilities[i].at(finishPossibilities[i].size() - 1).setOrigin(128, 128);
+                }
+                else
+                {
+                    finishPossibilities[i].pop_back();
+                }
+        }
+        else
+            if (i == 0 || i == 2)
+                if (bigger)
+                {
+                    finishPossibilities[i].push_back(sf::Sprite(AssetManager::getTexture(".\\resources\\arrowLowOp.png")));
+                    finishPossibilities[i].at(finishPossibilities[i].size() - 1).setOrigin(128, 128);
+                }
+                else
+                {
+                    finishPossibilities[i].pop_back();
+                }
     }
 }

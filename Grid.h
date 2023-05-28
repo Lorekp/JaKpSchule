@@ -22,17 +22,17 @@ private:
 public:
 	void addSubGridElementAt(int x, int y, SubGridElement newSubGridElement);
 
-	void removeRowFromGrid(int row);
+	bool removeRowFromGrid(int row);
 	void addRowToGrid();
-	void removeColumnFromGrid(int column);
+	bool removeColumnFromGrid(int column);
 	void addColumnToGrid();
 
 	void moveGridRight();
 	void moveGridDown();
 
 	GridElement getGridElementAt(int x, int y);
-	sf::Vector3i getStart();
-	sf::Vector3i getFinish();
+	sf::Vector3i& getStart();
+	sf::Vector3i& getFinish();
 	sf::Sprite getStartSprite();
 	sf::Sprite getFinishSprite();
 
