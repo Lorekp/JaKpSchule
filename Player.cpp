@@ -10,8 +10,8 @@ Player::Player()
 
 Player::~Player(){}
 
-void Player::move(sf::Vector2f target)  {pos += (target-pos)*0.025f; circ.setPosition(pos);}
-void Player::move(float x, float y)     {pos += (sf::Vector2f(x, y)-pos)*0.025f; circ.setPosition(pos);}
+void Player::move(sf::Vector2f target)  {pos += ((target/*1.1f*/)-pos)*0.025f; circ.setPosition(pos);}
+void Player::move(float x, float y)     {pos += ((sf::Vector2f(x, y)/*1.1f*/)-pos)*0.025f; circ.setPosition(pos);}
 
 void Player::draw(sf::RenderWindow& window, float scale)
 {

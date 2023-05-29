@@ -13,6 +13,9 @@ public:
 	Editor(sf::RenderWindow& window);
 	void run();
 	void draw(float scale, sf::RenderWindow& window);
+	void addElementToGrid(uint x, uint y);
+	void addElementToGrid(sf::Vector2u coords);
+	sf::Vector2u getGridCell(float scale, sf::RenderWindow& window);
 
 private:
     bool playerExists{false};

@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include <iostream>
 
+
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)
 {
 	grid = AssetManager::getGrid(filename);
@@ -20,6 +21,10 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
 
 void Editor::run()
 {
+    bool control{false};
+    bool slopeStraightDelete{false}; 
+    int slopeOrStraight{0}; //decides whether the settings for putting in the gridElements are active
+    sf::Vector2u clickedCellCoords; //the grid coordinates of the latest clicked grid cell
     bool isInMovement{false};
     bool fullscreen = false;
     bool upFlag = false, downFlag = false, leftFlag = false, rightFlag = false; //movement flags
@@ -47,13 +52,34 @@ void Editor::run()
                     (fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
                     fullscreen = !fullscreen;
                     break;
+                case sf::Keyboard::LControl: control=true; break;
                 case sf::Keyboard::W: upFlag = true; break;
                 case sf::Keyboard::A: leftFlag = true; break;
-                case sf::Keyboard::S: downFlag = true; break;
+                case sf::Keyboard::S: if(control)   grid.saveGrid();
+                downFlag = true; break;
                 case sf::Keyboard::D: rightFlag = true; break;
                 case sf::Keyboard::T: isInMovement = true; break;
                 case sf::Keyboard::P: playerExists = !playerExists; break;
                 case sf::Keyboard::R: player.setPos(-32, -32); break;
+                case sf::Keyboard::Num0: if(slopeStraightDelete)  grid.removeSubGridElementAt(clickedCellCoords);
+                                           break;
+                case sf::Keyboard::Num1: if(slopeOrStraight== -1)   grid.addSubGridElementAt(clickedCellCoords, Straight(0)); 
+                                         else if(slopeOrStraight== 1)   grid.addSubGridElementAt(clickedCellCoords, Slope(0));
+                                         slopeStraightDelete=false; slopeOrStraight=false;
+                                         break;
+                case sf::Keyboard::Num2: if(slopeStraightDelete&&slopeOrStraight==0)  slopeOrStraight=-1; 
+                                         else if(slopeOrStraight== -1)   {grid.addSubGridElementAt(clickedCellCoords, Straight(1)); slopeStraightDelete=false; slopeOrStraight=false;}
+                                         else if(slopeOrStraight== 1)   {grid.addSubGridElementAt(clickedCellCoords, Slope(1)); slopeStraightDelete=false; slopeOrStraight=false;}
+                                         break;
+                case sf::Keyboard::Num3: if(slopeStraightDelete&&slopeOrStraight==0)  slopeOrStraight=1; 
+                                         else if(slopeOrStraight== -1)   {grid.addSubGridElementAt(clickedCellCoords, Straight(2)); slopeStraightDelete=false; slopeOrStraight=false;}
+                                         else if(slopeOrStraight== 1)   {grid.addSubGridElementAt(clickedCellCoords, Slope(2)); slopeStraightDelete=false; slopeOrStraight=false;}
+                                         break;
+                case sf::Keyboard::Num4: if(slopeOrStraight== -1)   grid.addSubGridElementAt(clickedCellCoords, Straight(3)); 
+                                         else if(slopeOrStraight== 1)   grid.addSubGridElementAt(clickedCellCoords, Slope(3)); 
+                                         slopeStraightDelete=false; slopeOrStraight=false;
+                                         break;
+                case sf::Keyboard::Escape: slopeStraightDelete=false; slopeOrStraight=false; break;
                 default:
                     break;
                 }
@@ -61,11 +87,11 @@ void Editor::run()
             case sf::Event::KeyReleased:
                 switch (event.key.code)
                 {
+                case sf::Keyboard::LControl: control=false; break;
                 case sf::Keyboard::W: upFlag = false; break;
                 case sf::Keyboard::A: leftFlag = false; break;
                 case sf::Keyboard::S: downFlag = false; break;
                 case sf::Keyboard::D: rightFlag = false; break;
-                case sf::Keyboard::T: isInMovement = false; break;
                 default:
                     break;
                 }
@@ -83,22 +109,8 @@ void Editor::run()
                 {
                 case sf::Mouse::Right:
                 {
-                    //checking if mouse clicked in any of the cells
-                    float gridSizeX = grid.getGrid().size() * 256 * scale;
-                    float gridSizeY = grid.getGrid().at(0).size() * 256 * scale;
-                    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-                    for (int i = 0; i < grid.getGrid().size(); i++)
-                    {
-                        for (int j = 0; j < grid.getGrid().at(0).size(); j++)
-                        {
-                            if ((j * 256 * scale -(gridSizeX / 2)) < mousePos.x && mousePos.x < (j * 256 * scale + 256 * scale - (gridSizeX / 2)) &&
-                                (i * 256 * scale -(gridSizeY / 2)) < mousePos.y && mousePos.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
-                            {
-                                //do something with x = i and y = j
-                            }
-                        }
-                    }
-                    
+                    clickedCellCoords = getGridCell(scale, window);
+                    slopeStraightDelete = true;
                 }
                 break;
                 default:
@@ -138,7 +150,12 @@ void Editor::run()
         if (view.getCenter().y > (grid.getGrid().at(0).size() * 256 * scale * 1.08f))
             view.setCenter(view.getCenter().x, (grid.getGrid().at(0).size() * 256 * scale * 1.08f));
 
-        if(isInMovement)    player.move(256, 256);
+        if(isInMovement)
+        {
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            player.move(mousePos);
+        }
+
         window.clear();
         window.setView(view);
 
@@ -199,4 +216,27 @@ sf::View Editor::disableLetterboxView(sf::View view) {
 
     view.setViewport(sf::FloatRect(0, 0, 1, 1));
     return view;
+}
+
+void Editor::addElementToGrid(uint x, uint y)
+{
+    
+}
+void Editor::addElementToGrid(sf::Vector2u coords)
+{
+    
+}
+
+sf::Vector2u Editor::getGridCell(float scale, sf::RenderWindow& window)
+{
+    //checking if mouse clicked in any of the cells
+    sf::Vector2f gridSizeInWindow = static_cast<sf::Vector2f>(grid.getFullSize()) * 256.0f * scale;
+    float sizeOfOneCell = 256.0f*scale;
+    sf::Vector2f mousePosToGrid = window.mapPixelToCoords(sf::Mouse::getPosition(window)) + gridSizeInWindow*0.5f;
+
+    uint x{static_cast<uint>(mousePosToGrid.x / sizeOfOneCell)};
+    uint y{static_cast<uint>(mousePosToGrid.y / sizeOfOneCell)};
+
+    return sf::Vector2u(x, y);
+    //grid.addSubGridElementAt(x, y, Slope(0));
 }

@@ -18,11 +18,17 @@ private:
 
 public:
 	void addSubGridElementAt(int x, int y, SubGridElement newSubGridElement);
+	void addSubGridElementAt(sf::Vector2u coords, SubGridElement newSubGridElement);
+	void removeSubGridElementAt(int x, int y);
+	void removeSubGridElementAt(sf::Vector2u coords);
 	GridElement getGridElementAt(int x, int y);
 
 	std::vector<std::vector<GridElement>>& getGrid();
+	sf::Vector2i getFullSize();
 
 	void draw(float scale, sf::RenderWindow& window, bool drawGrid);
+
+	void saveGrid();
 
 	Grid(int gridSizeX, int gridSizeY);
 	Grid();

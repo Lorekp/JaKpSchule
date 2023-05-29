@@ -17,6 +17,11 @@ Grid::Grid()
     grid.at(0).push_back(GridElement());
 }
 
+void Grid::saveGrid()
+{
+    
+}
+
 GridElement Grid::getGridElementAt(int x, int y) {
 	return grid.at(x).at(y);
 }
@@ -24,6 +29,11 @@ GridElement Grid::getGridElementAt(int x, int y) {
 std::vector<std::vector<GridElement>>& Grid::getGrid()
 {
     return grid;
+}
+
+sf::Vector2i Grid::getFullSize()
+{
+    return sf::Vector2i(grid.size(), grid.at(0).size());
 }
 
 void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
@@ -94,6 +104,19 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid)
     }
 }
 
-void Grid::addSubGridElementAt(int y, int x, SubGridElement newSubGridElement) {
-    grid.at(x).at(y).addSubGridElement(newSubGridElement);
+void Grid::addSubGridElementAt(int y, int x, SubGridElement newSubGridElement) 
+{
+    if(x<grid.size() && y<grid.at(0).size())    grid.at(x).at(y).addSubGridElement(newSubGridElement);
+}
+void Grid::addSubGridElementAt(sf::Vector2u coords, SubGridElement newSubGridElement) 
+{
+    if(coords.y<grid.size() && coords.x<grid.at(0).size())    grid.at(coords.y).at(coords.x).addSubGridElement(newSubGridElement);
+}
+void Grid::removeSubGridElementAt(int y, int x) 
+{
+    if(x<grid.size() && y<grid.at(0).size())    grid.at(x).at(y).removeSubGridElement();
+}
+void Grid::removeSubGridElementAt(sf::Vector2u coords) 
+{
+    if(coords.y<grid.size() && coords.x<grid.at(0).size())    grid.at(coords.y).at(coords.x).removeSubGridElement();
 }

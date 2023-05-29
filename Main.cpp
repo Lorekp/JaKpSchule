@@ -5,7 +5,6 @@
 #if defined(_WIN32)
 #include <direct.h>
 #endif
-#include <regex>
 #include <iostream>
 #include "Level.h"
 #include "AssetManager.h"
@@ -15,8 +14,8 @@
 bool isDirExist(std::string path);
 bool makePath(std::string path);
 
-int main() {
-
+int main() 
+{
     //initialization
     #if defined(WIN_32)
     makePath(".\\saves");
