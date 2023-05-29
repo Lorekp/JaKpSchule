@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Grid.h"
+#include "Player.h"
 
 class AssetManager;
 class Slope;

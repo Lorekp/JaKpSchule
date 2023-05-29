@@ -26,6 +26,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Slope.cpp" />
     <ClCompile Include="Straight.cpp" />
     <ClCompile Include="SubGridElement.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="GridElement.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Slope.h" />
     <ClInclude Include="Straight.h" />
     <ClInclude Include="SubGridElement.h" />
@@ -48,6 +50,7 @@
     <Image Include="resources\Arrow_Left_Key_Light.png" />
     <Image Include="resources\Arrow_Right_Key_Light.png" />
     <Image Include="resources\Arrow_Up_Key_Light.png" />
+    <Image Include="resources\blackBall.png" />
     <Image Include="resources\grid.png" />
     <Image Include="resources\plus.png" />
     <Image Include="resources\plusEmpty.png" />

@@ -22,6 +22,8 @@ MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
 	view.setSize(window.getSize().x, window.getSize().y);
 	view.setCenter(0, 0);
 	view = getLetterboxView(view, window.getSize().x, window.getSize().y);
+
+
 }
 
 void MainMenu::run()
@@ -29,6 +31,8 @@ void MainMenu::run()
     bool fullscreen = false;
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
+
+    Player player(mainGrid, scale);
 
     while (window.isOpen() && doRun)
     {
@@ -42,6 +46,18 @@ void MainMenu::run()
                 case sf::Keyboard::F11:
                     (fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
                     fullscreen = !fullscreen;
+                    break;
+                case sf::Keyboard::W:
+                    player.addNextSide(0);
+                    break;
+                case sf::Keyboard::A:
+                    player.addNextSide(3);
+                    break;
+                case sf::Keyboard::S:
+                    player.addNextSide(2);
+                    break;
+                case sf::Keyboard::D:
+                    player.addNextSide(1);
                     break;
                 default:
                     break;
@@ -57,6 +73,8 @@ void MainMenu::run()
                 break;
             }
         }
+        player.move();
+
         window.clear();
         window.setView(view);
 
