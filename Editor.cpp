@@ -6,6 +6,7 @@
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)
 {
 	grid = AssetManager::getGrid(filename);
+    this->player = Player();
 }
 
 Editor::Editor(sf::RenderWindow& window) : window(window)
@@ -17,6 +18,7 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
     view = getLetterboxView(view, window.getSize().x, window.getSize().y);
 
     this->grid = Grid(4, 4);
+    this->player = Player();
 }
 
 void Editor::run()
@@ -218,7 +220,7 @@ sf::View Editor::disableLetterboxView(sf::View view) {
     return view;
 }
 
-void Editor::addElementToGrid(uint x, uint y)
+void Editor::addElementToGrid(unsigned int x, unsigned int y)
 {
     
 }
@@ -234,8 +236,8 @@ sf::Vector2u Editor::getGridCell(float scale, sf::RenderWindow& window)
     float sizeOfOneCell = 256.0f*scale;
     sf::Vector2f mousePosToGrid = window.mapPixelToCoords(sf::Mouse::getPosition(window)) + gridSizeInWindow*0.5f;
 
-    uint x{static_cast<uint>(mousePosToGrid.x / sizeOfOneCell)};
-    uint y{static_cast<uint>(mousePosToGrid.y / sizeOfOneCell)};
+    unsigned int x{static_cast<unsigned int>(mousePosToGrid.x / sizeOfOneCell)};
+    unsigned int y{static_cast<unsigned int>(mousePosToGrid.y / sizeOfOneCell)};
 
     return sf::Vector2u(x, y);
     //grid.addSubGridElementAt(x, y, Slope(0));
