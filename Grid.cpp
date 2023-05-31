@@ -282,7 +282,8 @@ int Grid::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, se =
 }
 
 void Grid::addSubGridElementAt(int x, int y, SubGridElement newSubGridElement) {
-    grid.at(x).at(y).addSubGridElement(newSubGridElement);
+    if (x >= 0 && x < grid.size() && y >= 0 && y < grid.at(0).size())
+        grid.at(x).at(y).addSubGridElement(newSubGridElement);
 }
 
 bool Grid::removeRowFromGrid(int row)

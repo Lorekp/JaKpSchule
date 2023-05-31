@@ -24,10 +24,10 @@ int main() {
 
     AssetManager manager;
   
-    MainMenu mainMenu(scale, window);
-    mainMenu.run();
-    /*Editor editor(window);
-    editor.run();*/
+    /*MainMenu mainMenu(scale, window);
+    mainMenu.run();*/
+    Editor editor(window);
+    editor.run();
     
     return 0;
 

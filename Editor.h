@@ -35,7 +35,6 @@ private:
 	sf::View disableLetterboxView(sf::View view);
 	bool checkHoveredCell();
 	bool checkHoveredSymbol(int mouseX, int mouseY);
-	bool checkForStraight(int side);
 	void readjustPossibilities();
 	void resizePossibilities(bool bigger, bool x);
 	void readjustArrows(int side, bool add);
