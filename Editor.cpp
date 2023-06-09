@@ -222,8 +222,26 @@ void Editor::run()
                                     grid.addSubGridElementAt(hoveredCell.x, hoveredCell.y, Slope(hoverElement.getSprite().getRotation()));
                             }
                             else if (hoverElement.getType() == 1)
-                                if (!grid.checkForSubGridElementAndSide(hoveredCell.x, hoveredCell.y, 1, hoverElement.getSide()) && !checkForStraight(hoverElement.getSide()))
+                                if (!grid.checkForSubGridElementAndSide(hoveredCell.x, hoveredCell.y, 1, hoverElement.getSide())) {
                                     grid.addSubGridElementAt(hoveredCell.x, hoveredCell.y, Straight(hoverElement.getSide()));
+                                    switch (hoverElement.getSide())
+                                    {
+                                    case 0:
+                                        grid.addSubGridElementAt(hoveredCell.x - 1, hoveredCell.y, Straight(2));
+                                        break;
+                                    case 1:
+                                        grid.addSubGridElementAt(hoveredCell.x, hoveredCell.y + 1, Straight(3));
+                                        break;
+                                    case 2:
+                                        grid.addSubGridElementAt(hoveredCell.x + 1, hoveredCell.y, Straight(0));
+                                        break;
+                                    case 3:
+                                        grid.addSubGridElementAt(hoveredCell.x, hoveredCell.y - 1, Straight(1));
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                }
                     if (checkHoveredSymbol(event.mouseButton.x, event.mouseButton.y) && !consumeClick) {
                         switch (hoveredSymbol)
                         {
@@ -532,20 +550,6 @@ bool Editor::checkHoveredSymbol(int mouseX, int mouseY)
         return true;
     }
     
-    return false;
-}
-
-bool Editor::checkForStraight(int side)
-{
-    switch (side)
-    {
-    case 0: return grid.checkForSubGridElementAndSide(hoveredCell.x - 1, hoveredCell.y, 1, 2); break;
-    case 1: return grid.checkForSubGridElementAndSide(hoveredCell.x, hoveredCell.y + 1, 1, 3); break;
-    case 2: return grid.checkForSubGridElementAndSide(hoveredCell.x + 1, hoveredCell.y, 1, 0); break;
-    case 3: return grid.checkForSubGridElementAndSide(hoveredCell.x, hoveredCell.y - 1, 1, 1); break;
-    default:
-        break;
-    }
     return false;
 }
 
