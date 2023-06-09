@@ -5,6 +5,7 @@
 class AssetManager;
 class Slope;
 class Straight;
+class Player;
 
 class MainMenu{
 
@@ -15,6 +16,7 @@ private:
 	bool doRun;
 	sf::RenderWindow& window;
 	sf::View view;
+	Player player;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	void draw(float scale, sf::RenderWindow& window);

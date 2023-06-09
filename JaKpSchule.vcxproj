@@ -26,6 +26,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Slope.cpp" />
     <ClCompile Include="Straight.cpp" />
     <ClCompile Include="SubGridElement.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="GridElement.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Slope.h" />
     <ClInclude Include="Straight.h" />
     <ClInclude Include="SubGridElement.h" />

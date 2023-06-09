@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include "Slope.h"
 #include "Straight.h"
+#include "Player.h"
 
 
 MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
@@ -22,6 +23,8 @@ MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
 	view.setSize(window.getSize().x, window.getSize().y);
 	view.setCenter(0, 0);
 	view = getLetterboxView(view, window.getSize().x, window.getSize().y);
+
+    this->player = Player(mainGrid);
 }
 
 void MainMenu::run()
@@ -60,8 +63,11 @@ void MainMenu::run()
         window.clear();
         window.setView(view);
 
+        player.move();
 
         background.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
+
+        
         window.draw(background);
 
         draw(scale, window);
@@ -73,6 +79,7 @@ void MainMenu::run()
 void MainMenu::draw(float scale, sf::RenderWindow& window)
 {
 	mainGrid.draw(scale, window, false, false, false);
+    player.draw(window);
 }
 
 float MainMenu::getScale() {
