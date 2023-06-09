@@ -6,7 +6,8 @@ Player::Player(Grid& grid) : grid(grid)
 {
 	this->pSprite = sf::Sprite(AssetManager::getTexture(".\\resources\\blackBall.png"));
 	pSprite.setOrigin(128, 128);
-	
+
+	this->grid.getStart();
 }
 
 void Player::draw(sf::RenderWindow& window, float scale)
@@ -17,5 +18,6 @@ void Player::draw(sf::RenderWindow& window, float scale)
 
 void Player::move()
 {
+
 }
 
