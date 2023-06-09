@@ -199,8 +199,12 @@ void Editor::run()
                     if (hoverPlace)
                         if (checkHoveredCell())
                         {
-                            if (hoverElement.getType() == 0)
-                                hoverElement.setRotation(hoverElement.getSprite().getRotation() + 90);
+                            if (hoverElement.getType() == 0) {
+                                if (hoverElement.getSprite().getRotation() == 0)
+                                    hoverElement.setRotation(90);
+                                else
+                                    hoverElement.setRotation(0);
+                            }
                             else if (hoverElement.getType() == 1) {
                                 (hoverElement.getSide() + 1 > 3) ? (hoverElement.setSide(0)) : (hoverElement.setSide(hoverElement.getSide() + 1));
                                 hoverElement.setRotation((hoverElement.getSide() + 1) * 90);
