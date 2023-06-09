@@ -24,11 +24,12 @@ MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
 	view.setCenter(0, 0);
 	view = getLetterboxView(view, window.getSize().x, window.getSize().y);
 
-    this->player = Player(mainGrid);
 }
 
 void MainMenu::run()
 {
+    Player player = Player(mainGrid);
+
     bool fullscreen = false;
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
@@ -71,6 +72,7 @@ void MainMenu::run()
         window.draw(background);
 
         draw(scale, window);
+        player.draw(window, scale);
 
         window.display();
     }
@@ -79,7 +81,6 @@ void MainMenu::run()
 void MainMenu::draw(float scale, sf::RenderWindow& window)
 {
 	mainGrid.draw(scale, window, false, false, false);
-    player.draw(window);
 }
 
 float MainMenu::getScale() {
