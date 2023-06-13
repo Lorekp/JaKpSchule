@@ -1,36 +1,33 @@
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics.hpp>
-#include "AssetManager.h"
-
+#pragma once
+#include "Grid.h"
+#include <SFML/System/Time.hpp>
 
 class Player
 {
 private:
-    std::vector<int> nextSide;
-    sf::Vector2f pos{ 0, 0 };
-    sf::Vector2f targetPos;
-    int previousSide;
-    sf::Vector2i currentCell;
-    sf::Vector2i targetCell;
-    sf::Sprite circ;
-    Grid& grid;
-    float scale;
+	Grid& grid;
+	sf::Sprite pSprite;
 
-    void move(sf::Vector2f target);
-    void move(float x, float y);
-    bool isMoveValid(int side);
-    bool calculateTargetCell(int side);
-    bool validPair(int side1, int previousSide, int type, int rotationOrSide);
-    sf::Vector2f calcCellpos(sf::Vector2i cell);
+	std::vector<int> nextSide;
+	int lastSide;
+	sf::Vector2f pos;
+	sf::Vector2i cellPos;
+	sf::Vector2f targetPos;
+	sf::Vector2i cellTarget;
+
+	sf::Vector2f getPos();
+	void setPos(sf::Vector2f newPos);
+	void setPos(float x, float y);
+
+	void move(sf::Vector2f target, float dTimeAsSeconds);
+	void move(float x, float y, float dTimeAsSeconds);
+
+	bool checkIfMovementValid(int side);
+	bool checkCellPos();
 public:
-    sf::Vector2f getPos();
-    void setPos(sf::Vector2f);
-    void setPos(float x, float y);
-
-    void move();
-    void draw(sf::RenderWindow& window, float scale);
-
-    void addNextSide(int side);
-
-    Player(Grid& grid, float scale);
+	void draw(sf::RenderWindow& window, float scale);
+	void move(sf::Time deltaTime);
+	void addNextSide(int side);
+	Player(Grid& grid);
 };
+

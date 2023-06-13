@@ -6,6 +6,7 @@
 class AssetManager;
 class Slope;
 class Straight;
+class Player;
 
 class MainMenu{
 

@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include "Slope.h"
 #include "Straight.h"
+#include "Player.h"
 
 
 MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
@@ -23,19 +24,24 @@ MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
 	view.setCenter(0, 0);
 	view = getLetterboxView(view, window.getSize().x, window.getSize().y);
 
-
 }
 
 void MainMenu::run()
 {
+    Player player = Player(mainGrid);
+
     bool fullscreen = false;
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
 
-    Player player(mainGrid, scale);
+    //time init
+    sf::Time elapsedTime;
+    sf::Clock clock;
 
     while (window.isOpen() && doRun)
     {
+        sf::Time deltaTime = clock.restart();
+
         sf::Event event;
         while (window.pollEvent(event)) {
             switch (event.type)
@@ -46,18 +52,6 @@ void MainMenu::run()
                 case sf::Keyboard::F11:
                     (fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
                     fullscreen = !fullscreen;
-                    break;
-                case sf::Keyboard::W:
-                    player.addNextSide(0);
-                    break;
-                case sf::Keyboard::A:
-                    player.addNextSide(3);
-                    break;
-                case sf::Keyboard::S:
-                    player.addNextSide(2);
-                    break;
-                case sf::Keyboard::D:
-                    player.addNextSide(1);
                     break;
                 default:
                     break;
@@ -73,16 +67,21 @@ void MainMenu::run()
                 break;
             }
         }
-        player.move();
+
+        elapsedTime += deltaTime;
+        float etimeAsSeconds = elapsedTime.asSeconds();
+
+        player.move(deltaTime);
 
         window.clear();
         window.setView(view);
 
-
         background.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
+
         window.draw(background);
 
         draw(scale, window);
+        player.draw(window, scale);
 
         window.display();
     }
