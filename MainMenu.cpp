@@ -34,8 +34,14 @@ void MainMenu::run()
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
 
+    //time init
+    sf::Time elapsedTime;
+    sf::Clock clock;
+
     while (window.isOpen() && doRun)
     {
+        sf::Time deltaTime = clock.restart();
+
         sf::Event event;
         while (window.pollEvent(event)) {
             switch (event.type)
@@ -61,14 +67,17 @@ void MainMenu::run()
                 break;
             }
         }
+
+        elapsedTime += deltaTime;
+        float etimeAsSeconds = elapsedTime.asSeconds();
+
+        player.move(deltaTime);
+
         window.clear();
         window.setView(view);
 
-        player.move();
-
         background.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
 
-        
         window.draw(background);
 
         draw(scale, window);
