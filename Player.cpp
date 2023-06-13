@@ -56,7 +56,6 @@ bool Player::calculateTargetCell(int side)
     switch (side)
     {
     case 0:
-        for ()
         break;
     default:
         break;
@@ -77,10 +76,6 @@ bool Player::validPair(int side1, int previousSide, int type, int rotationOrSide
             if ((side1 == 2 && previousSide == 1) || (side1 == 1 && previousSide == 2) || (side1 == 0 && previousSide == 3) || (side1 == 3 && previousSide == 0))
                 return true;
         }
-    }
-    else if (type == 1)
-    {
-        if (previousSide == )
     }
     return false;
 }
