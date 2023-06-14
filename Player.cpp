@@ -84,5 +84,6 @@ void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2
 
 bool Player::checkIfMovementValid(int side)
 {
+	checkCellPos();
 	
 }

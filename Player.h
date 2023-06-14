@@ -14,6 +14,7 @@ private:
 	sf::Vector2i cellPos;
 	sf::Vector2f targetPos;
 	sf::Vector2i cellTarget;
+	SubGridElement target;
 
 	sf::Vector2f getPos();
 	void setPos(sf::Vector2f newPos);
