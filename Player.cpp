@@ -65,8 +65,11 @@ void Player::move(sf::Time deltaTime)
 		}
 		if (valid)
 		{
+			bool targetFound = false;
 			//calculate TargetCell
-
+			if (nextSide.at(0) == 0)
+				for (int i = 0; i < grid.getGrid().size()*256*pSprite.getScale().x && targetFound == false; i++)
+					if ()
 		}
 	}
 }
@@ -84,11 +87,55 @@ void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2
 
 bool Player::checkIfMovementValid(int side)
 {
+	int targetRot = target.getSprite().getRotation();
 	checkCellPos();
 	switch (target.getType())
 	{
 	case 0: //slope
-
+		switch (lastSide)
+		{
+		case 0:
+			if ((targetRot == 0 && side == 1) || (targetRot == 90 && side == 3))
+				return true;
+			break;
+		case 1:
+			if ((targetRot == 0 && side == 0) || (targetRot == 90 && side == 2))
+				return true;
+			break;
+		case 2:
+			if ((targetRot == 0 && side == 3) || (targetRot == 90 && side == 1))
+				return true;
+			break;
+		case 3:
+			if ((targetRot == 0 && side == 2) || (targetRot == 90 && side == 0))
+				return true;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 1: //straight
+		switch (lastSide)
+		{
+		case 0:
+			if (targetRot == 90 && (side == 1 || side == 3))
+				return true;
+			break;
+		case 1:
+			if (targetRot == 0 && (side == 0 || side == 2))
+				return true;
+			break;
+		case 2:
+			if (targetRot == 90 && (side == 1 || side == 3))
+				return true;
+			break;
+		case 3:
+			if (targetRot == 0 && (side == 0 || side == 2))
+				return true;
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;

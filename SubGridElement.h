@@ -16,6 +16,7 @@ public:
 protected:
 	int type;
 	int side;
+	int rotation;
 	sf::Sprite sprite;
 };
 
