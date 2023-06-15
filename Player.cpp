@@ -67,9 +67,9 @@ void Player::move(sf::Time deltaTime)
 		{
 			bool targetFound = false;
 			//calculate TargetCell
-			if (nextSide.at(0) == 0)
-				for (int i = 0; i < grid.getGrid().size()*256*pSprite.getScale().x && targetFound == false; i++)
-					if ()
+			//if (nextSide.at(0) == 0)
+			//	for (int i = 0; i < grid.getGrid().size()*256*pSprite.getScale().x && targetFound == false; i++)
+					
 		}
 	}
 }
