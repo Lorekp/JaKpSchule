@@ -22,7 +22,7 @@ private:
 	void move(float x, float y, float dTimeAsSeconds);
 
 	bool checkIfMovementValid(int side);
-	bool checkCellPos(sf::Vector2f pos);
+	bool checkCellPos(sf::Vector2f posToCheck);
 
 	int getSide(sf::Vector2i cell);
 public:
