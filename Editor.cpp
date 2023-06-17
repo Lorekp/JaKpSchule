@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include "Slope.h"
 #include "Straight.h"
+#include "Player.h"
 
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)
 {
@@ -89,6 +90,7 @@ void Editor::run()
     float camSpeed = 500;
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
+
 
     //time init
     sf::Time elapsedTime;

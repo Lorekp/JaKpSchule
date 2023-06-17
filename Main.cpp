@@ -5,24 +5,27 @@
 #include "AssetManager.h"
 #include "MainMenu.h"
 #include "Editor.h"
+#include "Settings.h"
 
 bool isDirExist(const std::string& path);
 bool makePath(const std::string& path);
 
 int main() {
 
-    float scale = 0.25f;
     //initialization
     makePath(".\\saves");
 
     //window init
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8.0;
+    sf::ContextSettings contextSettings;
+    contextSettings.antialiasingLevel = 8.0;
 
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, contextSettings);
     window.setFramerateLimit(60);
 
+    float scale = 0.25f;
     AssetManager manager;
+    Settings settings;
+    settings.setScale(scale);
   
     MainMenu mainMenu(scale, window);
     mainMenu.run();

@@ -18,6 +18,7 @@ Grid::Grid(int gridSizeX, int gridSizeY) {
     finishSprite.setOrigin(128, 128);
     start = sf::Vector3i(0, 2, 2);
     finish = sf::Vector3i(3, 3, 0);
+
 }
 
 Grid::Grid()
@@ -114,14 +115,16 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawS
 
         window.draw(sprite);
     }
-    //draw gridelements
     for (int x = 0; x < gridSizeX; x++)
     {
         for (int y = 0; y < gridSizeY; y++)
         {
-            
+            //draw SubGridElements
             for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++) {
                 sf::Sprite sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
+                sf::RectangleShape boundingBox = grid.at(x).at(y).getSubGridElementAt(i).getBoundingBox();
+                boundingBox.setOrigin(13 / 2, 32);
+                boundingBox.setScale(sf::Vector2f(scale, scale));
                 sprite.setOrigin(128, 128);
                 sprite.setScale(sf::Vector2f(scale, scale));
               
@@ -133,24 +136,33 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawS
                 case 0:
                     sprite.setPosition(newPosX, newPosY);
                     sprite.setRotation(grid.at(x).at(y).getSubGridElementAt(i).getSprite().getRotation());
+                    boundingBox.setPosition(newPosX, newPosY);
+                    boundingBox.setRotation(grid.at(x).at(y).getSubGridElementAt(i).getBoundingBox().getRotation());
                     break;
                 case 1:
                     sprite.setPosition(newPosX, newPosY);
+                    boundingBox.setPosition(newPosX, newPosY);
                     switch (grid.at(x).at(y).getSubGridElementAt(i).getSide())
                     {
                     case 0: 
                         sprite.move(0, (-scale * 256) / 2);
                         sprite.setRotation(90);
+                        boundingBox.move(0, (-scale * 256) / 2);
+                        boundingBox.setRotation(90);
                         break;
                     case 1:
                         sprite.move((scale * 256) / 2, 0);
+                        boundingBox.move((scale * 256) / 2, 0);
                         break;
                     case 2:
                         sprite.move(0, (scale * 256) / 2);
                         sprite.setRotation(90);
+                        boundingBox.move(0, (scale * 256) / 2);
+                        boundingBox.setRotation(90);
                         break;
                     case 3:
                         sprite.move((-scale * 256) / 2, 0);
+                        boundingBox.move((-scale * 256) / 2, 0);
                         break;
                     default:
                         break;
@@ -160,7 +172,9 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawS
                     break;
                 }
                 window.draw(sprite);
+                window.draw(boundingBox);
             }
+
         }
     }
     //draw start
