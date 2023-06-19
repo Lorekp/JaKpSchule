@@ -14,7 +14,7 @@ std::vector<SubGridElement> GridElement::getSubGridElements()
 	return subGridElements;
 }
 
-SubGridElement GridElement::getSubGridElementAt(int i)
+SubGridElement& GridElement::getSubGridElementAt(int i)
 {
 	return subGridElements.at(i);
 }

@@ -11,12 +11,12 @@ int SubGridElement::getSide()
     return side;
 }
 
-sf::Sprite SubGridElement::getSprite()
+sf::Sprite& SubGridElement::getSprite()
 {
     return sprite;
 }
 
-sf::RectangleShape SubGridElement::getBoundingBox()
+sf::RectangleShape& SubGridElement::getBoundingBox()
 {
     return boundingBox;
 }
@@ -29,6 +29,11 @@ void SubGridElement::setSide(int newSide)
 void SubGridElement::setSprite(sf::Sprite sprite)
 {
     this->sprite = sprite;
+}
+
+void SubGridElement::setBoundingBox(sf::RectangleShape boundingBox)
+{
+    this->boundingBox = boundingBox;
 }
 
 void SubGridElement::setRotation(int rotation)

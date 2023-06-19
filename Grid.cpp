@@ -121,8 +121,8 @@ void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawS
         {
             //draw SubGridElements
             for (int i = 0; i < grid.at(x).at(y).getSubGridElements().size(); i++) {
-                sf::Sprite&& sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
-                sf::RectangleShape&& boundingBox = grid.at(x).at(y).getSubGridElementAt(i).getBoundingBox();
+                sf::Sprite& sprite = grid.at(x).at(y).getSubGridElementAt(i).getSprite();
+                sf::RectangleShape& boundingBox = grid.at(x).at(y).getSubGridElementAt(i).getBoundingBox();
                 boundingBox.setOrigin(13 / 2, 32);
                 boundingBox.setScale(sf::Vector2f(scale, scale));
                 sprite.setOrigin(128, 128);

@@ -53,6 +53,18 @@ void MainMenu::run()
                     (fullscreen) ? window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth") : window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Labyrinth", sf::Style::Fullscreen);
                     fullscreen = !fullscreen;
                     break;
+                case sf::Keyboard::Left:
+                    player.addNextSide(3);
+                    break;
+                case sf::Keyboard::Right:
+                    player.addNextSide(1);
+                    break;
+                case sf::Keyboard::Up:
+                    player.addNextSide(0);
+                    break;
+                case sf::Keyboard::Down:
+                    player.addNextSide(2);
+                    break;
                 default:
                     break;
                 }

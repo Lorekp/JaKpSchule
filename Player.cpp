@@ -233,8 +233,8 @@ void Player::setTargetPos(sf::Vector2f newPos)
 {
 	targetPos = newPos;
 }
-void Player::move(sf::Vector2f target, float dTimeAsSeconds) { pos += ((target/*1.1f*/)-pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); }
-void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2f(x, y)/*1.1f*/) - pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); }
+void Player::move(sf::Vector2f target, float dTimeAsSeconds) { pos += ((target/*1.1f*/)-pos) * dTimeAsSeconds * 1.1f; pSprite.setPosition(pos); }
+void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2f(x, y)/*1.1f*/) - pos) * dTimeAsSeconds * 1.1f; pSprite.setPosition(pos); }
 
 bool Player::checkIfMovementValid(int side)
 {

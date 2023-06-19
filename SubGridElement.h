@@ -9,10 +9,11 @@ class SubGridElement
 public:
 	int getType();
 	int getSide();
-	sf::Sprite getSprite();
-	sf::RectangleShape getBoundingBox();
+	sf::Sprite& getSprite();
+	sf::RectangleShape& getBoundingBox();
 	void setSide(int newSide);
 	void setSprite(sf::Sprite sprite);
+	void setBoundingBox(sf::RectangleShape boundingBox);
 	void setRotation(int rotation);
 	SubGridElement();
 protected:
