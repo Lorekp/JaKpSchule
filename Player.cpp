@@ -151,7 +151,7 @@ void Player::move(sf::Time deltaTime)
 						}
 					}
 					if (scannedPixel > grid.getGrid().size() * 256 * Settings::getScale())
-					{
+					{ 
 						targetFound = true;
 						targetPos = sf::Vector2f(pos.x, 1000);
 
