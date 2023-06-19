@@ -3,8 +3,10 @@
 
 Slope::Slope(int rotation) {
 	this->type = 0;
+	this->sprite = sf::Sprite();
 	this->sprite.setRotation(rotation);
 	this->sprite.setTexture(AssetManager::getTexture(".\\resources\\slope.png"));
+	this->boundingBox = sf::RectangleShape();
 	this->boundingBox.setRotation(rotation+45);
 	this->boundingBox.setSize(sf::Vector2f(13, 64));
 	this->boundingBox.setFillColor(sf::Color(0, 0, 0, 0));

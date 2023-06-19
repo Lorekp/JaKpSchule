@@ -11,12 +11,12 @@ int SubGridElement::getSide()
     return side;
 }
 
-sf::Sprite& SubGridElement::getSprite()
+sf::Sprite SubGridElement::getSprite()
 {
     return sprite;
 }
 
-sf::RectangleShape& SubGridElement::getBoundingBox()
+sf::RectangleShape SubGridElement::getBoundingBox()
 {
     return boundingBox;
 }

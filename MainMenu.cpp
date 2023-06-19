@@ -71,7 +71,6 @@ void MainMenu::run()
         elapsedTime += deltaTime;
         float etimeAsSeconds = elapsedTime.asSeconds();
 
-        player.move(deltaTime);
 
         window.clear();
         window.setView(view);
@@ -81,6 +80,7 @@ void MainMenu::run()
         window.draw(background);
 
         draw(scale, window);
+        player.move(deltaTime);
         player.draw(window, scale);
 
         window.display();
