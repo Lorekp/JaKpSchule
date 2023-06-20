@@ -30,7 +30,7 @@ public:
 	void moveGridRight();
 	void moveGridDown();
 
-	GridElement getGridElementAt(int x, int y);
+	GridElement& getGridElementAt(int x, int y);
 	sf::Vector3i& getStart();
 	sf::Vector3i& getFinish();
 	sf::Sprite getStartSprite();

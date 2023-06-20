@@ -60,6 +60,7 @@ Player::Player(Grid& grid) : grid(grid)
 	}
 	
 	setTargetPos(pos);
+	move(sf::seconds(0.1f), true);
 }
 
 bool Player::checkCellPos(sf::Vector2f posToCheck)
@@ -91,7 +92,7 @@ void Player::draw(sf::RenderWindow& window, float scale)
 	window.draw(pSprite);
 }
 
-void Player::move(sf::Time deltaTime)
+void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 {
 	//only move if target hasn't been reached
 	if (pos != targetPos) {
@@ -102,6 +103,8 @@ void Player::move(sf::Time deltaTime)
 	else if (nextSide.size() > 0) //if nextSide available
 	{
 		bool valid = checkIfMovementValid(nextSide.at(0));
+		if (bypassMovementValid)
+			valid = true;
 		while (!valid)
 		{
 			nextSide.erase(nextSide.begin());
@@ -126,6 +129,7 @@ void Player::move(sf::Time deltaTime)
 							{
 								targetFound = true;
 								targetPos = sf::Vector2f(pos.x, pos.y - i);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -147,6 +151,7 @@ void Player::move(sf::Time deltaTime)
 							{
 								targetFound = true;
 								targetPos = sf::Vector2f(pos.x, scannedPixel);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -154,7 +159,6 @@ void Player::move(sf::Time deltaTime)
 					{ 
 						targetFound = true;
 						targetPos = sf::Vector2f(pos.x, 1000);
-
 					}
 				}
 			}
@@ -168,6 +172,7 @@ void Player::move(sf::Time deltaTime)
 							{
 								targetFound = true;
 								targetPos = sf::Vector2f(pos.x + 1, pos.y);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -188,6 +193,7 @@ void Player::move(sf::Time deltaTime)
 							{
 								targetFound = true;
 								targetPos = sf::Vector2f(pos.x - 1, pos.y);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -233,8 +239,8 @@ void Player::setTargetPos(sf::Vector2f newPos)
 {
 	targetPos = newPos;
 }
-void Player::move(sf::Vector2f target, float dTimeAsSeconds) { pos += ((target/*1.1f*/)-pos) * dTimeAsSeconds * 1.1f; pSprite.setPosition(pos); }
-void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2f(x, y)/*1.1f*/) - pos) * dTimeAsSeconds * 1.1f; pSprite.setPosition(pos); }
+void Player::move(sf::Vector2f target, float dTimeAsSeconds) { pos += ((target/*1.1f*/)-pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); }
+void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2f(x, y)/*1.1f*/) - pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); }
 
 bool Player::checkIfMovementValid(int side)
 {
@@ -291,5 +297,6 @@ bool Player::checkIfMovementValid(int side)
 	default:
 		break;
 	}
+	return false;
 }
 

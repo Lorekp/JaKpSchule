@@ -32,7 +32,7 @@ public:
 	void setTargetPos(float x, float y);
 	void setTargetPos(sf::Vector2f newPos);
 	void draw(sf::RenderWindow& window, float scale);
-	void move(sf::Time deltaTime);
+	void move(sf::Time deltaTime, bool bypassMovementValid);
 	void addNextSide(int side);
 	Player(Grid& grid);
 };

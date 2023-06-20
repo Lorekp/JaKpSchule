@@ -39,7 +39,7 @@ Grid::Grid()
     finish = sf::Vector3i(3, 3, 0);
 }
 
-GridElement Grid::getGridElementAt(int x, int y) {
+GridElement& Grid::getGridElementAt(int x, int y) {
 	return grid.at(x).at(y);
 }
 
