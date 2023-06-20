@@ -112,10 +112,7 @@ Grid AssetManager::deserializeGrid(std::string filename)
 sf::Texture& AssetManager::getTexture(std::string filename)
 {
 	#if !defined(WIN_32)
-	for(int index=0;index<filename.size();index++)
-	{
-		filename = std::regex_replace(filename, std::regex("\\\\"), "/");
-	}
+	filename = std::regex_replace(filename, std::regex("\\\\"), "/");
 	#endif
 
 	auto& texMap = sInstance->m_Textures;
