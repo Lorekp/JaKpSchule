@@ -138,12 +138,13 @@ void Editor::run()
         //move the background to camera
         background.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
         window.draw(background);
-
-        draw(scale, window);
+        grid.draw(scale, window, true);
+        
+        //draw(scale, window);
 
         window.display();
     }
-
+}
 
 sf::View Editor::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {
 

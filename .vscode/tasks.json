@@ -11,6 +11,7 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "AssetManager.cpp",
+                "Editor.cpp",
                 "MainMenu.cpp",
                 "Grid.cpp",
                 "GridElement.cpp",

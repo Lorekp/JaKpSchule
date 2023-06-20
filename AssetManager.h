@@ -8,10 +8,12 @@
 #include <assert.h>
 #include <SFML/Graphics.hpp>
 #include <regex>
+#include <string>
 #include "GridElement.h"
 #include "Grid.h"
 #include "SubGridElement.h"
 
+class Grid;
 class Slope;
 class Straight;
 
