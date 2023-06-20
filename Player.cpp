@@ -59,6 +59,7 @@ Player::Player(Grid& grid) : grid(grid)
 		break;
 	}
 	
+	setInitialPos(pos);
 	setTargetPos(pos);
 	move(sf::seconds(0.1f), true);
 }
@@ -229,6 +230,8 @@ int Player::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, se
 
 	return result;
 }
+void Player::setInitialPos(sf::Vector2f constPos) {initialPos = constPos;}
+void Player::setInitialPos(float cx, float cy) {initialPos = sf::Vector2f(cx, cy);}
 void Player::setPos(sf::Vector2f newPos) { pos = newPos; pSprite.setPosition(pos); }
 void Player::setPos(float x, float y) { pos = sf::Vector2f(x, y); pSprite.setPosition(pos); }
 void Player::setTargetPos(float x, float y)
@@ -239,8 +242,22 @@ void Player::setTargetPos(sf::Vector2f newPos)
 {
 	targetPos = newPos;
 }
-void Player::move(sf::Vector2f target, float dTimeAsSeconds) { pos += ((target/*1.1f*/)-pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); }
-void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2f(x, y)/*1.1f*/) - pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); }
+void Player::move(sf::Vector2f target, float dTimeAsSeconds) 
+{ 
+	sf::Vector2f ppos = initialPos - 0.2f*(target-initialPos);
+	pos -= (ppos - pos) * dTimeAsSeconds * 0.2f; pSprite.setPosition(pos); 
+}
+
+void Player::move(float x, float y, float dTimeAsSeconds) 
+{ 
+	sf::Vector2f ppos = initialPos - 0.1f*(sf::Vector2f(x, y)-initialPos);
+	pos += (ppos - pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); 
+}
+/*
+Beschleunigt jetzt statt zu verlangsamen, ist aber noch langsam im Beschleunigen,
+hört nicht auf zu beschleunigen und schießt über das Ziel hinaus
+Wird noch verbessert
+*/
 
 bool Player::checkIfMovementValid(int side)
 {

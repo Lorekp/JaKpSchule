@@ -8,7 +8,7 @@ AssetManager::AssetManager()
 	sInstance = this;
 }
 
-void AssetManager::serializeGrid(std::string filename, std::vector<std::vector<GridElement>>& grid)
+void AssetManager::serializeGrid(std::string filename, Grid& gridG)
 {
 	#if !defined(WIN_32)
 	filename = std::regex_replace(filename, std::regex("\\\\"), "/");
