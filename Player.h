@@ -11,6 +11,7 @@ private:
 
 	std::vector<int> nextSide;
 	int lastSide;
+	sf::Vector2f initialPos;
 	sf::Vector2f pos;
 	sf::Vector2i cellPos;
 	sf::Vector2f targetPos;
@@ -25,6 +26,8 @@ private:
 	bool checkCellPos(sf::Vector2f posToCheck);
 
 	int getSide(sf::Vector2i cell);
+	void setInitialPos(sf::Vector2f constPos);
+	void setInitialPos(float cx, float cy);
 public:
 	sf::Vector2f getPos();
 	void setPos(sf::Vector2f newPos);
@@ -32,7 +35,7 @@ public:
 	void setTargetPos(float x, float y);
 	void setTargetPos(sf::Vector2f newPos);
 	void draw(sf::RenderWindow& window, float scale);
-	void move(sf::Time deltaTime);
+	void move(sf::Time deltaTime, bool bypassMovementValid);
 	void addNextSide(int side);
 	Player(Grid& grid);
 };

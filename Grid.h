@@ -1,5 +1,8 @@
 #pragma once
-
+#include "AssetManager.h"
+#include "GridElement.h"
+#include "SubGridElement.h"
+#include <cmath>
 #include <vector>
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -30,7 +33,7 @@ public:
 	void moveGridRight();
 	void moveGridDown();
 
-	GridElement getGridElementAt(int x, int y);
+	GridElement& getGridElementAt(int x, int y);
 	sf::Vector3i& getStart();
 	sf::Vector3i& getFinish();
 	sf::Sprite getStartSprite();

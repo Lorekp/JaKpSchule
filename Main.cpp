@@ -1,5 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <sys/stat.h>
+#include <errno.h>
+#if defined(_WIN32)
 #include <direct.h>
+#endif
+#include <regex>
 #include <iostream>
 #include "Level.h"
 #include "AssetManager.h"
@@ -7,13 +13,17 @@
 #include "Editor.h"
 #include "Settings.h"
 
-bool isDirExist(const std::string& path);
-bool makePath(const std::string& path);
+bool isDirExist(std::string path);
+bool makePath(std::string path);
 
 int main() {
 
     //initialization
+    #if defined(_WIN32)
     makePath(".\\saves");
+    #else
+    makePath("./saves");
+    #endif
 
     //window init
     sf::ContextSettings contextSettings;
@@ -36,7 +46,7 @@ int main() {
 
 }
 
-bool isDirExist(const std::string& path)
+bool isDirExist(std::string path)
 {
 #if defined(_WIN32)
     struct _stat info;
@@ -46,6 +56,7 @@ bool isDirExist(const std::string& path)
     }
     return (info.st_mode & _S_IFDIR) != 0;
 #else 
+    path = std::regex_replace(path, std::regex("\\\\"), "/");
     struct stat info;
     if (stat(path.c_str(), &info) != 0)
     {
@@ -55,11 +66,12 @@ bool isDirExist(const std::string& path)
 #endif
 }
 
-bool makePath(const std::string& path)
+bool makePath(std::string path)
 {
 #if defined(_WIN32)
     int ret = _mkdir(path.c_str());
 #else
+    path = std::regex_replace(path, std::regex("\\\\"), "/");
     mode_t mode = 0755;
     int ret = mkdir(path.c_str(), mode);
 #endif
@@ -78,7 +90,7 @@ bool makePath(const std::string& path)
             if (pos == std::string::npos)
 #endif
                 return false;
-            if (!makePath( path.substr(0, pos) ))
+            if (!makePath(path.substr(0, pos) ))
                 return false;
         }
         // now, try to create again

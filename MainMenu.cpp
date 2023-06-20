@@ -3,6 +3,7 @@
 #include "Slope.h"
 #include "Straight.h"
 #include "Player.h"
+#include "Settings.h"
 
 
 MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
@@ -28,6 +29,7 @@ MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
 
 void MainMenu::run()
 {
+    mainGrid.draw(Settings::getScale(), window, false, false, false);
     Player player = Player(mainGrid);
 
     bool fullscreen = false;
@@ -92,7 +94,7 @@ void MainMenu::run()
         window.draw(background);
 
         draw(scale, window);
-        player.move(deltaTime);
+        player.move(deltaTime, false);
         player.draw(window, scale);
 
         window.display();

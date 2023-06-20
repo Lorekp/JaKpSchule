@@ -61,6 +61,7 @@ Player::Player(Grid& grid) : grid(grid)
 	
 	setTargetPos(pos);
 	cellPos = sf::Vector2i(0, grid.getStart().y);
+	move(sf::seconds(0.1f), true);
 }
 
 bool Player::checkCellPos(sf::Vector2f posToCheck)
@@ -92,7 +93,7 @@ void Player::draw(sf::RenderWindow& window, float scale)
 	window.draw(pSprite);
 }
 
-void Player::move(sf::Time deltaTime)
+void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 {
 	const float scale = Settings::getScale();
 	//only move if target hasn't been reached
@@ -104,6 +105,8 @@ void Player::move(sf::Time deltaTime)
 	else if (nextSide.size() > 0) //if nextSide available
 	{
 		bool valid = checkIfMovementValid(nextSide.at(0));
+		if (bypassMovementValid)
+			valid = true;
 		while (!valid)
 		{
 			nextSide.erase(nextSide.begin());
@@ -129,7 +132,8 @@ void Player::move(sf::Time deltaTime)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(posX, scannedPixel))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(posX, scannedPixel);
+								targetPos = sf::Vector2f(pos.x, pos.y - i);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -151,7 +155,8 @@ void Player::move(sf::Time deltaTime)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(posX, scannedPixel))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(posX, scannedPixel);
+								targetPos = sf::Vector2f(pos.x, scannedPixel);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -174,7 +179,8 @@ void Player::move(sf::Time deltaTime)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(scannedPixel, posY))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(scannedPixel, posY);
+								targetPos = sf::Vector2f(pos.x + 1, pos.y);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -196,7 +202,8 @@ void Player::move(sf::Time deltaTime)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(scannedPixel, posY))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(scannedPixel, posY);
+								targetPos = sf::Vector2f(pos.x - 1, pos.y);
+								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
 					}
@@ -232,6 +239,8 @@ int Player::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, se
 
 	return result;
 }
+void Player::setInitialPos(sf::Vector2f constPos) {initialPos = constPos;}
+void Player::setInitialPos(float cx, float cy) {initialPos = sf::Vector2f(cx, cy);}
 void Player::setPos(sf::Vector2f newPos) { pos = newPos; pSprite.setPosition(pos); }
 void Player::setPos(float x, float y) { pos = sf::Vector2f(x, y); pSprite.setPosition(pos); }
 void Player::setTargetPos(float x, float y)
@@ -242,8 +251,22 @@ void Player::setTargetPos(sf::Vector2f newPos)
 {
 	targetPos = newPos;
 }
-void Player::move(sf::Vector2f target, float dTimeAsSeconds) { pos += ((target*1.1f)-pos) * dTimeAsSeconds * 1.1f; pSprite.setPosition(pos); }
-void Player::move(float x, float y, float dTimeAsSeconds) { pos += ((sf::Vector2f(x, y)*1.1f) - pos) * dTimeAsSeconds * 1.1f; pSprite.setPosition(pos); }
+void Player::move(sf::Vector2f target, float dTimeAsSeconds) 
+{ 
+	sf::Vector2f ppos = initialPos - 0.2f*(target-initialPos);
+	pos -= (ppos - pos) * dTimeAsSeconds * 0.2f; pSprite.setPosition(pos); 
+}
+
+void Player::move(float x, float y, float dTimeAsSeconds) 
+{ 
+	sf::Vector2f ppos = initialPos - 0.1f*(sf::Vector2f(x, y)-initialPos);
+	pos += (ppos - pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); 
+}
+/*
+Beschleunigt jetzt statt zu verlangsamen, ist aber noch langsam im Beschleunigen,
+hört nicht auf zu beschleunigen und schießt über das Ziel hinaus
+Wird noch verbessert
+*/
 
 bool Player::checkIfMovementValid(int side)
 {
@@ -300,5 +323,6 @@ bool Player::checkIfMovementValid(int side)
 	default:
 		break;
 	}
+	return false;
 }
 
