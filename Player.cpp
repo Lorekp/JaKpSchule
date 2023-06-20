@@ -132,7 +132,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(posX, scannedPixel))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(pos.x, pos.y - i);
+								targetPos = sf::Vector2f(posX, pos.y - i);
 								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
@@ -155,7 +155,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(posX, scannedPixel))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(pos.x, scannedPixel);
+								targetPos = sf::Vector2f(posX, scannedPixel);
 								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
@@ -179,7 +179,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(scannedPixel, posY))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(pos.x + 1, pos.y);
+								targetPos = sf::Vector2f(pos.x + 1, posY);
 								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
@@ -202,7 +202,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(scannedPixel, posY))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(pos.x - 1, pos.y);
+								targetPos = sf::Vector2f(pos.x - 1, posY);
 								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
 							}
 						}
