@@ -12,6 +12,7 @@ Player::Player(Grid& grid) : grid(grid)
 	int gridSizeY = grid.getGrid().at(0).size();
 	
 	float scale = Settings::getScale();
+	currentSpeed = 0;
 
 	switch (getSide(sf::Vector2i(grid.getStart().x, grid.getStart().y)))
 	{
@@ -62,6 +63,11 @@ Player::Player(Grid& grid) : grid(grid)
 	setTargetPos(pos);
 	cellPos = sf::Vector2i(0, grid.getStart().y);
 	move(sf::seconds(0.1f), true);
+}
+
+float Player::Lerp(float x, float y, float z)
+{
+	return ((1.0f - z) * x) + (z * y);
 }
 
 bool Player::checkCellPos(sf::Vector2f posToCheck)
@@ -239,8 +245,6 @@ int Player::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, se
 
 	return result;
 }
-void Player::setInitialPos(sf::Vector2f constPos) {initialPos = constPos;}
-void Player::setInitialPos(float cx, float cy) {initialPos = sf::Vector2f(cx, cy);}
 void Player::setPos(sf::Vector2f newPos) { pos = newPos; pSprite.setPosition(pos); }
 void Player::setPos(float x, float y) { pos = sf::Vector2f(x, y); pSprite.setPosition(pos); }
 void Player::setTargetPos(float x, float y)
@@ -253,14 +257,17 @@ void Player::setTargetPos(sf::Vector2f newPos)
 }
 void Player::move(sf::Vector2f target, float dTimeAsSeconds) 
 { 
-	sf::Vector2f ppos = initialPos - 0.2f*(target-initialPos);
-	pos -= (ppos - pos) * dTimeAsSeconds * 0.2f; pSprite.setPosition(pos); 
+	/*sf::Vector2f ppos = initialPos - 0.2f*(target-initialPos);
+	pos -= (ppos - pos) * dTimeAsSeconds * 0.2f; pSprite.setPosition(pos); */
 }
 
 void Player::move(float x, float y, float dTimeAsSeconds) 
 { 
-	sf::Vector2f ppos = initialPos - 0.1f*(sf::Vector2f(x, y)-initialPos);
-	pos += (ppos - pos) * dTimeAsSeconds * 0.1f; pSprite.setPosition(pos); 
+	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
+	
+	/*sf::Vector2f ppos = initialPos - 0.1f*(sf::Vector2f(x, y)-initialPos);
+	pos += (ppos - pos) * dTimeAsSeconds * 0.1f; 
+	pSprite.setPosition(pos); */
 }
 /*
 Beschleunigt jetzt statt zu verlangsamen, ist aber noch langsam im Beschleunigen,

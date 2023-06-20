@@ -11,16 +11,17 @@ private:
 
 	std::vector<int> nextSide;
 	int lastSide;
-	sf::Vector2f initialPos;
 	sf::Vector2f pos;
 	sf::Vector2i cellPos;
 	sf::Vector2f targetPos;
 	sf::Vector2i cellTarget;
 	SubGridElement target;
+	float currentSpeed;
 
 
 	void move(sf::Vector2f target, float dTimeAsSeconds);
 	void move(float x, float y, float dTimeAsSeconds);
+	float Lerp(float x, float y, float z);
 
 	bool checkIfMovementValid(int side);
 	bool checkCellPos(sf::Vector2f posToCheck);
