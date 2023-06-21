@@ -251,7 +251,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 							}
 						}
 					}
-					if ((scannedPixel) < -(grid.getGrid().at(0).size() * -256 * scale))
+					if ((scannedPixel) < -(grid.getGrid().at(0).size() * 256 * scale))
 					{
 						targetFound = true;
 						targetPos = sf::Vector2f(-1000, posY);
