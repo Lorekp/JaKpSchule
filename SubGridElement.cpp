@@ -48,3 +48,8 @@ SubGridElement::SubGridElement()
     this->side = 0;
     this->rotation = 0;
 }
+
+bool SubGridElement::operator!=(const SubGridElement& compare) const
+{
+    return compare.sprite.getPosition() != this->sprite.getPosition();
+}

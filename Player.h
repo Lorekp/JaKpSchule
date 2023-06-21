@@ -24,7 +24,7 @@ private:
 	float Lerp(float x, float y, float z);
 
 	bool checkIfMovementValid(int side);
-	bool checkCellPos(sf::Vector2f posToCheck);
+	bool checkCellPos(sf::Vector2f posToCheck, sf::Vector2i& variable);
 
 	int getSide(sf::Vector2i cell);
 	void setInitialPos(sf::Vector2f constPos);

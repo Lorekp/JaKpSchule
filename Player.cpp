@@ -70,7 +70,7 @@ float Player::Lerp(float x, float y, float z)
 	return ((1.0f - z) * x) + (z * y);
 }
 
-bool Player::checkCellPos(sf::Vector2f posToCheck)
+bool Player::checkCellPos(sf::Vector2f posToCheck, sf::Vector2i& variable)
 {
 	float scale = Settings::getScale();
 	float gridSizeX = grid.getGrid().at(0).size() * 256 * scale;
@@ -84,7 +84,7 @@ bool Player::checkCellPos(sf::Vector2f posToCheck)
 				(i * 256 * scale - (gridSizeY / 2)) < posToCheck.y && posToCheck.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
 			{
 
-				cellPos = sf::Vector2i(i, j);
+				variable = sf::Vector2i(i, j);
 				return true;
 			}
 		}
@@ -105,8 +105,10 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 	//only move if target hasn't been reached
 	if (pos != targetPos) {
 		move(targetPos, deltaTime.asSeconds());
-		if (pos == targetPos)
+		if (pos == targetPos) {
 			lastSide = nextSide.at(0);
+			currentSpeed = 0;
+		}
 	}
 	else if (nextSide.size() > 0) //if nextSide available
 	{
@@ -132,18 +134,27 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 				{
 					int posX = -(grid.getGrid().at(0).size() / static_cast<float>(2)) * 256 * scale + scale * 128  + scale * 256 * cellPos.y;
 					int scannedPixel = pos.y - i;
-					if (checkCellPos(sf::Vector2f(posX, scannedPixel))) {
-						for (int j = 0; j < grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElements().size(); j++)
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(posX, scannedPixel), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
 						{
-							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(posX, scannedPixel))
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(posX, scannedPixel) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(posX, pos.y - i);
-								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x + 22.5f * scale, bbox.getPosition().y + 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.x -= 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(posX, scannedPixel + 31.5f * scale);
 							}
 						}
 					}
-					if ((scannedPixel) < grid.getGrid().size() * -256 * scale)
+					if ((scannedPixel) < -(grid.getGrid().size() * 256 * scale))
 					{
 						targetFound = true;
 						targetPos = sf::Vector2f(posX, -1000);
@@ -155,14 +166,23 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 				{
 					int posX = -(grid.getGrid().at(0).size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.y;
 					int scannedPixel = pos.y + i;
-					if (checkCellPos(sf::Vector2f(posX, scannedPixel))) {
-						for (int j = 0; j < grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElements().size(); j++)
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(posX, scannedPixel), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
 						{
-							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(posX, scannedPixel))
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(posX, scannedPixel) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(posX, scannedPixel);
-								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x - 22.5f * scale, bbox.getPosition().y - 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.x += 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(posX, scannedPixel - 31.5f * scale);
 							}
 						}
 					}
@@ -179,14 +199,23 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 				{
 					int posY = -(grid.getGrid().size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.x;
 					int scannedPixel = pos.x + i;
-					if (checkCellPos(sf::Vector2f(scannedPixel, posY))) {
-						for (int j = 0; j < grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElements().size(); j++)
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(scannedPixel, posY), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
 						{
-							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(scannedPixel, posY))
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(scannedPixel, posY) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(pos.x + 1, posY);
-								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x - 22.5f * scale, bbox.getPosition().y - 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.y += 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(scannedPixel - 31.5f * scale, posY);
 							}
 						}
 					}
@@ -202,18 +231,27 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 				{
 					int posY = -(grid.getGrid().size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.x;
 					int scannedPixel = pos.x - i;
-					if (checkCellPos(sf::Vector2f(scannedPixel, posY))) {
-						for (int j = 0; j < grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElements().size(); j++)
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(scannedPixel, posY), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
 						{
-							if (grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j).getBoundingBox().getGlobalBounds().contains(scannedPixel, posY))
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(scannedPixel, posY) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
 							{
 								targetFound = true;
-								targetPos = sf::Vector2f(pos.x - 1, posY);
-								target = grid.getGridElementAt(cellPos.x, cellPos.y).getSubGridElementAt(j);
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x + 22.5f * scale, bbox.getPosition().y + 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.y -= 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(scannedPixel + 31.5f * scale, posY);
 							}
 						}
 					}
-					if ((scannedPixel) < grid.getGrid().at(0).size() * -256 * scale)
+					if ((scannedPixel) < -(grid.getGrid().at(0).size() * -256 * scale))
 					{
 						targetFound = true;
 						targetPos = sf::Vector2f(-1000, posY);
@@ -257,28 +295,68 @@ void Player::setTargetPos(sf::Vector2f newPos)
 }
 void Player::move(sf::Vector2f target, float dTimeAsSeconds) 
 { 
-	/*sf::Vector2f ppos = initialPos - 0.2f*(target-initialPos);
-	pos -= (ppos - pos) * dTimeAsSeconds * 0.2f; pSprite.setPosition(pos); */
+	float x = target.x;
+	float y = target.y;
+	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
+	if (x > pos.x) {
+		pos.x += currentSpeed;
+		if (x < pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	else if (x < pos.x) {
+		pos.x -= currentSpeed;
+		if (x > pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	if (y > pos.y) {
+		pos.y += currentSpeed;
+		if (y < pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
+	else if (y < pos.y) {
+		pos.y -= currentSpeed;
+		if (y > pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
 }
 
 void Player::move(float x, float y, float dTimeAsSeconds) 
 { 
 	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
-	
-	/*sf::Vector2f ppos = initialPos - 0.1f*(sf::Vector2f(x, y)-initialPos);
-	pos += (ppos - pos) * dTimeAsSeconds * 0.1f; 
-	pSprite.setPosition(pos); */
+	if (x > pos.x) {
+		pos.x += currentSpeed;
+		if (x < pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	else if (x < pos.x) {
+		pos.x -= currentSpeed;
+		if (x > pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	if (y > pos.y) {
+		pos.y += currentSpeed;
+		if (y < pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
+	else if (y < pos.y) {
+		pos.y -= currentSpeed;
+		if (y > pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
 }
-/*
-Beschleunigt jetzt statt zu verlangsamen, ist aber noch langsam im Beschleunigen,
-hört nicht auf zu beschleunigen und schießt über das Ziel hinaus
-Wird noch verbessert
-*/
 
 bool Player::checkIfMovementValid(int side)
 {
 	int targetRot = target.getSprite().getRotation();
-	checkCellPos(pos);
+	checkCellPos(pos, cellPos);
 	switch (target.getType())
 	{
 	case 0: //slope

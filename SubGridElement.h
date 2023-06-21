@@ -16,6 +16,7 @@ public:
 	void setBoundingBox(sf::RectangleShape boundingBox);
 	void setRotation(int rotation);
 	SubGridElement();
+	bool operator!=(const SubGridElement& compare) const;
 protected:
 	int type;
 	int side;
