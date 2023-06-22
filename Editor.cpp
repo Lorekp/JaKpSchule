@@ -412,7 +412,7 @@ void Editor::run()
 void Editor::draw(float scale, sf::RenderWindow& window)
 {
     //draw the grid itself
-    grid.draw(scale, window, true, drawStart, drawFinish);
+    grid.draw(window, true, drawStart, drawFinish);
 
     //draw the not yet placed element
     if (hoverPlace) 

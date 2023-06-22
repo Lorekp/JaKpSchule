@@ -25,17 +25,20 @@ private:
 
 	bool checkIfMovementValid(int side);
 	bool checkCellPos(sf::Vector2f posToCheck, sf::Vector2i& variable);
+	bool finished;
 
 	int getSide(sf::Vector2i cell);
 	void setInitialPos(sf::Vector2f constPos);
 	void setInitialPos(float cx, float cy);
 public:
 	sf::Vector2f getPos();
+	sf::Vector2f getTargetPos();
+	bool getFinished();
 	void setPos(sf::Vector2f newPos);
 	void setPos(float x, float y);
 	void setTargetPos(float x, float y);
 	void setTargetPos(sf::Vector2f newPos);
-	void draw(sf::RenderWindow& window, float scale);
+	void draw(sf::RenderWindow& window);
 	void move(sf::Time deltaTime, bool bypassMovementValid);
 	void addNextSide(int side);
 	Player(Grid& grid);

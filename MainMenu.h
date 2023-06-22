@@ -14,15 +14,12 @@ private:
 	std::vector<sf::Sprite> textures;
 	Grid mainGrid;
 	float scale;
-	bool doRun;
 	sf::RenderWindow& window;
 	sf::View view;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
-	void draw(float scale, sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window);
 public:
-	MainMenu(float scale, sf::RenderWindow& window);
-	void run();
-
-	float getScale();
+	MainMenu(sf::RenderWindow& window);
+	int run();
 };

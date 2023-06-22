@@ -6,8 +6,8 @@ Player::Player(Grid& grid) : grid(grid)
 {
 	this->pSprite = sf::Sprite(AssetManager::getTexture(".\\resources\\blackBall.png"));
 	pSprite.setOrigin(128, 128);
+	finished = false;
 
-	//set player starting pos
 	int gridSizeX = grid.getGrid().size();
 	int gridSizeY = grid.getGrid().at(0).size();
 	
@@ -65,6 +65,11 @@ Player::Player(Grid& grid) : grid(grid)
 	move(sf::seconds(0.1f), true);
 }
 
+bool Player::getFinished()
+{
+	return finished;
+}
+
 float Player::Lerp(float x, float y, float z)
 {
 	return ((1.0f - z) * x) + (z * y);
@@ -92,8 +97,9 @@ bool Player::checkCellPos(sf::Vector2f posToCheck, sf::Vector2i& variable)
 	return false;
 }
 
-void Player::draw(sf::RenderWindow& window, float scale)
+void Player::draw(sf::RenderWindow& window)
 {
+	float scale = Settings::getScale();
 	pSprite.setPosition(pos);
 	pSprite.setScale(scale, scale);
 	window.draw(pSprite);
@@ -109,6 +115,28 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 			lastSide = nextSide.at(0);
 			currentSpeed = 0;
 		}
+		else
+			switch (nextSide.at(0))
+			{
+			case 0:
+				if (pos.y <= grid.getStartSprite().getPosition().y)
+					finished = true;
+				break;
+			case 1:
+				if (pos.x >= grid.getStartSprite().getPosition().x)
+					finished = true;
+				break;
+			case 2:
+				if (pos.y >= grid.getStartSprite().getPosition().y)
+					finished = true;
+				break;
+			case 3:
+				if (pos.x <= grid.getStartSprite().getPosition().x)
+					finished = true;
+				break;
+			default:
+				break;
+			}
 	}
 	else if (nextSide.size() > 0) //if nextSide available
 	{
@@ -157,7 +185,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 					if ((scannedPixel) < -(grid.getGrid().size() * 256 * scale))
 					{
 						targetFound = true;
-						targetPos = sf::Vector2f(posX, -1000);
+						targetPos = sf::Vector2f(posX, -(grid.getGrid().size() * 256 * scale + 10000 * scale));
 					}
 				}
 			}
@@ -189,7 +217,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 					if (scannedPixel > grid.getGrid().size() * 256 * scale)
 					{ 
 						targetFound = true;
-						targetPos = sf::Vector2f(posX, 1000);
+						targetPos = sf::Vector2f(posX, grid.getGrid().size() * 256 * scale + 10000 * scale);
 
 					}
 				}
@@ -222,7 +250,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 					if ((scannedPixel) > grid.getGrid().at(0).size() * 256 * scale)
 					{
 						targetFound = true;
-						targetPos = sf::Vector2f(1000, posY);
+						targetPos = sf::Vector2f(grid.getGrid().at(0).size() * 256 * scale + 10000 * scale, posY);
 					}
 				}
 			}
@@ -254,7 +282,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 					if ((scannedPixel) < -(grid.getGrid().at(0).size() * 256 * scale))
 					{
 						targetFound = true;
-						targetPos = sf::Vector2f(-1000, posY);
+						targetPos = sf::Vector2f(-(grid.getGrid().at(0).size() * 256 * scale + 10000 * scale), posY);
 					}
 				}
 			}
@@ -265,6 +293,11 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 void Player::addNextSide(int side)
 {
 	this->nextSide.push_back(side);
+}
+
+sf::Vector2f Player::getTargetPos()
+{
+	return targetPos;
 }
 
 sf::Vector2f Player::getPos() { return pos; }
@@ -299,25 +332,25 @@ void Player::move(sf::Vector2f target, float dTimeAsSeconds)
 	float y = target.y;
 	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
 	if (x > pos.x) {
-		pos.x += currentSpeed;
+		pos.x += currentSpeed * dTimeAsSeconds * 50;
 		if (x < pos.x)
 			pos.x = x;
 		pSprite.setPosition(pos);
 	}
 	else if (x < pos.x) {
-		pos.x -= currentSpeed;
+		pos.x -= currentSpeed * dTimeAsSeconds * 50;
 		if (x > pos.x)
 			pos.x = x;
 		pSprite.setPosition(pos);
 	}
 	if (y > pos.y) {
-		pos.y += currentSpeed;
+		pos.y += currentSpeed * dTimeAsSeconds * 50;
 		if (y < pos.y)
 			pos.y = y;
 		pSprite.setPosition(pos);
 	}
 	else if (y < pos.y) {
-		pos.y -= currentSpeed;
+		pos.y -= currentSpeed * dTimeAsSeconds * 50;
 		if (y > pos.y)
 			pos.y = y;
 		pSprite.setPosition(pos);
@@ -328,25 +361,25 @@ void Player::move(float x, float y, float dTimeAsSeconds)
 { 
 	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
 	if (x > pos.x) {
-		pos.x += currentSpeed;
+		pos.x += currentSpeed * dTimeAsSeconds * 50;
 		if (x < pos.x)
 			pos.x = x;
 		pSprite.setPosition(pos);
 	}
 	else if (x < pos.x) {
-		pos.x -= currentSpeed;
+		pos.x -= currentSpeed * dTimeAsSeconds * 50;
 		if (x > pos.x)
 			pos.x = x;
 		pSprite.setPosition(pos);
 	}
 	if (y > pos.y) {
-		pos.y += currentSpeed;
+		pos.y += currentSpeed * dTimeAsSeconds * 50;
 		if (y < pos.y)
 			pos.y = y;
 		pSprite.setPosition(pos);
 	}
 	else if (y < pos.y) {
-		pos.y -= currentSpeed;
+		pos.y -= currentSpeed * dTimeAsSeconds * 50;
 		if (y > pos.y)
 			pos.y = y;
 		pSprite.setPosition(pos);

@@ -6,19 +6,18 @@
 #include "Settings.h"
 
 
-MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
+MainMenu::MainMenu(sf::RenderWindow& window) : window(window)
 {
 	//texture init
-	AssetManager::getTexture(".\\resources\\slope.png").setSmooth(true);
-	AssetManager::getTexture(".\\resources\\straight.png").setSmooth(true);
-	AssetManager::getTexture(".\\resources\\Arrow_Right_Key_Light.png").setSmooth(true);
-	AssetManager::getTexture(".\\resources\\Arrow_Left_Key_Light.png").setSmooth(true);
-	AssetManager::getTexture(".\\resources\\Arrow_Up_Key_Light.png").setSmooth(true);
-	AssetManager::getTexture(".\\resources\\Arrow_Down_Key_Light.png").setSmooth(true);
+	AssetManager::getTexture(".\\resources\\slope.png");
+	AssetManager::getTexture(".\\resources\\straight.png");
+	AssetManager::getTexture(".\\resources\\Arrow_Right_Key_Light.png");
+	AssetManager::getTexture(".\\resources\\Arrow_Left_Key_Light.png");
+	AssetManager::getTexture(".\\resources\\Arrow_Up_Key_Light.png");
+	AssetManager::getTexture(".\\resources\\Arrow_Down_Key_Light.png");
 	mainGrid = AssetManager::getGrid(".\\levels\\mainGrid.labdat");
 
-	this->scale = scale;
-    this->doRun = true;
+	this->scale = Settings::getScale();
 
 	this->view = sf::View();
 	view.setSize(window.getSize().x, window.getSize().y);
@@ -27,21 +26,25 @@ MainMenu::MainMenu(float scale, sf::RenderWindow& window) : window(window)
 
 }
 
-void MainMenu::run()
+int MainMenu::run()
 {
-    mainGrid.draw(Settings::getScale(), window, false, false, false);
+    mainGrid.draw(window, false, false, false);
     Player player = Player(mainGrid);
 
+    float fadePercent = 0;
     bool fullscreen = false;
 
     sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
+    sf::RectangleShape fadeShape = sf::RectangleShape(sf::Vector2f(1920, 1080));
+    fadeShape.setFillColor(sf::Color(0, 0, 0, 0)); //make transparent fade
 
     //time init
     sf::Time elapsedTime;
     sf::Clock clock;
 
-    while (window.isOpen() && doRun)
+    while (window.isOpen())
     {
+        this->scale = Settings::getScale();
         sf::Time deltaTime = clock.restart();
 
         sf::Event event;
@@ -90,24 +93,39 @@ void MainMenu::run()
         window.setView(view);
 
         background.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
+        
+        fadeShape.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
+        if (player.getPos().x < -((mainGrid.getGrid().at(0).size() * 256 * scale)/2))
+        {
+            float fadeDistance = (view.getSize().x / 2 - ((mainGrid.getGrid().at(0).size() * 256 * scale) / 2));
+            float relativePlayerPos = (-1) * (player.getPos().x) - ((mainGrid.getGrid().at(0).size() * 256 * scale) / 2);
+            fadePercent = (relativePlayerPos / fadeDistance);
+            fadeShape.setFillColor(sf::Color(0, 0, 0, 255 * fadePercent));
+            if (player.getPos().x < -(view.getSize().x / 2))
+                return 0; //run editor
+        }
+        else if (player.getPos().x > ((mainGrid.getGrid().at(0).size() * 256 * scale) / 2))
+        {
 
+        }
+        else if (player.getPos().y > ((mainGrid.getGrid().size() * 256 * scale) / 2))
+        {
+
+        }
         window.draw(background);
+        window.draw(fadeShape);
 
-        draw(scale, window);
+        draw(window);
         player.move(deltaTime, false);
-        player.draw(window, scale);
+        player.draw(window);
 
         window.display();
     }
 }
 
-void MainMenu::draw(float scale, sf::RenderWindow& window)
+void MainMenu::draw(sf::RenderWindow& window)
 {
-	mainGrid.draw(scale, window, false, false, false);
-}
-
-float MainMenu::getScale() {
-    return scale;
+	mainGrid.draw(window, false, false, false);
 }
 
 sf::View MainMenu::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {

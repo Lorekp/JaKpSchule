@@ -11,7 +11,7 @@ class Editor
 public:
 	Editor(std::string const& filename, sf::RenderWindow& window);
 	Editor(sf::RenderWindow& window);
-	void run();
+	int run();
 	void draw(float scale, sf::RenderWindow& window);
 
 private:

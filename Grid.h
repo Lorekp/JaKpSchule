@@ -47,7 +47,7 @@ public:
 
 	std::vector<std::vector<GridElement>>& getGrid();
 
-	void draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawStart, bool drawFinish);
+	void draw(sf::RenderWindow& window, bool drawGrid, bool drawStart, bool drawFinish);
 
 	Grid(int gridSizeX, int gridSizeY);
 	Grid();

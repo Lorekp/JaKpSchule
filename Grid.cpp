@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include "Settings.h"
 
 Grid::Grid(int gridSizeX, int gridSizeY) {
     for (int x = 0; x < gridSizeX; x++)
@@ -15,7 +16,6 @@ Grid::Grid(int gridSizeX, int gridSizeY) {
     finishSprite.setOrigin(128, 128);
     start = sf::Vector3i(0, 2, 2);
     finish = sf::Vector3i(3, 3, 0);
-
 }
 
 Grid::Grid()
@@ -93,8 +93,9 @@ std::vector<std::vector<GridElement>>& Grid::getGrid()
     return grid;
 }
 
-void Grid::draw(float scale, sf::RenderWindow& window, bool drawGrid, bool drawStart, bool drawFinish)
+void Grid::draw(sf::RenderWindow& window, bool drawGrid, bool drawStart, bool drawFinish)
 {
+    float scale = Settings::getScale();
     int gridSizeX = grid.size();
     int gridSizeY = grid.at(0).size();
 
