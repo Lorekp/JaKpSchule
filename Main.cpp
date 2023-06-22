@@ -38,10 +38,11 @@ int main() {
     settings.setScale(scale);
   
     MainMenu mainMenu(window);
-    if (mainMenu.run() == 0)
+    int runReturn = mainMenu.run();
+    if (runReturn == 0)
     {
         Editor editor(window);
-        editor.run();
+        runReturn = editor.run();
     }
     /*Editor editor(window);
     editor.run();*/

@@ -83,7 +83,7 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
     }
 }
 
-void Editor::run()
+int Editor::run()
 {
     bool fullscreen = false;
     bool upFlag = false, downFlag = false, leftFlag = false, rightFlag = false; //movement flags
@@ -181,6 +181,16 @@ void Editor::run()
                 case sf::Keyboard::A: leftFlag = false; break;
                 case sf::Keyboard::S: downFlag = false; break;
                 case sf::Keyboard::D: rightFlag = false; break;
+                case sf::Keyboard::Backspace: return 1;
+                /*case sf::Keyboard::C: 
+                    if (checkHoveredCell()) 
+                    { 
+                        for (int i = grid.getGridElementAt(hoveredCell.x, hoveredCell.y).getSubGridElements().size(); i >= 0; i--)
+                        {
+                            grid.getGridElementAt(hoveredCell.x, hoveredCell.y).getSubGridElements().pop_back();
+                        }
+                    }
+                    break;*/
                 default:
                     break;
                 }

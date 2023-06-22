@@ -106,7 +106,12 @@ int MainMenu::run()
         }
         else if (player.getPos().x > ((mainGrid.getGrid().at(0).size() * 256 * scale) / 2))
         {
-
+            float fadeDistance = (view.getSize().x / 2 - ((mainGrid.getGrid().at(0).size() * 256 * scale) / 2));
+            float relativePlayerPos = (player.getPos().x) - ((mainGrid.getGrid().at(0).size() * 256 * scale) / 2);
+            fadePercent = (relativePlayerPos / fadeDistance);
+            fadeShape.setFillColor(sf::Color(0, 0, 0, 255 * fadePercent));
+            if (player.getPos().x > (view.getSize().x / 2))
+                return 0; //run editor
         }
         else if (player.getPos().y > ((mainGrid.getGrid().size() * 256 * scale) / 2))
         {
