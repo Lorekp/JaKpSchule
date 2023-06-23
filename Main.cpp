@@ -44,6 +44,11 @@ int main() {
         Editor editor(window);
         runReturn = editor.run();
     }
+    if (runReturn == 2)
+    {
+        Level level(window, ".\\saves\\level.labdat");
+        level.run();
+    }
     /*Editor editor(window);
     editor.run();*/
     

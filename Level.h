@@ -1,15 +1,23 @@
 #pragma once
-#include <vector>
+#include "Grid.h"
+#include "Player.h"
 
-class Grid;
-class GridElement;
+class AssetManager;
+class Slope;
+class Straight;
+class Player;
 
 class Level {
 
 private:
+	Grid levelGrid;
+	float scale;
+	sf::RenderWindow& window;
+	sf::View view;
 
+	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 public:
-	void run();
-	Level();
+	int run();
+	Level(sf::RenderWindow& window, std::string filename);
 
 };

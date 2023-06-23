@@ -11,7 +11,7 @@ Slope::Slope(int rotation) {
 	this->boundingBox.setSize(sf::Vector2f(13, 64));
 	this->boundingBox.setFillColor(sf::Color(0, 0, 0, 0));
 	//debug Outline
-	/*this->boundingBox.setOutlineThickness(8);
-	this->boundingBox.setOutlineColor(sf::Color::Red);*/
+	this->boundingBox.setOutlineThickness(8);
+	this->boundingBox.setOutlineColor(sf::Color::Red);
 }
 

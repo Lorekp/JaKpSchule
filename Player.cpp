@@ -295,6 +295,13 @@ void Player::addNextSide(int side)
 	this->nextSide.push_back(side);
 }
 
+bool Player::rotMultipleOf90(int rot)
+{
+	if ((rot / 90) % 2 > 0)
+		return false;
+	return true;
+}
+
 sf::Vector2f Player::getTargetPos()
 {
 	return targetPos;

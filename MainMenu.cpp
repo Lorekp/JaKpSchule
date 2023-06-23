@@ -111,7 +111,7 @@ int MainMenu::run()
             fadePercent = (relativePlayerPos / fadeDistance);
             fadeShape.setFillColor(sf::Color(0, 0, 0, 255 * fadePercent));
             if (player.getPos().x > (view.getSize().x / 2))
-                return 0; //run editor
+                return 2; //run level
         }
         else if (player.getPos().y > ((mainGrid.getGrid().size() * 256 * scale) / 2))
         {

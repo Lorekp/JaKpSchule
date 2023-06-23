@@ -72,10 +72,10 @@ Editor::Editor(sf::RenderWindow& window) : window(window)
             finishPossibilities[i].at(j).setOrigin(128, 128);
             switch (i)
             {
-            case 0: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishPossibilities[i].at(j).setRotation(270); break;
-            case 1: finishPossibilities[i].at(j).setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(0); break;
-            case 2: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishPossibilities[i].at(j).setRotation(90); break;
-            case 3: finishPossibilities[i].at(j).setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(180); break;
+            case 0: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); finishPossibilities[i].at(j).setRotation(270); break; //up
+            case 1: finishPossibilities[i].at(j).setPosition((gridSizeY * 256 * scale) / 2 + 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(0); break; //right
+            case 2: finishPossibilities[i].at(j).setPosition(j * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); finishPossibilities[i].at(j).setRotation(90); break; //down
+            case 3: finishPossibilities[i].at(j).setPosition(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, j * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); finishPossibilities[i].at(j).setRotation(180); break; //left
             default:
                 break;
             }
@@ -125,8 +125,14 @@ int Editor::run()
                 {
                     if (checkHoveredCell())
                     {
-                        if (hoverElement.getType() == 0)
-                            hoverElement.setRotation(hoverElement.getSprite().getRotation() + 90);
+                        if (hoverElement.getType() == 0) {
+                            if ((hoverElement.getSprite().getRotation() == 90))
+                            {
+                                hoverElement.setRotation(0);
+                            }
+                            else
+                                hoverElement.setRotation(90);
+                        }
                         else if (hoverElement.getType() == 1) {
                             (hoverElement.getSide() + 1 > 3) ? (hoverElement.setSide(0)) : (hoverElement.setSide(hoverElement.getSide() + 1));
                             hoverElement.setRotation((hoverElement.getSide()+ 1)*90);
