@@ -1,0 +1,7 @@
+# CMake generation dependency list for this directory.
+C:/Users/laure/Downloads/Thor-master/doc/CMakeLists.txt
+C:/Users/laure/Downloads/Thor-master/doc/Doxyfile.txt
+C:/Users/laure/Downloads/Thor-master/doc/Doxygen.css
+F:/CMake/share/cmake-3.26/Modules/FindDoxygen.cmake
+F:/CMake/share/cmake-3.26/Modules/FindPackageHandleStandardArgs.cmake
+F:/CMake/share/cmake-3.26/Modules/FindPackageMessage.cmake

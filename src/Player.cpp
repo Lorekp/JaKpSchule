@@ -1,0 +1,453 @@
+#include "Player.h"
+#include "utils/AssetManager.h"
+#include "utils/Settings.h"
+
+Player::Player(Grid& grid) : grid(grid)
+{
+	this->pSprite = sf::Sprite(AssetManager::getTexture(".\\resources\\blackBall.png"));
+	pSprite.setOrigin(128, 128);
+	finished = false;
+
+	int gridSizeX = grid.getGrid().size();
+	int gridSizeY = grid.getGrid().at(0).size();
+	
+	float scale = Settings::getScale();
+	currentSpeed = 0;
+
+	switch (getSide(sf::Vector2i(grid.getStart().x, grid.getStart().y)))
+	{
+	case 2: setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3); break;
+	case 4: setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1); break;
+	case 3: setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2); break;
+	case 6: setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0); break;
+	case 5: {
+		if (grid.getStart().z == 2) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2);
+		}
+		else if (grid.getStart().z == 3) {
+			setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3);
+		}
+		break;
+	}
+	case 8: {
+		if (grid.getStart().z == 3) {
+			setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3);
+		}
+		else if (grid.getStart().z == 0) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0);
+		}
+		break;
+	}
+	case 10: {
+		if (grid.getStart().z == 0) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0);
+		}
+		else if (grid.getStart().z == 1) {
+			setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1);
+		}
+		break;
+	}
+	case 7: {
+		if (grid.getStart().z == 2) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2);
+		}
+		else if (grid.getStart().z == 1) {
+			setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+	
+	setTargetPos(pos);
+	cellPos = sf::Vector2i(0, grid.getStart().y);
+	move(sf::seconds(0.1f), true);
+}
+
+bool Player::getFinished()
+{
+	return finished;
+}
+
+float Player::Lerp(float x, float y, float z)
+{
+	return ((1.0f - z) * x) + (z * y);
+}
+
+bool Player::checkCellPos(sf::Vector2f posToCheck, sf::Vector2i& variable)
+{
+	float scale = Settings::getScale();
+	float gridSizeX = grid.getGrid().at(0).size() * 256 * scale;
+	float gridSizeY = grid.getGrid().size() * 256 * scale;
+
+	for (int i = 0; i < grid.getGrid().size(); i++)
+	{
+		for (int j = 0; j < grid.getGrid().at(0).size(); j++)
+		{
+			if ((j * 256 * scale - (gridSizeX / 2)) < posToCheck.x && posToCheck.x < (j * 256 * scale + 256 * scale - (gridSizeX / 2)) &&
+				(i * 256 * scale - (gridSizeY / 2)) < posToCheck.y && posToCheck.y < (i * 256 * scale + 256 * scale - (gridSizeY / 2)))
+			{
+
+				variable = sf::Vector2i(i, j);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void Player::draw(sf::RenderWindow& window)
+{
+	float scale = Settings::getScale();
+	pSprite.setPosition(pos);
+	pSprite.setScale(scale, scale);
+	window.draw(pSprite);
+}
+
+void Player::move(sf::Time deltaTime, bool bypassMovementValid)
+{
+	const float scale = Settings::getScale();
+	//only move if target hasn't been reached
+	if (pos != targetPos) {
+		move(targetPos, deltaTime.asSeconds());
+		if (pos == targetPos) {
+			lastSide = nextSide.at(0);
+			currentSpeed = 0;
+		}
+		else
+			switch (nextSide.at(0))
+			{
+			case 0:
+				if (pos.y <= grid.getStartSprite().getPosition().y)
+					finished = true;
+				break;
+			case 1:
+				if (pos.x >= grid.getStartSprite().getPosition().x)
+					finished = true;
+				break;
+			case 2:
+				if (pos.y >= grid.getStartSprite().getPosition().y)
+					finished = true;
+				break;
+			case 3:
+				if (pos.x <= grid.getStartSprite().getPosition().x)
+					finished = true;
+				break;
+			default:
+				break;
+			}
+	}
+	else if (nextSide.size() > 0) //if nextSide available
+	{
+		bool valid = checkIfMovementValid(nextSide.at(0));
+		if (bypassMovementValid)
+			valid = true;
+		while (!valid)
+		{
+			nextSide.erase(nextSide.begin());
+			if (nextSide.size() > 0)
+			{
+				valid = checkIfMovementValid(nextSide.at(0));
+			}
+			else
+				break;
+		}
+		if (valid)
+		{
+			bool targetFound = false;
+			//trace and find next target
+			if (nextSide.at(0) == 0) {
+				for (int i = 0; targetFound == false; i++)
+				{
+					int posX = -(grid.getGrid().at(0).size() / static_cast<float>(2)) * 256 * scale + scale * 128  + scale * 256 * cellPos.y;
+					int scannedPixel = pos.y - i;
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(posX, scannedPixel), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
+						{
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(posX, scannedPixel) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
+							{
+								targetFound = true;
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x + 22.5f * scale, bbox.getPosition().y + 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.x -= 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(posX, scannedPixel + 31.5f * scale);
+							}
+						}
+					}
+					if ((scannedPixel) < -(grid.getGrid().size() * 256 * scale))
+					{
+						targetFound = true;
+						targetPos = sf::Vector2f(posX, -(grid.getGrid().size() * 256 * scale + 10000 * scale));
+					}
+				}
+			}
+			else if (nextSide.at(0) == 2) {
+				for (int i = 0; targetFound == false; i++)
+				{
+					int posX = -(grid.getGrid().at(0).size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.y;
+					int scannedPixel = pos.y + i;
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(posX, scannedPixel), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
+						{
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(posX, scannedPixel) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
+							{
+								targetFound = true;
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x - 22.5f * scale, bbox.getPosition().y - 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.x += 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(posX, scannedPixel - 31.5f * scale);
+							}
+						}
+					}
+					if (scannedPixel > grid.getGrid().size() * 256 * scale)
+					{ 
+						targetFound = true;
+						targetPos = sf::Vector2f(posX, grid.getGrid().size() * 256 * scale + 10000 * scale);
+
+					}
+				}
+			}
+			else if (nextSide.at(0) == 1) {
+				for (int i = 0; targetFound == false; i++)
+				{
+					int posY = -(grid.getGrid().size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.x;
+					int scannedPixel = pos.x + i;
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(scannedPixel, posY), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
+						{
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(scannedPixel, posY) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
+							{
+								targetFound = true;
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x - 22.5f * scale, bbox.getPosition().y - 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.y += 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(scannedPixel - 31.5f * scale, posY);
+							}
+						}
+					}
+					if ((scannedPixel) > grid.getGrid().at(0).size() * 256 * scale)
+					{
+						targetFound = true;
+						targetPos = sf::Vector2f(grid.getGrid().at(0).size() * 256 * scale + 10000 * scale, posY);
+					}
+				}
+			}
+			else if (nextSide.at(0) == 3) {
+				for (int i = 0; targetFound == false; i++)
+				{
+					int posY = -(grid.getGrid().size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.x;
+					int scannedPixel = pos.x - i;
+					sf::Vector2i scannedCellPos;
+					if (checkCellPos(sf::Vector2f(scannedPixel, posY), scannedCellPos)) {
+						for (int j = 0; j < grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElements().size(); j++)
+						{
+							sf::RectangleShape& bbox = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j).getBoundingBox();
+							if (bbox.getGlobalBounds().contains(scannedPixel, posY) && ((grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j) != target) || bypassMovementValid))
+							{
+								targetFound = true;
+								target = grid.getGridElementAt(scannedCellPos.x, scannedCellPos.y).getSubGridElementAt(j);
+								if (target.getType() == 0)
+								{
+									targetPos = sf::Vector2f(bbox.getPosition().x + 22.5f * scale, bbox.getPosition().y + 22.5f * scale);
+									if (target.getSprite().getRotation() == 90)
+										targetPos.y -= 45 * scale;
+								}
+								else if (target.getType() == 1)
+									targetPos = sf::Vector2f(scannedPixel + 31.5f * scale, posY);
+							}
+						}
+					}
+					if ((scannedPixel) < -(grid.getGrid().at(0).size() * 256 * scale))
+					{
+						targetFound = true;
+						targetPos = sf::Vector2f(-(grid.getGrid().at(0).size() * 256 * scale + 10000 * scale), posY);
+					}
+				}
+			}
+		}
+	}
+}
+
+void Player::addNextSide(int side)
+{
+	this->nextSide.push_back(side);
+}
+
+bool Player::rotMultipleOf90(int rot)
+{
+	if ((rot / 90) % 2 > 0)
+		return false;
+	return true;
+}
+
+sf::Vector2f Player::getTargetPos()
+{
+	return targetPos;
+}
+
+sf::Vector2f Player::getPos() { return pos; }
+int Player::getSide(sf::Vector2i cell) //2 = e, 4 = w, n = 3, s = 6 | ne = 5, se = 8, sw = 10, nw = 7
+{
+	int result = 0;
+
+	if (cell.x == 0)
+		result = 3;
+	else if (cell.x == grid.getGrid().size() - 1)
+		result = 6;
+	if (cell.y == 0)
+		result += 4;
+	else if (cell.y == grid.getGrid().at(0).size() - 1)
+		result += 2;
+
+	return result;
+}
+void Player::setPos(sf::Vector2f newPos) { pos = newPos; pSprite.setPosition(pos); }
+void Player::setPos(float x, float y) { pos = sf::Vector2f(x, y); pSprite.setPosition(pos); }
+void Player::setTargetPos(float x, float y)
+{
+	targetPos = sf::Vector2f(x, y);
+}
+void Player::setTargetPos(sf::Vector2f newPos)
+{
+	targetPos = newPos;
+}
+void Player::move(sf::Vector2f target, float dTimeAsSeconds) 
+{ 
+	float x = target.x;
+	float y = target.y;
+	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
+	if (x > pos.x) {
+		pos.x += currentSpeed * dTimeAsSeconds * 50;
+		if (x < pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	else if (x < pos.x) {
+		pos.x -= currentSpeed * dTimeAsSeconds * 50;
+		if (x > pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	if (y > pos.y) {
+		pos.y += currentSpeed * dTimeAsSeconds * 50;
+		if (y < pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
+	else if (y < pos.y) {
+		pos.y -= currentSpeed * dTimeAsSeconds * 50;
+		if (y > pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
+}
+
+void Player::move(float x, float y, float dTimeAsSeconds) 
+{ 
+	currentSpeed = Lerp(currentSpeed, /*maxSpeed*/10, /*scale*/0.1f);
+	if (x > pos.x) {
+		pos.x += currentSpeed * dTimeAsSeconds * 50;
+		if (x < pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	else if (x < pos.x) {
+		pos.x -= currentSpeed * dTimeAsSeconds * 50;
+		if (x > pos.x)
+			pos.x = x;
+		pSprite.setPosition(pos);
+	}
+	if (y > pos.y) {
+		pos.y += currentSpeed * dTimeAsSeconds * 50;
+		if (y < pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
+	else if (y < pos.y) {
+		pos.y -= currentSpeed * dTimeAsSeconds * 50;
+		if (y > pos.y)
+			pos.y = y;
+		pSprite.setPosition(pos);
+	}
+}
+
+bool Player::checkIfMovementValid(int side)
+{
+	int targetRot = target.getSprite().getRotation();
+	checkCellPos(pos, cellPos);
+	switch (target.getType())
+	{
+	case 0: //slope
+		switch (lastSide)
+		{
+		case 0:
+			if ((targetRot == 0 && side == 1) || (targetRot == 90 && side == 3))
+				return true;
+			break;
+		case 1:
+			if ((targetRot == 0 && side == 0) || (targetRot == 90 && side == 2))
+				return true;
+			break;
+		case 2:
+			if ((targetRot == 0 && side == 3) || (targetRot == 90 && side == 1))
+				return true;
+			break;
+		case 3:
+			if ((targetRot == 0 && side == 2) || (targetRot == 90 && side == 0))
+				return true;
+			break;
+		default:
+			break;
+		}
+		break;
+	case 1: //straight
+		switch (lastSide)
+		{
+		case 0:
+			if (targetRot == 90 && (side == 1 || side == 3))
+				return true;
+			break;
+		case 1:
+			if (targetRot == 0 && (side == 0 || side == 2))
+				return true;
+			break;
+		case 2:
+			if (targetRot == 90 && (side == 1 || side == 3))
+				return true;
+			break;
+		case 3:
+			if (targetRot == 0 && (side == 0 || side == 2))
+				return true;
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+

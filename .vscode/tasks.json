@@ -18,6 +18,8 @@
                 "SubGridElement.cpp",
                 "Slope.cpp",
                 "Straight.cpp",
+                "Settings.cpp",
+                "Player.cpp",
                 "-std=c++20",
                 "-lsfml-graphics",
                 "-lsfml-window",

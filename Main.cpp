@@ -7,10 +7,11 @@
 #endif
 #include <regex>
 #include <iostream>
-#include "Level.h"
-#include "AssetManager.h"
-#include "MainMenu.h"
-#include "Editor.h"
+#include "gameModes/Level.h"
+#include "utils/AssetManager.h"
+#include "gameModes/MainMenu.h"
+#include "gameModes/Editor.h"
+#include "utils/Settings.h"
 
 bool isDirExist(std::string path);
 bool makePath(std::string path);
@@ -25,16 +26,31 @@ int main() {
     #endif
 
     //window init
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8.0;
+    sf::ContextSettings contextSettings;
+    contextSettings.antialiasingLevel = 8.0;
 
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2), "Labyrinth", sf::Style::Default, contextSettings);
     window.setFramerateLimit(60);
 
+    float scale = 0.25f;
     AssetManager manager;
+    Settings settings;
+    settings.setScale(scale);
   
-    Editor editor(window);
-    editor.run();
+    MainMenu mainMenu(window);
+    int runReturn = mainMenu.run();
+    if (runReturn == 0)
+    {
+        Editor editor(window);
+        runReturn = editor.run();
+    }
+    if (runReturn == 2)
+    {
+        Level level(window, ".\\saves\\level.labdat");
+        level.run();
+    }
+    /*Editor editor(window);
+    editor.run();*/
     
     return 0;
 

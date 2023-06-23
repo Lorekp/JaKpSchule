@@ -19,36 +19,47 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="GridElement.cpp" />
-    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Slope.cpp" />
-    <ClCompile Include="Straight.cpp" />
-    <ClCompile Include="SubGridElement.cpp" />
+    <ClCompile Include="src\gameModes\Editor.cpp" />
+    <ClCompile Include="src\gameModes\Level.cpp" />
+    <ClCompile Include="src\gameModes\MainMenu.cpp" />
+    <ClCompile Include="src\grid\Grid.cpp" />
+    <ClCompile Include="src\grid\GridElement.cpp" />
+    <ClCompile Include="src\grid\SubGridElement.cpp" />
+    <ClCompile Include="src\grid\subGridElements\Slope.cpp" />
+    <ClCompile Include="src\grid\subGridElements\Straight.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\utils\AssetManager.cpp" />
+    <ClCompile Include="src\utils\Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AssetManager.h" />
-    <ClInclude Include="Editor.h" />
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="GridElement.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Slope.h" />
-    <ClInclude Include="Straight.h" />
-    <ClInclude Include="SubGridElement.h" />
+    <ClInclude Include="src\gameModes\Editor.h" />
+    <ClInclude Include="src\gameModes\Level.h" />
+    <ClInclude Include="src\gameModes\MainMenu.h" />
+    <ClInclude Include="src\grid\Grid.h" />
+    <ClInclude Include="src\grid\GridElement.h" />
+    <ClInclude Include="src\grid\SubGridElement.h" />
+    <ClInclude Include="src\grid\subGridElements\Slope.h" />
+    <ClInclude Include="src\grid\subGridElements\Straight.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\utils\AssetManager.h" />
+    <ClInclude Include="src\utils\Settings.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\arrow.png" />
+    <Image Include="resources\arrowLowOp.png" />
     <Image Include="resources\Arrow_Down_Key_Light.png" />
     <Image Include="resources\Arrow_Left_Key_Light.png" />
     <Image Include="resources\Arrow_Right_Key_Light.png" />
     <Image Include="resources\Arrow_Up_Key_Light.png" />
+    <Image Include="resources\blackBall.png" />
     <Image Include="resources\grid.png" />
+    <Image Include="resources\plus.png" />
+    <Image Include="resources\plusEmpty.png" />
     <Image Include="resources\slope.png" />
+    <Image Include="resources\slopeLowOp.png" />
     <Image Include="resources\straight.png" />
+    <Image Include="resources\straightLowOp.png" />
     <Image Include="resources\white19201080.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -107,15 +118,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SFML_STATIC;TGUI_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\thor-2.0\include;$(SolutionDir)\SFML-2.6.0\include;$(SolutionDir)\TGUI-1.x-nightly\include;$(SolutionDir)\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;sfml-audio-s-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s-d.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\thor-2.0\lib;$(SolutionDir)\SFML-2.6.0\lib;$(SolutionDir)\TGUI-1.x-nightly\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;sfml-audio-s-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s-d.lib;ws2_32.lib;thor-s-d.lib;tgui-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,17 +135,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SFML_STATIC;TGUI_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\thor-2.0\include;$(SolutionDir)\SFML-2.6.0\include;$(SolutionDir)\TGUI-1.x-nightly\include;$(SolutionDir)\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;sfml-audio-s.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\thor-2.0\lib;$(SolutionDir)\SFML-2.6.0\lib;$(SolutionDir)\TGUI-1.x-nightly\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;sfml-audio-s.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s.lib;ws2_32.lib;thor-s.lib;tgui-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

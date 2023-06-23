@@ -15,63 +15,75 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssetManager.cpp">
+    <ClCompile Include="src\gameModes\Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
+    <ClCompile Include="src\gameModes\Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level.cpp">
+    <ClCompile Include="src\gameModes\MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grid\subGridElements\Slope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grid\subGridElements\Straight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grid\Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grid\GridElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grid\SubGridElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
+    <ClCompile Include="src\utils\AssetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SubGridElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Slope.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Straight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor.cpp">
+    <ClCompile Include="src\utils\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="src\gameModes\Editor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level.h">
+    <ClInclude Include="src\gameModes\Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
+    <ClInclude Include="src\gameModes\MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AssetManager.h">
+    <ClInclude Include="src\grid\subGridElements\Slope.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GridElement.h">
+    <ClInclude Include="src\grid\subGridElements\Straight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SubGridElement.h">
+    <ClInclude Include="src\grid\Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Slope.h">
+    <ClInclude Include="src\grid\GridElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Straight.h">
+    <ClInclude Include="src\grid\SubGridElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Editor.h">
+    <ClInclude Include="src\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,6 +110,27 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\grid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\slopeLowOp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\straightLowOp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\plus.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\plusEmpty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\arrowLowOp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\arrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\blackBall.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
