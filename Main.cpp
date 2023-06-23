@@ -7,11 +7,11 @@
 #endif
 #include <regex>
 #include <iostream>
-#include "Level.h"
-#include "AssetManager.h"
-#include "MainMenu.h"
-#include "Editor.h"
-#include "Settings.h"
+#include "gameModes/Level.h"
+#include "utils/AssetManager.h"
+#include "gameModes/MainMenu.h"
+#include "gameModes/Editor.h"
+#include "utils/Settings.h"
 
 bool isDirExist(std::string path);
 bool makePath(std::string path);

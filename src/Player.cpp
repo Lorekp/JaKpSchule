@@ -1,6 +1,6 @@
 #include "Player.h"
-#include "AssetManager.h"
-#include "Settings.h"
+#include "utils/AssetManager.h"
+#include "utils/Settings.h"
 
 Player::Player(Grid& grid) : grid(grid)
 {

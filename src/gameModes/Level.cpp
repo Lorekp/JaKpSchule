@@ -1,9 +1,9 @@
 #include "Level.h"
-#include "AssetManager.h"
-#include "Slope.h"
-#include "Straight.h"
+#include "utils/AssetManager.h"
+#include "grid/subGridElements/Slope.h"
+#include "grid/subGridElements/Straight.h"
 #include "Player.h"
-#include "Settings.h"
+#include "utils/Settings.h"
 
 Level::Level(sf::RenderWindow& window, std::string filename) : window(window)
 {

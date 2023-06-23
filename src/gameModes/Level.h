@@ -1,5 +1,5 @@
 #pragma once
-#include "Grid.h"
+#include "grid/Grid.h"
 #include "Player.h"
 
 class AssetManager;

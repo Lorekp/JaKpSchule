@@ -1,5 +1,5 @@
-#include "Grid.h"
-#include "Settings.h"
+#include "grid/Grid.h"
+#include "utils/Settings.h"
 
 Grid::Grid(int gridSizeX, int gridSizeY) {
     for (int x = 0; x < gridSizeX; x++)

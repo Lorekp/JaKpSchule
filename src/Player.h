@@ -1,6 +1,6 @@
 #pragma once
-#include "Grid.h"
-#include "SubGridElement.h"
+#include "grid/Grid.h"
+#include "grid/SubGridElement.h"
 #include <SFML/System/Time.hpp>
 
 class Player

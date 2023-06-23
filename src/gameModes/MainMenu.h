@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Grid.h"
+#include "grid/Grid.h"
 #include "Player.h"
 
 class AssetManager;

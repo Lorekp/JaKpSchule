@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "Grid.h"
-#include "SubGridElement.h"
+#include "grid/Grid.h"
+#include "grid/SubGridElement.h"
 
 
 

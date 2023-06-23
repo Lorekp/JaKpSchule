@@ -1,7 +1,7 @@
 #include "Editor.h"
-#include "AssetManager.h"
-#include "Slope.h"
-#include "Straight.h"
+#include "utils/AssetManager.h"
+#include "grid/subGridElements/Slope.h"
+#include "grid/subGridElements/Straight.h"
 #include "Player.h"
 
 Editor::Editor(std::string const& filename, sf::RenderWindow& window) : window(window)

@@ -1,17 +1,17 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-#include "Slope.h"
-#include "Straight.h"
+#include "grid/subGridElements/Slope.h"
+#include "grid/subGridElements/Straight.h"
 #include <map>
 #include <fstream>
 #include <assert.h>
 #include <SFML/Graphics.hpp>
 #include <regex>
 #include <string>
-#include "GridElement.h"
-#include "Grid.h"
-#include "SubGridElement.h"
+#include "grid/GridElement.h"
+#include "grid/Grid.h"
+#include "grid/SubGridElement.h"
 
 class Grid;
 class Slope;
