@@ -42,8 +42,26 @@ int main() {
     AssetManager manager;
     Settings settings;
     settings.setScale(scale);
-  
+
+
     MainMenu mainMenu(window);
+    EditorMenu editorMenu(gui, window);
+    int runReturn = mainMenu.run();
+  
+    while (runReturn != -1)
+    {
+        switch (runReturn)
+        {
+        case 0: //editorMenu
+            runReturn = editorMenu.run();
+            break;
+        case 13:
+
+        default:
+            break;
+        }
+    }
+    /*MainMenu mainMenu(window);
     int runReturn = mainMenu.run();
     if (runReturn == 0)
     {
@@ -54,7 +72,7 @@ int main() {
     {
         Level level(window, ".\\saves\\level.labdat");
         level.run();
-    }
+    }*/
     /*Editor editor(window);
     editor.run();*/
     

@@ -13,7 +13,7 @@ EditorMenu::EditorMenu(tgui::Gui& gui, sf::RenderWindow& window) : gui(gui), win
 	try
 	{
 		gui.loadWidgetsFromFile(".\\resources\\forms\\EditorMenuForm.txt");
-		gui.get<tgui::Button>("Back")->onPress([&] {doRun = false;});
+		gui.get<tgui::Button>("Back")->onPress([&] {doRun = false; returnType = 13; });
 		gui.get<tgui::Button>("NewLevel")->onPress([&] {/*do smth*/});
 		
 	}
@@ -26,6 +26,9 @@ EditorMenu::EditorMenu(tgui::Gui& gui, sf::RenderWindow& window) : gui(gui), win
 
 int EditorMenu::run()
 {
+	sf::RectangleShape background(sf::Vector2f(1920, 1080));
+	background.setFillColor(sf::Color(198, 198, 198, 255));
+
 	while (window.isOpen() && doRun)
 	{
 		sf::Event event;
@@ -50,11 +53,14 @@ int EditorMenu::run()
 		window.clear();
 		window.setView(view);
 
+		background.setPosition(view.getCenter() - sf::Vector2f(1920 / 2, 1080 / 2));
+
+		window.draw(background);
 		gui.draw();
 
 		window.display();
 	}
-	return 0;
+	return returnType;
 }
 
 sf::View EditorMenu::getLetterboxView(sf::View view, int windowWidth, int windowHeight) {

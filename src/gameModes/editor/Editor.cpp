@@ -89,8 +89,9 @@ int Editor::run()
     bool upFlag = false, downFlag = false, leftFlag = false, rightFlag = false; //movement flags
     float camSpeed = 500;
 
-    sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
 
+    sf::RectangleShape background(sf::Vector2f(1920, 1080));
+    background.setFillColor(sf::Color(198, 198, 198, 255));
 
     //time init
     sf::Time elapsedTime;

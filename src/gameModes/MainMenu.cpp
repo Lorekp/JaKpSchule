@@ -26,7 +26,7 @@ MainMenu::MainMenu(sf::RenderWindow& window) : window(window)
 
 }
 
-int MainMenu::run()
+int MainMenu::run(int side)
 {
     mainGrid.draw(window, false, false, false);
     Player player = Player(mainGrid);
@@ -34,8 +34,9 @@ int MainMenu::run()
     float fadePercent = 0;
     bool fullscreen = false;
 
-    sf::Sprite background(AssetManager::getTexture(".\\resources\\white19201080.png"));
-    sf::RectangleShape fadeShape = sf::RectangleShape(sf::Vector2f(1920, 1080));
+    sf::RectangleShape background(sf::Vector2f(1920, 1080));
+    background.setFillColor(sf::Color(198, 198, 198, 255));
+    sf::RectangleShape fadeShape(sf::Vector2f(1920, 1080));
     fadeShape.setFillColor(sf::Color(0, 0, 0, 0)); //make transparent fade
 
     //time init

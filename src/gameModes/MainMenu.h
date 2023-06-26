@@ -21,5 +21,5 @@ private:
 	void draw(sf::RenderWindow& window);
 public:
 	MainMenu(sf::RenderWindow& window);
-	int run();
+	int run(int side);
 };
