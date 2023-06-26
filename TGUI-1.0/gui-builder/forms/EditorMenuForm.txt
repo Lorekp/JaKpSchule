@@ -24,8 +24,8 @@ Renderer.1 {
 
 Picture.MenuBackground {
     IgnoreMouseEvents = true;
-    Position = (410, 230);
-    Size = (800, 550);
+    Position = (21.354%, 21.296%);
+    Size = (41.666%, 50.925%);
 
     Renderer {
         Texture = "resources/DefaultPicture.png" Smooth;
@@ -35,8 +35,8 @@ Picture.MenuBackground {
 
 ScrollablePanel.LevelList {
     ContentSize = (0, 0);
-    Position = (430, 320);
-    Size = (470, 390);
+    Position = (22.395%, 29.629%);
+    Size = (24.479%, 36.111%);
 
     Renderer {
         BackgroundColor = white;
@@ -65,8 +65,8 @@ ScrollablePanel.LevelList {
 
 Picture.LevelDetail {
     IgnoreMouseEvents = true;
-    Position = (900, 320);
-    Size = (290, 240);
+    Position = (46.875%, 29.629%);
+    Size = (15.104%, 22.222%);
 
     Renderer {
         Texture = "resources/DefaultPicture.png" Smooth;
@@ -78,8 +78,8 @@ TextArea.TextArea1 {
     DefaultText = "???";
     HorizontalScrollbarPolicy = Never;
     MaximumCharacters = 0;
-    Position = (900, 560);
-    Size = (288, 150);
+    Position = (46.875%, 51.815%);
+    Size = (15.000%, 13.888%);
     Text = "";
     TextSize = 13;
     VerticalScrollbarPolicy = Never;
@@ -118,18 +118,18 @@ TextArea.TextArea1 {
 }
 
 Button.Button3 {
-    Position = (470, 720);
+    Position = (24.479%, 66.666%);
     Renderer = &1;
-    Size = (391, 41);
+    Size = (20.364%, 3.796%);
     Text = Button;
     TextSize = 13;
 }
 
 Button.Back {
     MouseCursor = Hand;
-    Position = (1110, 260);
+    Position = (57.8125%, 24.074%);
     Renderer = &1;
-    Size = (71, 41);
+    Size = (3.697%, 3.796%);
     Text = Button;
     TextSize = 13;
 }

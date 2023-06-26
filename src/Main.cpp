@@ -47,7 +47,8 @@ int main() {
     int runReturn = mainMenu.run();
     if (runReturn == 0)
     {
-        EditorMenu editorMenu(gui);
+        EditorMenu editorMenu(gui, window);
+        editorMenu.run();
     }
     if (runReturn == 2)
     {
