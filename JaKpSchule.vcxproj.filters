@@ -139,5 +139,17 @@
     <Image Include="resources\blackBall.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\minus.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\minusEmpty.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\anim\big_impact_smoke.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\forms\EditorMenuForm.txt" />
   </ItemGroup>
 </Project>

@@ -48,6 +48,7 @@
     <ClInclude Include="src\utils\Settings.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\anim\big_impact_smoke.png" />
     <Image Include="resources\arrow.png" />
     <Image Include="resources\arrowLowOp.png" />
     <Image Include="resources\Arrow_Down_Key_Light.png" />
@@ -56,6 +57,8 @@
     <Image Include="resources\Arrow_Up_Key_Light.png" />
     <Image Include="resources\blackBall.png" />
     <Image Include="resources\grid.png" />
+    <Image Include="resources\minus.png" />
+    <Image Include="resources\minusEmpty.png" />
     <Image Include="resources\plus.png" />
     <Image Include="resources\plusEmpty.png" />
     <Image Include="resources\slope.png" />
@@ -63,6 +66,9 @@
     <Image Include="resources\straight.png" />
     <Image Include="resources\straightLowOp.png" />
     <Image Include="resources\white19201080.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\forms\EditorMenuForm.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
