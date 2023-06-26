@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\gameModes\Editor.cpp">
+    <ClCompile Include="src\gameModes\editor\Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\gameModes\Level.cpp">
@@ -42,7 +42,7 @@
     <ClCompile Include="src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\AssetManager.cpp">
@@ -51,9 +51,12 @@
     <ClCompile Include="src\utils\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gameModes\editor\EditorMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\gameModes\Editor.h">
+    <ClInclude Include="src\gameModes\editor\Editor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\gameModes\Level.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameModes\editor\EditorMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
