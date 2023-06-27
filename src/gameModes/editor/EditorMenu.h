@@ -18,5 +18,6 @@ private:
 	sf::View view;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
+	void addNewLevel();
 };
 

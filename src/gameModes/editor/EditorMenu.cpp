@@ -1,5 +1,7 @@
 #include "EditorMenu.h"
 #include "utils/Settings.h"
+#include "grid/Grid.h"
+#include "utils/AssetManager.h"
 
 EditorMenu::EditorMenu(tgui::Gui& gui, sf::RenderWindow& window) : gui(gui), window(window)
 {
@@ -13,8 +15,8 @@ EditorMenu::EditorMenu(tgui::Gui& gui, sf::RenderWindow& window) : gui(gui), win
 	try
 	{
 		gui.loadWidgetsFromFile(".\\resources\\forms\\EditorMenuForm.txt");
-		gui.get<tgui::Button>("Back")->onPress([&] {doRun = false; returnType = 13; });
-		gui.get<tgui::Button>("NewLevel")->onPress([&] {/*do smth*/});
+		gui.get<tgui::Button>("Back")->onPress([&] {doRun = false; returnType = 11; });
+		gui.get<tgui::Button>("NewLevel")->onPress([&] {addNewLevel(); });
 		
 	}
 	catch (const tgui::Exception& e)
@@ -99,3 +101,9 @@ sf::View EditorMenu::getLetterboxView(sf::View view, int windowWidth, int window
 	return view;
 }
 
+void EditorMenu::addNewLevel()
+{
+	std::string filename;
+	Grid grid(4, 4);
+	AssetManager::serializeGrid(filename, grid);
+}

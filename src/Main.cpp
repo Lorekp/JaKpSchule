@@ -46,7 +46,7 @@ int main() {
 
     MainMenu mainMenu(window);
     EditorMenu editorMenu(gui, window);
-    int runReturn = mainMenu.run();
+    int runReturn = mainMenu.run(2);
   
     while (runReturn != -1)
     {
@@ -55,8 +55,15 @@ int main() {
         case 0: //editorMenu
             runReturn = editorMenu.run();
             break;
-        case 13:
-
+        case 2:
+        {
+            Level level(window, ".\\saves\\level.labdat");
+            level.run();
+        }
+            break;
+        case 11:
+            runReturn = mainMenu.run(1);
+            break;
         default:
             break;
         }

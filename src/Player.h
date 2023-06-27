@@ -42,6 +42,7 @@ public:
 	void draw(sf::RenderWindow& window);
 	void move(sf::Time deltaTime, bool bypassMovementValid);
 	void addNextSide(int side);
+	void update();
 	Player(Grid& grid);
 };
 

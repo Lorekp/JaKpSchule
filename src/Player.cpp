@@ -7,62 +7,11 @@ Player::Player(Grid& grid) : grid(grid)
 	this->pSprite = sf::Sprite(AssetManager::getTexture(".\\resources\\blackBall.png"));
 	pSprite.setOrigin(128, 128);
 	finished = false;
-
-	int gridSizeX = grid.getGrid().size();
-	int gridSizeY = grid.getGrid().at(0).size();
 	
 	float scale = Settings::getScale();
 	currentSpeed = 0;
 
-	switch (getSide(sf::Vector2i(grid.getStart().x, grid.getStart().y)))
-	{
-	case 2: setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3); break;
-	case 4: setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1); break;
-	case 3: setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2); break;
-	case 6: setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0); break;
-	case 5: {
-		if (grid.getStart().z == 2) {
-			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2);
-		}
-		else if (grid.getStart().z == 3) {
-			setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3);
-		}
-		break;
-	}
-	case 8: {
-		if (grid.getStart().z == 3) {
-			setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3);
-		}
-		else if (grid.getStart().z == 0) {
-			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0);
-		}
-		break;
-	}
-	case 10: {
-		if (grid.getStart().z == 0) {
-			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0);
-		}
-		else if (grid.getStart().z == 1) {
-			setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1);
-		}
-		break;
-	}
-	case 7: {
-		if (grid.getStart().z == 2) {
-			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2);
-		}
-		else if (grid.getStart().z == 1) {
-			setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1);
-		}
-		break;
-	}
-	default:
-		break;
-	}
-	
-	setTargetPos(pos);
-	cellPos = sf::Vector2i(0, grid.getStart().y);
-	move(sf::seconds(0.1f), true);
+	update();
 }
 
 bool Player::getFinished()
@@ -225,7 +174,7 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 			else if (nextSide.at(0) == 1) {
 				for (int i = 0; targetFound == false; i++)
 				{
-					int posY = -(grid.getGrid().size() / static_cast<float>(2)) * 256 * scale + scale * 128 + scale * 256 * cellPos.x;
+					int posY = scale * 128 + scale * 256 * cellPos.x - ((grid.getGrid().size() / static_cast<float>(2)) * 256 * scale);
 					int scannedPixel = pos.x + i;
 					sf::Vector2i scannedCellPos;
 					if (checkCellPos(sf::Vector2f(scannedPixel, posY), scannedCellPos)) {
@@ -293,6 +242,66 @@ void Player::move(sf::Time deltaTime, bool bypassMovementValid)
 void Player::addNextSide(int side)
 {
 	this->nextSide.push_back(side);
+}
+
+void Player::update()
+{
+
+	int gridSizeX = grid.getGrid().size();
+	int gridSizeY = grid.getGrid().at(0).size();
+	float scale = Settings::getScale();
+	for (int i = 0; 0 < nextSide.size(); i++)
+		nextSide.pop_back();
+
+	switch (getSide(sf::Vector2i(grid.getStart().x, grid.getStart().y)))
+	{
+	case 2: setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3); break;
+	case 4: setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1); break;
+	case 3: setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2); break;
+	case 6: setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0); break;
+	case 5: {
+		if (grid.getStart().z == 2) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2);
+		}
+		else if (grid.getStart().z == 3) {
+			setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3);
+		}
+		break;
+	}
+	case 8: {
+		if (grid.getStart().z == 3) {
+			setPos((gridSizeY * 256 * scale) / 2 + 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(3);
+		}
+		else if (grid.getStart().z == 0) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0);
+		}
+		break;
+	}
+	case 10: {
+		if (grid.getStart().z == 0) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, ((gridSizeX * 256 * scale) / 2) + 1024 * scale); nextSide.push_back(0);
+		}
+		else if (grid.getStart().z == 1) {
+			setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1);
+		}
+		break;
+	}
+	case 7: {
+		if (grid.getStart().z == 2) {
+			setPos(grid.getStart().y * 256 * scale - ((gridSizeY * 256 * scale) / 2) + 128 * scale, -((gridSizeX * 256 * scale) / 2) - 1024 * scale); nextSide.push_back(2);
+		}
+		else if (grid.getStart().z == 1) {
+			setPos(-((gridSizeY * 256 * scale) / 2) - 1024 * scale, grid.getStart().x * 256 * scale - ((gridSizeX * 256 * scale) / 2) + 128 * scale); nextSide.push_back(1);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
+	setTargetPos(pos);
+	cellPos = sf::Vector2i(grid.getStart().x, grid.getStart().y);
+	move(sf::seconds(0.1f), true);
 }
 
 bool Player::rotMultipleOf90(int rot)

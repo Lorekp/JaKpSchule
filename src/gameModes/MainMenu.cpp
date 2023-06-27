@@ -9,12 +9,6 @@
 MainMenu::MainMenu(sf::RenderWindow& window) : window(window)
 {
 	//texture init
-	AssetManager::getTexture(".\\resources\\slope.png");
-	AssetManager::getTexture(".\\resources\\straight.png");
-	AssetManager::getTexture(".\\resources\\Arrow_Right_Key_Light.png");
-	AssetManager::getTexture(".\\resources\\Arrow_Left_Key_Light.png");
-	AssetManager::getTexture(".\\resources\\Arrow_Up_Key_Light.png");
-	AssetManager::getTexture(".\\resources\\Arrow_Down_Key_Light.png");
 	mainGrid = AssetManager::getGrid(".\\levels\\mainGrid.labdat");
 
 	this->scale = Settings::getScale();
@@ -28,6 +22,8 @@ MainMenu::MainMenu(sf::RenderWindow& window) : window(window)
 
 int MainMenu::run(int side)
 {
+    if (side == 1) //adjust entrance if coming from side
+        mainGrid.setStart(sf::Vector3i(3, 0, 1));
     mainGrid.draw(window, false, false, false);
     Player player = Player(mainGrid);
 
@@ -70,6 +66,10 @@ int MainMenu::run(int side)
                     break;
                 case sf::Keyboard::Down:
                     player.addNextSide(2);
+                    break;
+                case sf::Keyboard::R:
+                    mainGrid.setStart(sf::Vector3i(0, 1, 2));
+                    player.update();
                     break;
                 default:
                     break;
