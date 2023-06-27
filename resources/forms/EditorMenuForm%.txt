@@ -1,0 +1,135 @@
+Renderer.1 {
+    BackgroundColor = #F5F5F5;
+    BackgroundColorDisabled = #E6E6E6;
+    BackgroundColorDown = #EBEBEB;
+    BackgroundColorHover = white;
+    BorderColor = #3C3C3C;
+    BorderColorDisabled = #7D7D7D;
+    BorderColorDown = black;
+    BorderColorFocused = #1E1EB4;
+    BorderColorHover = black;
+    Borders = (1, 1, 1, 1);
+    TextColor = #3C3C3C;
+    TextColorDisabled = #7D7D7D;
+    TextColorDown = black;
+    TextColorHover = black;
+    Texture = None;
+    TextureDisabled = None;
+    TextureDown = None;
+    TextureDownFocused = None;
+    TextureDownHover = None;
+    TextureFocused = None;
+    TextureHover = None;
+}
+
+Picture.MenuBackground {
+    IgnoreMouseEvents = true;
+    Position = (29.166%, 21.296%);
+    Size = (41.666%, 50.925%);
+
+    Renderer {
+        Texture = "resources/DefaultPicture.png" Smooth;
+        TransparentTexture = false;
+    }
+}
+
+ScrollablePanel.LevelList {
+    ContentSize = (0, 0);
+    Position = (30.208%, 29.629%);
+    Size = (24.479%, 36.111%);
+
+    Renderer {
+        BackgroundColor = white;
+        BorderColor = black;
+        TextureBackground = None;
+
+        Scrollbar {
+            ArrowBackgroundColor = #F5F5F5;
+            ArrowBackgroundColorHover = white;
+            ArrowColor = #3C3C3C;
+            ArrowColorHover = black;
+            TextureArrowDown = None;
+            TextureArrowDownHover = None;
+            TextureArrowUp = None;
+            TextureArrowUpHover = None;
+            TextureThumb = None;
+            TextureThumbHover = None;
+            TextureTrack = None;
+            TextureTrackHover = None;
+            ThumbColor = #DCDCDC;
+            ThumbColorHover = #E6E6E6;
+            TrackColor = #F5F5F5;
+        }
+    }
+}
+
+Picture.LevelDetail {
+    IgnoreMouseEvents = true;
+    Position = (54.6875%, 29.629%);
+    Size = (15.104%, 22.222%);
+
+    Renderer {
+        Texture = "resources/DefaultPicture.png" Smooth;
+        TransparentTexture = false;
+    }
+}
+
+TextArea.TextArea1 {
+    DefaultText = "???";
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 0;
+    Position = (54.6875%, 51.815%);
+    Size = (15%, 13.888%);
+    Text = "";
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        BackgroundColor = white;
+        BorderColor = black;
+        Borders = (1, 1, 1, 1);
+        CaretColor = black;
+        CaretWidth = 1;
+        DefaultTextColor = #A0A0A0;
+        Padding = (0, 0, 0, 0);
+        SelectedTextBackgroundColor = #006EFF;
+        SelectedTextColor = white;
+        TextColor = #3C3C3C;
+        TextureBackground = None;
+
+        Scrollbar {
+            ArrowBackgroundColor = #F5F5F5;
+            ArrowBackgroundColorHover = white;
+            ArrowColor = #3C3C3C;
+            ArrowColorHover = black;
+            TextureArrowDown = None;
+            TextureArrowDownHover = None;
+            TextureArrowUp = None;
+            TextureArrowUpHover = None;
+            TextureThumb = None;
+            TextureThumbHover = None;
+            TextureTrack = None;
+            TextureTrackHover = None;
+            ThumbColor = #DCDCDC;
+            ThumbColorHover = #E6E6E6;
+            TrackColor = #F5F5F5;
+        }
+    }
+}
+
+Button.NewLevel {
+    Position = (30.208%, 66.666%);
+    Renderer = &1;
+    Size = (20.364%, 3.796%);
+    Text = "New Level";
+    TextSize = 13;
+}
+
+Button.Back {
+    MouseCursor = Hand;
+    Position = (66.145%, 24.074%);
+    Renderer = &1;
+    Size = (3.697%, 3.796%);
+    Text = Back;
+    TextSize = 13;
+}

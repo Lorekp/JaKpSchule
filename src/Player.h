@@ -28,8 +28,6 @@ private:
 	bool finished;
 
 	int getSide(sf::Vector2i cell);
-	void setInitialPos(sf::Vector2f constPos);
-	void setInitialPos(float cx, float cy);
 	bool rotMultipleOf90(int rot);
 public:
 	sf::Vector2f getPos();

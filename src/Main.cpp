@@ -39,10 +39,11 @@ int main() {
     tgui::Gui gui(window);
 
     float scale = 0.25f;
+    float fontSize = 12.f;
     AssetManager manager;
     Settings settings;
     settings.setScale(scale);
-
+    settings.setFontSize(fontSize);
 
     MainMenu mainMenu(window);
     EditorMenu editorMenu(gui, window);

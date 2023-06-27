@@ -1,31 +1,7 @@
-Renderer.1 {
-    BackgroundColor = #F5F5F5;
-    BackgroundColorDisabled = #E6E6E6;
-    BackgroundColorDown = #EBEBEB;
-    BackgroundColorHover = white;
-    BorderColor = #3C3C3C;
-    BorderColorDisabled = #7D7D7D;
-    BorderColorDown = black;
-    BorderColorFocused = #1E1EB4;
-    BorderColorHover = black;
-    Borders = (1, 1, 1, 1);
-    TextColor = #3C3C3C;
-    TextColorDisabled = #7D7D7D;
-    TextColorDown = black;
-    TextColorHover = black;
-    Texture = None;
-    TextureDisabled = None;
-    TextureDown = None;
-    TextureDownFocused = None;
-    TextureDownHover = None;
-    TextureFocused = None;
-    TextureHover = None;
-}
-
 Picture.MenuBackground {
     IgnoreMouseEvents = true;
-    Position = (29.166%, 21.296%);
-    Size = (41.666%, 50.925%);
+    Position = (560, 230);
+    Size = (800, 550);
 
     Renderer {
         Texture = "resources/DefaultPicture.png" Smooth;
@@ -35,8 +11,8 @@ Picture.MenuBackground {
 
 ScrollablePanel.LevelList {
     ContentSize = (0, 0);
-    Position = (30.208%, 29.629%);
-    Size = (24.479%, 36.111%);
+    Position = (580, 400);
+    Size = (470, 310);
 
     Renderer {
         BackgroundColor = white;
@@ -63,10 +39,10 @@ ScrollablePanel.LevelList {
     }
 }
 
-Picture.LevelDetail {
+Picture.ImgLevelDetail {
     IgnoreMouseEvents = true;
-    Position = (54.6875%, 29.629%);
-    Size = (15.104%, 22.222%);
+    Position = (1050, 320);
+    Size = (290, 240);
 
     Renderer {
         Texture = "resources/DefaultPicture.png" Smooth;
@@ -74,27 +50,92 @@ Picture.LevelDetail {
     }
 }
 
-TextArea.TextArea1 {
-    DefaultText = "???";
-    HorizontalScrollbarPolicy = Never;
-    MaximumCharacters = 0;
-    Position = (54.6875%, 51.815%);
-    Size = (15%, 13.888%);
-    Text = "";
+BitmapButton.NewLevel {
+    Image = None;
+    ImageScaling = 0;
+    MouseCursor = Hand;
+    Position = (600, 340);
+    Size = (40, 40);
+    Text = "+";
     TextSize = 13;
-    VerticalScrollbarPolicy = Never;
 
     Renderer {
-        BackgroundColor = white;
+        BackgroundColor = #F5F5F5;
+        BackgroundColorDisabled = #E6E6E6;
+        BackgroundColorDown = #EBEBEB;
+        BackgroundColorHover = white;
+        BorderColor = #3C3C3C;
+        BorderColorDisabled = #7D7D7D;
+        BorderColorDown = black;
+        BorderColorFocused = #1E1EB4;
+        BorderColorHover = black;
+        Borders = (1, 1, 1, 1);
+        TextColor = #3C3C3C;
+        TextColorDisabled = #7D7D7D;
+        TextColorDown = black;
+        TextColorHover = black;
+        Texture = None;
+        TextureDisabled = None;
+        TextureDown = None;
+        TextureDownFocused = None;
+        TextureDownHover = None;
+        TextureFocused = None;
+        TextureHover = None;
+    }
+}
+
+BitmapButton.Back {
+    Image = None;
+    ImageScaling = 0;
+    MouseCursor = Hand;
+    Position = (1300, 260);
+    Size = (40, 40);
+    Text = "->";
+    TextSize = 13;
+
+    Renderer {
+        BackgroundColor = #F5F5F5;
+        BackgroundColorDisabled = #E6E6E6;
+        BackgroundColorDown = #EBEBEB;
+        BackgroundColorHover = white;
+        BorderColor = #3C3C3C;
+        BorderColorDisabled = #7D7D7D;
+        BorderColorDown = black;
+        BorderColorFocused = #1E1EB4;
+        BorderColorHover = black;
+        Borders = (1, 1, 1, 1);
+        TextColor = #3C3C3C;
+        TextColorDisabled = #7D7D7D;
+        TextColorDown = black;
+        TextColorHover = black;
+        Texture = None;
+        TextureDisabled = None;
+        TextureDown = None;
+        TextureDownFocused = None;
+        TextureDownHover = None;
+        TextureFocused = None;
+        TextureHover = None;
+    }
+}
+
+ListBox.LevelDetail {
+    ItemHeight = 18;
+    MaximumItems = 0;
+    Position = (1050, 560);
+    Size = (290, 150);
+    TextSize = 13;
+
+    Renderer {
+        BackgroundColor = #F5F5F5;
+        BackgroundColorHover = white;
         BorderColor = black;
         Borders = (1, 1, 1, 1);
-        CaretColor = black;
-        CaretWidth = 1;
-        DefaultTextColor = #A0A0A0;
         Padding = (0, 0, 0, 0);
-        SelectedTextBackgroundColor = #006EFF;
+        SelectedBackgroundColor = #006EFF;
+        SelectedBackgroundColorHover = #1E96FF;
         SelectedTextColor = white;
         TextColor = #3C3C3C;
+        TextColorHover = black;
         TextureBackground = None;
 
         Scrollbar {
@@ -115,21 +156,4 @@ TextArea.TextArea1 {
             TrackColor = #F5F5F5;
         }
     }
-}
-
-Button.NewLevel {
-    Position = (30.208%, 66.666%);
-    Renderer = &1;
-    Size = (20.364%, 3.796%);
-    Text = "New Level";
-    TextSize = 13;
-}
-
-Button.Back {
-    MouseCursor = Hand;
-    Position = (66.145%, 24.074%);
-    Renderer = &1;
-    Size = (3.697%, 3.796%);
-    Text = Back;
-    TextSize = 13;
 }

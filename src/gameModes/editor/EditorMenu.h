@@ -14,10 +14,12 @@ private:
 
 	bool doRun;
 	int returnType;
+	std::vector<tgui::Label::Ptr> levelList;
 
 	sf::View view;
 
 	sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
 	void addNewLevel();
+	bool isFileExist(std::string path);
 };
 

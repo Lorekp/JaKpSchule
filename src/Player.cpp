@@ -250,7 +250,7 @@ void Player::update()
 	int gridSizeX = grid.getGrid().size();
 	int gridSizeY = grid.getGrid().at(0).size();
 	float scale = Settings::getScale();
-	for (int i = 0; 0 < nextSide.size(); i++)
+	while(0 < nextSide.size())
 		nextSide.pop_back();
 
 	switch (getSide(sf::Vector2i(grid.getStart().x, grid.getStart().y)))
