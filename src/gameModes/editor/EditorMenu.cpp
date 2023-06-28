@@ -59,7 +59,7 @@ int EditorMenu::run()
 		for (const auto& entry : std::filesystem::directory_iterator(".\\saves"))
 		{
 			bool isNewEntry = true;
-			for (int i = i; i < levelList.size(); i++)
+			for (int i = 0; i < levelList.size(); i++)
 			{
 				if (levelList.at(i)->getText() == std::u8string(std::filesystem::path(entry.path()).stem().u8string()))
 					isNewEntry = false;
@@ -93,10 +93,14 @@ int EditorMenu::run()
 		}
 		if (savesAmount < levelList.size())
 		{
-			while (0 < levelList.size())
-			{
-				//make group die
-			}
+				for (int i = 0; i < levelList.size(); i++)
+				{
+					for (const auto& entry : std::filesystem::directory_iterator(".\\saves"))
+					{
+						if (!(levelList.at(i)->getText() == std::u8string(std::filesystem::path(entry.path()).stem().u8string())))
+							levelList.at(i)->getParent()->~Container();
+					}
+				}
 		}
 
 		window.clear();
