@@ -73,7 +73,8 @@ int EditorMenu::run()
 					gui.add(group);
 
 					auto label = tgui::Label::create(std::u8string(std::filesystem::path(entry.path()).stem().u8string())); //using filename
-					label->setPosition({ "0", "10" });
+					const int offset = 10 * levelList.size() + 10;
+					label->setPosition({ "0", offset});
 					label->setTextSize(Settings::getFontSize());
 					group->add(label);
 
@@ -91,14 +92,14 @@ int EditorMenu::run()
 			}
 			savesAmount += 1;
 		}
-		if (savesAmount < levelList.size())
+		if (savesAmount < levelList.size()) //delete files from list if not existing anymore
 		{
 				for (int i = 0; i < levelList.size(); i++)
 				{
 					for (const auto& entry : std::filesystem::directory_iterator(".\\saves"))
 					{
 						if (!(levelList.at(i)->getText() == std::u8string(std::filesystem::path(entry.path()).stem().u8string())))
-							levelList.at(i)->getParent()->~Container();
+							levelList.at(i)->getParent()->~Container(); //nullptr when deleting 
 					}
 				}
 		}
